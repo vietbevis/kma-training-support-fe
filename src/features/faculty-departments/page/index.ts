@@ -1,0 +1,1 @@
+export { FacultyDepartmentsPage } from './FacultieDepartmentsPage'
