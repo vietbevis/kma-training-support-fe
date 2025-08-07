@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/features/auth'
-import envConfig from '@/shared/config/envConfig'
 import type { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import envConfig from '../config/envConfig'
 import type { RefreshTokenResponse } from '../validations/AuthSchema'
 import API_ROUTES from './api-routes'
 import ROUTES from './routes'
@@ -11,7 +11,7 @@ interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 const api = axios.create({
-  baseURL: envConfig.VITE_API_URL,
+  baseURL: envConfig.VITE_ENV === 'development' ? '/api' : envConfig.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json'
   }

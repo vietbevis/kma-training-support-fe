@@ -11,22 +11,12 @@ import type {
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-export const useGetSubjectsQuery = ({
-  page,
-  limit,
-  search,
-  facultyDepartmentId
-}: {
-  page: number
-  limit: number
-  search: string
-  facultyDepartmentId: string
-}) => {
+export const useGetSubjectsQuery = (query: Partial<GetSubjectsSchemaType>) => {
   return useQuery({
-    queryKey: ['subjects', normalizeObject({ page, limit, search, facultyDepartmentId })],
+    queryKey: ['subjects', normalizeObject(query)],
     queryFn: () =>
       api.get<SubjectsResponseSchemaType>(API_ROUTES.SUBJECTS, {
-        params: normalizeObject({ page, limit, search, facultyDepartmentId })
+        params: normalizeObject(query)
       })
   })
 }

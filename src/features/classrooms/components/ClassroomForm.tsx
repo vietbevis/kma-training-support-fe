@@ -79,10 +79,8 @@ export const ClassroomForm = ({ initialData, onSubmit, isLoading, mode }: Classr
               <FormLabel>Tòa nhà *</FormLabel>
               <FormControl>
                 <ComboboxBuilding
-                  value={form.watch('buildingId') || ''}
+                  value={form.watch('buildingId')}
                   onValueChange={(value: string) => field.onChange(value)}
-                  placeholder='Chọn tòa nhà...'
-                  width='100%'
                 />
               </FormControl>
               <FormMessage />

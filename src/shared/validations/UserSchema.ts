@@ -1,34 +1,39 @@
 import { z } from 'zod'
-import { AcademicDegree, Gender } from '../lib/enum'
-import { BaseEntityDTO, BaseResponseSchema, createPaginationQuerySchema, MetaPagination } from './CommonSchema'
+import { Gender } from '../lib/enum'
+import { BaseEntityDTO, createPaginationQuerySchema, MetaPagination } from './CommonSchema'
 
 export const CreateUserSchema = z
   .object({
     fullName: z.string().min(1, 'Họ và tên không được để trống').max(255, 'Họ và tên không được quá 255 ký tự'),
+    username: z.string().min(1, 'Tên đăng nhập không được để trống').max(255, 'Tên đăng nhập không được quá 255 ký tự'),
+    code: z.string().min(1, 'Mã nhân viên không được để trống').max(255, 'Mã nhân viên không được quá 255 ký tự'),
+    password: z.string().min(1, 'Mật khẩu không được để trống').max(255, 'Mật khẩu không được quá 255 ký tự'),
     gender: z.enum(Gender, { message: 'Giới tính không hợp lệ' }),
-    dateOfBirth: z.coerce.date().optional(),
-    phone: z.string().max(20, 'Số điện thoại không được quá 20 ký tự').optional(),
-    email: z.string().email('Email không hợp lệ').max(255, 'Email không được quá 255 ký tự').optional(),
-    address: z.string().optional(),
-    citizenId: z.string().max(50, 'Căn cước công dân không được quá 50 ký tự').optional(),
-    citizenIdIssueDate: z.coerce.date().optional(),
-    citizenIdIssuePlace: z.string().max(255, 'Nơi cấp CCCD không được quá 255 ký tự').optional(),
-    citizenIdAddress: z.string().optional(),
-    currentAddress: z.string().optional(),
-    academicDegree: z.enum(AcademicDegree).optional(),
-    workplace: z.string().max(255, 'Nơi công tác không được quá 255 ký tự').optional(),
-    departmentId: z.coerce.number().optional(),
-    taxCode: z.string().max(20, 'Mã số thuế không được quá 20 ký tự').optional(),
-    bankAccount: z.string().max(50, 'Số tài khoản không được quá 50 ký tự').optional(),
-    bankName: z.string().max(255, 'Tên ngân hàng không được quá 255 ký tự').optional(),
-    bankBranch: z.string().max(255, 'Chi nhánh không được quá 255 ký tự').optional(),
-    salaryCoefficient: z.coerce.number().min(0, 'Hệ số lương phải lớn hơn hoặc bằng 0').optional(),
-    salary: z.string().max(50, 'Mức lương không được quá 50 ký tự').optional(),
-    profileFile: z.string().max(500, 'Đường dẫn file lý lịch không được quá 500 ký tự').optional(),
-    teachingStatus: z.coerce.boolean(),
-    facultyId: z.coerce.number(),
-    positionId: z.coerce.number().optional(),
-    taxExemptionId: z.coerce.number().optional()
+    dateOfBirth: z.string(),
+    phone: z.string().max(20, 'Số điện thoại không được quá 20 ký tự'),
+    email: z.string().email('Email không hợp lệ').max(255, 'Email không được quá 255 ký tự'),
+    workplace: z.string().max(255, 'Nơi công tác không được quá 255 ký tự'),
+    citizenId: z.string().max(50, 'Căn cước công dân không được quá 50 ký tự'),
+    citizenIdIssueDate: z.string(),
+    citizenIdIssuePlace: z.string().max(255, 'Nơi cấp CCCD không được quá 255 ký tự'),
+    citizenIdFront: z.string().max(500, 'Đường dẫn file ảnh CCCD không được quá 500 ký tự'),
+    citizenIdBack: z.string().max(500, 'Đường dẫn file ảnh CCCD không được quá 500 ký tự'),
+    citizenIdAddress: z.string(),
+    currentAddress: z.string(),
+    areTeaching: z.coerce.boolean(),
+    salaryCoefficient: z.coerce.number().min(0, 'Hệ số lương phải lớn hơn hoặc bằng 0'),
+    salary: z.coerce.number().min(0, 'Mức lương phải lớn hơn hoặc bằng 0'),
+    position: z.string(),
+    bankAccount: z.string().max(50, 'Số tài khoản không được quá 50 ký tự'),
+    bankName: z.string().max(255, 'Tên ngân hàng không được quá 255 ký tự'),
+    bankBranch: z.string().max(255, 'Chi nhánh không được quá 255 ký tự'),
+    taxCode: z.string().max(20, 'Mã số thuế không được quá 20 ký tự'),
+    exemptionPercentageId: z.string(),
+    subjectId: z.string(),
+    academicCredentialId: z.string(),
+    facultyDepartmentId: z.string(),
+    roleIds: z.array(z.string()),
+    profileFile: z.string().max(500, 'Đường dẫn file lý lịch không được quá 500 ký tự')
   })
   .strict()
   .strip()
@@ -38,111 +43,97 @@ export const UpdateUserSchema = CreateUserSchema
 export const UserSchema = BaseEntityDTO.extend({
   code: z.string(),
   fullName: z.string(),
+  username: z.string(),
   gender: z.enum(Gender),
-  dateOfBirth: z.coerce.date().nullable(),
+  dateOfBirth: z.string().nullable(),
   phone: z.string().nullable(),
   email: z.string().nullable(),
-  address: z.string().nullable(),
+  citizenIdFront: z.string().nullable(),
+  citizenIdBack: z.string().nullable(),
   citizenId: z.string().nullable(),
-  citizenIdIssueDate: z.coerce.date().nullable(),
+  citizenIdIssueDate: z.string().nullable(),
   citizenIdIssuePlace: z.string().nullable(),
   citizenIdAddress: z.string().nullable(),
   currentAddress: z.string().nullable(),
-  academicDegree: z.enum(AcademicDegree).nullable(),
   workplace: z.string().nullable(),
   taxCode: z.string().nullable(),
   bankAccount: z.string().nullable(),
   bankName: z.string().nullable(),
   bankBranch: z.string().nullable(),
   salaryCoefficient: z.coerce.number().nullable(),
-  salary: z.string().nullable(),
+  salary: z.coerce.number().nullable(),
   profileFile: z.string().nullable(),
-  teachingStatus: z.boolean(),
-  username: z.string().nullable().default(''),
-  faculty: z
+  areTeaching: z.boolean(),
+  position: z.string().nullable(),
+  facultyDepartment: z
     .object({
-      id: z.number(),
+      id: z.string(),
       name: z.string(),
       description: z.string().nullable(),
       isFaculty: z.coerce.boolean()
     })
     .nullable()
     .default(null),
-  department: z
+  exemptionPercentage: z
     .object({
-      id: z.number(),
+      id: z.string(),
       name: z.string(),
       description: z.string().nullable()
     })
     .nullable()
     .default(null),
-  position: z
+  subject: z
     .object({
-      id: z.number(),
+      id: z.string(),
       name: z.string(),
-      taxExemption: z
-        .object({
-          id: z.number(),
-          reason: z.string(),
-          percentage: z.coerce.number()
-        })
-        .nullable()
-        .default(null)
+      description: z.string().nullable()
     })
     .nullable()
     .default(null),
-  taxExemption: z
+  academicCredential: z
     .object({
-      id: z.number(),
-      reason: z.string(),
-      percentage: z.coerce.number()
+      id: z.string(),
+      name: z.string(),
+      description: z.string().nullable()
     })
     .nullable()
-    .default(null)
+    .default(null),
+  roles: z.array(z.object({ id: z.string(), name: z.string() }))
 }).strip()
 
-export const UserResponseSchema = BaseResponseSchema.extend({
-  data: UserSchema
-})
+export const UserResponseSchema = UserSchema
 
-export const PaginationUserSchema = createPaginationQuerySchema(
-  z.enum(['createdAt', 'fullName', 'code', 'dateOfBirth'])
-)
+export const PaginationUserSchema = createPaginationQuerySchema()
 
 export const UserQuerySchema = PaginationUserSchema.extend({
-  fullName: z.string().optional(),
-  code: z.string().optional(),
-  gender: z.enum(Gender).optional(),
-  academicDegree: z.enum(AcademicDegree).optional(),
-  facultyId: z.coerce.number().optional(),
-  departmentId: z.coerce.number().optional(),
-  positionId: z.coerce.number().optional(),
-  teachingStatus: z.enum(['true', 'false']).optional(),
-  haveAccount: z.enum(['true', 'false']).optional()
+  search: z.string().optional(),
+  facultyDepartmentId: z.string().optional(),
+  subjectId: z.string().optional(),
+  academicCredentialId: z.string().optional(),
+  gender: z.string().optional(),
+  areTeaching: z.boolean().optional()
 })
 
 export const PaginatedUserSchema = z
   .object({
-    items: z.array(UserSchema),
+    data: z.array(UserSchema),
     meta: MetaPagination
   })
   .strip()
 
-export const UsersResponseSchema = BaseResponseSchema.extend({
-  data: PaginatedUserSchema
-})
+export const UsersResponseSchema = PaginatedUserSchema
 
-export const DeleteUserSchema = BaseResponseSchema.extend({
-  data: z.object({
+export const DeleteUserSchema = z
+  .object({
     id: z.number().min(1, 'ID nhân viên không hợp lệ')
   })
-}).strip()
+  .strip()
 
-export const RestoreUserSchema = BaseResponseSchema.extend({
-  data: z.object({
+export const RestoreUserSchema = z
+  .object({
     id: z.number().min(1, 'ID nhân viên không hợp lệ')
   })
-}).strip()
+  .strip()
 
 export type User = z.infer<typeof UserSchema>
 export type Users = z.infer<typeof PaginatedUserSchema>

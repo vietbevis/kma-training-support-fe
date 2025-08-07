@@ -13,8 +13,8 @@ const navMain = [
         url: ROUTES.ACCOUNTS.url
       },
       {
-        title: 'Nhân viên',
-        url: '#'
+        title: ROUTES.USERS.title,
+        url: ROUTES.USERS.url
       }
     ]
   },
@@ -59,6 +59,10 @@ const navMain = [
       {
         title: ROUTES.ACADEMIC_CREDENTIALS.title,
         url: ROUTES.ACADEMIC_CREDENTIALS.url
+      },
+      {
+        title: ROUTES.EXEMPTION_PERCENTAGES.title,
+        url: ROUTES.EXEMPTION_PERCENTAGES.url
       },
       {
         title: 'Số tiết định mức',

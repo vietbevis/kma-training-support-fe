@@ -10,10 +10,9 @@ export type DecodedJwtToken = {
 
 export const decodeToken = (token: string) => {
   try {
-    console.log('Token decoded...')
+    console.log('token >>> decodeToken')
     return jwtDecode(token) as DecodedJwtToken
   } catch (error) {
-    console.error('Error decoding token:', error)
     return null
   }
 }

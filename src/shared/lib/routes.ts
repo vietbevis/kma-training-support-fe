@@ -1,4 +1,17 @@
-import { BookOpen, Building, GraduationCap, Home, LogIn, School, School2, SquareTerminal } from 'lucide-react'
+import {
+  BookOpen,
+  Building,
+  GraduationCap,
+  Home,
+  LogIn,
+  Pencil,
+  Percent,
+  School,
+  School2,
+  SquareTerminal,
+  User,
+  UserPlus
+} from 'lucide-react'
 
 const ROUTES = {
   HOME: {
@@ -45,6 +58,26 @@ const ROUTES = {
     title: 'Bộ môn',
     url: '/subjects',
     icon: BookOpen
+  },
+  EXEMPTION_PERCENTAGES: {
+    title: 'Phần trăm miễn giảm',
+    url: '/exemption-percentages',
+    icon: Percent
+  },
+  USERS: {
+    title: 'Nhân viên',
+    url: '/users',
+    icon: User
+  },
+  USER_CREATE: {
+    title: 'Thêm nhân viên',
+    url: '/users/create',
+    icon: UserPlus
+  },
+  USER_EDIT: {
+    title: 'Sửa nhân viên',
+    url: '/users/:id/edit',
+    icon: Pencil
   }
 }
 

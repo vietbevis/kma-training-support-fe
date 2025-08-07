@@ -13,7 +13,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem
 } from '@/shared/components/ui/sidebar'
-import { Link } from 'react-router'
+import { NavLink } from 'react-router'
 import { Fragment } from 'react/jsx-runtime'
 
 export function NavMain({
@@ -51,9 +51,9 @@ export function NavMain({
                       {item.items?.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <Link to={subItem.url}>
+                            <NavLink to={subItem.url}>
                               <span>{subItem.title}</span>
-                            </Link>
+                            </NavLink>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}
@@ -64,10 +64,10 @@ export function NavMain({
             ) : (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <Link to={item.url}>
+                  <NavLink to={item.url}>
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                  </Link>
+                  </NavLink>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             )}

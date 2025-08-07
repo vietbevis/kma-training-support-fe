@@ -6,12 +6,13 @@ import { Navigate, Outlet, useLocation } from 'react-router'
 import { useRefreshTokenMutation } from '../api/AuthService'
 import useAuthStore from '../stores/authStore'
 
+let countRefreshingToken = 0
+
 const AuthGuard = () => {
   const [isLoading, setIsLoading] = useState(true)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const { token, login, logout } = useAuthStore()
+  const { token, logout, isAuth: isAuthenticated } = useAuthStore()
   const location = useLocation()
-  const { mutateAsync: refreshTokenMutation } = useRefreshTokenMutation()
+  const { mutateAsync: refreshTokenMutation, isPending: isRefreshingToken } = useRefreshTokenMutation()
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -22,7 +23,6 @@ const AuthGuard = () => {
         // Không có access token - nhân viên chưa đăng nhập
         if (!accessToken) {
           logout()
-          setIsAuthenticated(false)
           setIsLoading(false)
           return
         }
@@ -31,7 +31,6 @@ const AuthGuard = () => {
         const decodedAccess = decodeToken(accessToken)
         if (!decodedAccess) {
           logout()
-          setIsAuthenticated(false)
           setIsLoading(false)
           return
         }
@@ -41,7 +40,6 @@ const AuthGuard = () => {
 
         if (!isAccessTokenExpired) {
           // Access token vẫn hợp lệ
-          setIsAuthenticated(true)
           setIsLoading(false)
           return
         }
@@ -49,7 +47,6 @@ const AuthGuard = () => {
         // Access token hết hạn, thử làm mới
         if (!refreshToken) {
           logout()
-          setIsAuthenticated(false)
           setIsLoading(false)
           return
         }
@@ -58,30 +55,31 @@ const AuthGuard = () => {
         const decodedRefresh = decodeToken(refreshToken)
         if (!decodedRefresh || decodedRefresh.exp * 1000 < Date.now()) {
           logout()
-          setIsAuthenticated(false)
           setIsLoading(false)
           return
         }
 
         // Thử làm mới token
         try {
+          if (isRefreshingToken) return
           await refreshTokenMutation({ refreshToken })
-          setIsAuthenticated(true)
+
+          console.log('🚀 ~ checkAuth ~ countRefreshingToken:', countRefreshingToken)
+          countRefreshingToken++
+
           setIsLoading(false)
-        } catch (error) {
+        } catch {
           logout()
-          setIsAuthenticated(false)
           setIsLoading(false)
         }
-      } catch (error) {
+      } catch {
         logout()
-        setIsAuthenticated(false)
         setIsLoading(false)
       }
     }
 
     checkAuth()
-  }, [token, login, logout, refreshTokenMutation])
+  }, [logout, refreshTokenMutation, token?.accessToken, token?.refreshToken, isRefreshingToken])
 
   // Hiển thị spinner khi kiểm tra xem nhân viên có đăng nhập không
   if (isLoading) {

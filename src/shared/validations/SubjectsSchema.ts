@@ -39,8 +39,7 @@ export const SubjectResponseSchema = SubjectSchema
 export const PaginationSubjectSchema = createPaginationQuerySchema()
 
 export const GetSubjectsSchema = PaginationSubjectSchema.extend({
-  name: z.string().optional(),
-  code: z.string().optional(),
+  search: z.string().optional(),
   facultyDepartmentId: z.string().optional()
 })
 

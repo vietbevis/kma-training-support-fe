@@ -21,9 +21,16 @@ const FacultyDepartmentsPage = lazy(() =>
   import('./features/faculty-departments/page').then((m) => ({ default: m.FacultyDepartmentsPage }))
 )
 const SubjectsPage = lazy(() => import('./features/subjects/page').then((m) => ({ default: m.SubjectsPage })))
+const ExemptionPercentagesPage = lazy(() =>
+  import('./features/exemption-percentages/page').then((m) => ({ default: m.ExemptionPercentagesPage }))
+)
+const UsersPage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UsersPage })))
+const UserCreatePage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UserCreatePage })))
+const UserEditPage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UserEditPage })))
 
 const router = createBrowserRouter([
   {
+    // loader: authLoader,
     element: <AuthGuard />,
     children: [
       {
@@ -57,6 +64,22 @@ const router = createBrowserRouter([
           {
             path: ROUTES.SUBJECTS.url,
             element: <SubjectsPage />
+          },
+          {
+            path: ROUTES.EXEMPTION_PERCENTAGES.url,
+            element: <ExemptionPercentagesPage />
+          },
+          {
+            path: ROUTES.USERS.url,
+            element: <UsersPage />
+          },
+          {
+            path: ROUTES.USER_CREATE.url,
+            element: <UserCreatePage />
+          },
+          {
+            path: ROUTES.USER_EDIT.url,
+            element: <UserEditPage />
           }
         ]
       }

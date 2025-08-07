@@ -18,7 +18,8 @@ const API_ROUTES = {
   CLASSROOMS: '/v1/classrooms',
   ACCOUNTS: '/v1/accounts',
   ACADEMIC_CREDENTIALS: '/v1/academic-credentials',
-  SUBJECTS: '/v1/subjects'
+  SUBJECTS: '/v1/subjects',
+  EXEMPTION_PERCENTAGES: '/v1/exemption-percentages'
 }
 
 export default API_ROUTES

@@ -1,0 +1,1 @@
+export { ExemptionPercentagesPage } from './ExemptionPercentagesPage'

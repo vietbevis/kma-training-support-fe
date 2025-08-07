@@ -33,8 +33,7 @@ export const FacultyDepartmentResponseSchema = FacultyDepartmentSchema
 export const PaginationFacultyDepartmentSchema = createPaginationQuerySchema()
 
 export const GetFacultyDepartmentsSchema = PaginationFacultyDepartmentSchema.extend({
-  name: z.string().optional(),
-  code: z.string().optional(),
+  search: z.string().optional(),
   isFaculty: z.enum(['true', 'false']).optional()
 })
 
