@@ -1,3 +1,4 @@
+import LoadingSpinner from '@/shared/components/LoadingSpinner'
 import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
@@ -12,12 +13,10 @@ interface SubjectTableProps {
 }
 
 export const SubjectTable = ({ subjects, onEdit, onDelete, isLoading }: SubjectTableProps) => {
-  if (isLoading) {
+  if (isLoading && subjects.length === 0) {
     return (
-      <div className='space-y-3'>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className='h-12 animate-pulse rounded-md bg-muted' />
-        ))}
+      <div className='flex justify-center items-center py-8'>
+        <LoadingSpinner isLoading={true} className='relative py-20' />
       </div>
     )
   }
