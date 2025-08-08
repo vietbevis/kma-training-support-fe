@@ -25,8 +25,6 @@ export const ClassroomFilters = () => {
         <ComboboxBuilding
           value={searchParams.get('buildingId') || ''}
           onValueChange={(value: string) => setSearchParams({ buildingId: value, page: '1' })}
-          placeholder='Chọn tòa nhà...'
-          width='100%'
         />
       </div>
 

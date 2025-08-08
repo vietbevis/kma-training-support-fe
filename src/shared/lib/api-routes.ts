@@ -18,6 +18,9 @@ const API_ROUTES = {
   CLASSROOMS: '/v1/classrooms',
   ACCOUNTS: '/v1/accounts',
   ACADEMIC_CREDENTIALS: '/v1/academic-credentials',
+  EDUCATIONAL_SYSTEMS: '/v1/educational-systems',
+  LECTURE_INVITATION_MONEYS: '/v1/lecture-invitation-money',
+  COURSES: '/v1/courses',
   SUBJECTS: '/v1/subjects',
   EXEMPTION_PERCENTAGES: '/v1/exemption-percentages'
 }

@@ -19,13 +19,13 @@ const navMain = [
     ]
   },
   {
-    title: 'Hệ đào tạo',
-    url: '#',
+    title: ROUTES.EDUCATIONAL_SYSTEMS.title,
+    url: ROUTES.EDUCATIONAL_SYSTEMS.url,
     icon: Bot
   },
   {
-    title: 'Tiền mời giảng',
-    url: '#',
+    title: ROUTES.LECTURE_INVITATION_MONEYS.title,
+    url: ROUTES.LECTURE_INVITATION_MONEYS.url,
     icon: Bot
   },
   {
@@ -36,6 +36,11 @@ const navMain = [
   {
     title: ROUTES.SUBJECTS.title,
     url: ROUTES.SUBJECTS.url,
+    icon: BookOpen
+  },
+  {
+    title: ROUTES.COURSES.title,
+    url: ROUTES.COURSES.url,
     icon: BookOpen
   },
   {

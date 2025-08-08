@@ -1,0 +1,125 @@
+import { Button } from '@/shared/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useDialogStore } from '@/shared/stores/dialogStore'
+import type { EducationalSystem } from '@/shared/validations/EducationalSystemSchema'
+import { Plus } from 'lucide-react'
+import { useSearchParams } from 'react-router'
+import {
+  useCreateEducationalSystemMutation,
+  useDeleteEducationalSystemMutation,
+  useEducationalSystemsQuery,
+  useUpdateEducationalSystemMutation
+} from '../api/EducationalSystemService'
+import { EducationalSystemFilters, EducationalSystemForm, EducationalSystemTable } from '../components'
+
+export const EducationalSystemsPage = () => {
+  const dialogStore = useDialogStore()
+
+  const [searchParams] = useSearchParams()
+  const { data, isLoading } = useEducationalSystemsQuery({
+    search: searchParams.get('search') || undefined,
+    page: Number(searchParams.get('page')) || 1,
+    limit: Number(searchParams.get('limit')) || 10,
+    educationLevels: searchParams.get('educationLevels') || undefined,
+    tuitions: searchParams.get('tuitions') || undefined
+  })
+
+  const items = data?.data.data || []
+
+  const { mutateAsync: createMutation, isPending: isCreating } = useCreateEducationalSystemMutation()
+  const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteEducationalSystemMutation()
+  const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateEducationalSystemMutation()
+
+  const handleDelete = (id: string) => {
+    dialogStore.openDialog({
+      type: 'confirm',
+      title: 'Xác nhận xóa',
+      description: 'Bạn có chắc chắn muốn xóa hệ đào tạo này? Hành động này không thể hoàn tác.',
+      loading: isDeleting,
+      onConfirm: async () => {
+        try {
+          await deleteMutation(id)
+          dialogStore.closeDialog()
+        } catch (error) {
+          console.error(error)
+        }
+      }
+    })
+  }
+
+  const handleOpenCreate = () => {
+    dialogStore.openDialog({
+      type: 'custom',
+      title: 'Thêm hệ đào tạo mới',
+      description: 'Thêm hệ đào tạo mới vào hệ thống',
+      content: (
+        <EducationalSystemForm
+          mode='create'
+          onSubmit={(formData) => handleFormSubmit(formData, 'create')}
+          isLoading={isCreating}
+        />
+      )
+    })
+  }
+
+  const handleEdit = (item: EducationalSystem) => {
+    dialogStore.openDialog({
+      type: 'custom',
+      title: 'Chỉnh sửa hệ đào tạo',
+      description: 'Chỉnh sửa thông tin hệ đào tạo đã tồn tại',
+      content: (
+        <EducationalSystemForm
+          mode='edit'
+          initialData={item}
+          onSubmit={(formData) => handleFormSubmit(formData, 'edit', item.id)}
+          isLoading={isUpdating}
+        />
+      )
+    })
+  }
+
+  const handleFormSubmit = async (
+    formData: Parameters<typeof useCreateEducationalSystemMutation>['length'] extends never ? never : any,
+    formMode: 'create' | 'edit',
+    editingId?: string
+  ) => {
+    try {
+      if (formMode === 'create') {
+        await createMutation(formData)
+      } else if (formMode === 'edit' && editingId) {
+        await updateMutation({ id: editingId, data: formData })
+      }
+      dialogStore.closeDialog()
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  return (
+    <div className='space-y-6'>
+      <div className='flex items-center justify-between'>
+        <div>
+          <h1 className='text-3xl font-bold'>Quản lý hệ đào tạo</h1>
+          <p className='text-muted-foreground'>Quản lý danh sách các hệ đào tạo trong hệ thống</p>
+        </div>
+        <div className='flex gap-2'>
+          <Button onClick={handleOpenCreate}>
+            <Plus className='h-4 w-4 mr-2' />
+            Thêm hệ đào tạo
+          </Button>
+        </div>
+      </div>
+
+      <EducationalSystemFilters />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Danh sách hệ đào tạo ({items.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <EducationalSystemTable data={items} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}

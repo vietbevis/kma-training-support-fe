@@ -49,6 +49,11 @@ const ROUTES = {
     url: '/academic-credentials',
     icon: GraduationCap
   },
+  EDUCATIONAL_SYSTEMS: {
+    title: 'Hệ đào tạo',
+    url: '/educational-systems',
+    icon: BookOpen
+  },
   FACULTY_DEPARTMENTS: {
     title: 'Khoa/Phòng ban',
     url: '/faculty-departments',
@@ -59,10 +64,20 @@ const ROUTES = {
     url: '/subjects',
     icon: BookOpen
   },
+  COURSES: {
+    title: 'Học phần',
+    url: '/courses',
+    icon: BookOpen
+  },
   EXEMPTION_PERCENTAGES: {
     title: 'Phần trăm miễn giảm',
     url: '/exemption-percentages',
     icon: Percent
+  },
+  LECTURE_INVITATION_MONEYS: {
+    title: 'Tiền mời giảng',
+    url: '/lecture-invitation-money',
+    icon: BookOpen
   },
   USERS: {
     title: 'Nhân viên',

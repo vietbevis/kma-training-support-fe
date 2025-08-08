@@ -1,19 +1,19 @@
-import ComboboxFacultyDepartment from '@/features/faculty-departments/components/ComboboxFacultyDepartment'
+import { ComboboxAcademicCredential } from '@/features/academic-credentails'
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { useDebounceSearchParams } from '@/shared/hooks/useDebounceSearchParams'
 import { Search, X } from 'lucide-react'
 
-export const SubjectFilters = () => {
+export const LectureInvitationMoneyFilters = () => {
   const [searchParams, setSearchParams] = useDebounceSearchParams()
 
   return (
     <div className='flex items-center gap-4 flex-wrap'>
-      <div className='flex-1 max-w-sm'>
+      <div className='flex-1 max-w-md'>
         <div className='relative'>
           <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
           <Input
-            placeholder='Tìm kiếm theo tên và mã...'
+            placeholder='Tìm kiếm theo hệ đào tạo, số tiền...'
             value={searchParams.get('search') || ''}
             onChange={(e) => setSearchParams({ search: e.target.value, page: '1' })}
             className='pl-10'
@@ -21,14 +21,10 @@ export const SubjectFilters = () => {
         </div>
       </div>
 
-      <div className='max-w-sm'>
-        <ComboboxFacultyDepartment
-          value={searchParams.get('facultyDepartmentId') || ''}
-          onValueChange={(value: string) => setSearchParams({ facultyDepartmentId: value, page: '1' })}
-          placeholder='Chọn khoa...'
-          width='100%'
-          className='min-w-72'
-          isFaculty
+      <div className='max-w-sm w-full'>
+        <ComboboxAcademicCredential
+          value={searchParams.get('academicCredentialId') || ''}
+          onValueChange={(value) => setSearchParams({ academicCredentialId: value || '', page: '1' })}
         />
       </div>
 

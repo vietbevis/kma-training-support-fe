@@ -26,16 +26,16 @@ export const DotNumber = {
 
 export type DotNumber = (typeof DotNumber)[keyof typeof DotNumber]
 
-export const KiHoc = {
-  KI_1: 1,
-  KI_1_1: 1.1,
-  KI_1_2: 1.2,
-  KI_2: 2,
-  KI_2_1: 2.1,
-  KI_2_2: 2.2
+export const KyHoc = {
+  KI_1: 'Kỳ 1',
+  KI_1_1: 'Kỳ 1 đợt 1',
+  KI_1_2: 'Kỳ 1 đợt 2',
+  KI_2: 'Kỳ 2',
+  KI_2_1: 'Kỳ 2 đợt 1',
+  KI_2_2: 'Kỳ 2 đợt 2'
 } as const
 
-export type KiHoc = (typeof KiHoc)[keyof typeof KiHoc]
+export type KyHoc = (typeof KyHoc)[keyof typeof KyHoc]
 
 /**
  * Enum cho phương pháp đánh giá

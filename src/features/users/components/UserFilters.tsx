@@ -9,7 +9,7 @@ export const UserFilters = () => {
 
   return (
     <div className='flex items-center gap-4 flex-wrap'>
-      <div className='flex-1 min-w-[200px]'>
+      <div className='flex-1 max-w-sm'>
         <div className='relative'>
           <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
           <Input
@@ -28,7 +28,7 @@ export const UserFilters = () => {
           setSearchParams({ areTeaching: value === 'all' ? '' : value === 'true' ? 'true' : 'false' })
         }
       >
-        <SelectTrigger className='w-[180px]'>
+        <SelectTrigger className='max-w-sm'>
           <SelectValue placeholder='Trạng thái giảng dạy' />
         </SelectTrigger>
         <SelectContent>

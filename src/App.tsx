@@ -21,8 +21,15 @@ const FacultyDepartmentsPage = lazy(() =>
   import('./features/faculty-departments/page').then((m) => ({ default: m.FacultyDepartmentsPage }))
 )
 const SubjectsPage = lazy(() => import('./features/subjects/page').then((m) => ({ default: m.SubjectsPage })))
+const CoursesPage = lazy(() => import('./features/courses/page').then((m) => ({ default: m.CoursesPage })))
 const ExemptionPercentagesPage = lazy(() =>
   import('./features/exemption-percentages/page').then((m) => ({ default: m.ExemptionPercentagesPage }))
+)
+const EducationalSystemsPage = lazy(() =>
+  import('./features/educational-systems/page').then((m) => ({ default: m.EducationalSystemsPage }))
+)
+const LectureInvitationMoneysPage = lazy(() =>
+  import('./features/lecture-invitation-money/page').then((m) => ({ default: m.LectureInvitationMoneysPage }))
 )
 const UsersPage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UsersPage })))
 const UserCreatePage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UserCreatePage })))
@@ -58,6 +65,10 @@ const router = createBrowserRouter([
             element: <AcademicCredentialsPage />
           },
           {
+            path: ROUTES.EDUCATIONAL_SYSTEMS.url,
+            element: <EducationalSystemsPage />
+          },
+          {
             path: ROUTES.FACULTY_DEPARTMENTS.url,
             element: <FacultyDepartmentsPage />
           },
@@ -66,8 +77,16 @@ const router = createBrowserRouter([
             element: <SubjectsPage />
           },
           {
+            path: ROUTES.COURSES.url,
+            element: <CoursesPage />
+          },
+          {
             path: ROUTES.EXEMPTION_PERCENTAGES.url,
             element: <ExemptionPercentagesPage />
+          },
+          {
+            path: ROUTES.LECTURE_INVITATION_MONEYS.url,
+            element: <LectureInvitationMoneysPage />
           },
           {
             path: ROUTES.USERS.url,

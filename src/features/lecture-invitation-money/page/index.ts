@@ -1,0 +1,1 @@
+export { LectureInvitationMoneysPage } from './LectureInvitationMoneysPage'
