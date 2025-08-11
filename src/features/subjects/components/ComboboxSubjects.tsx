@@ -63,7 +63,6 @@ const ComboboxSubjects = ({ value, onValueChange, facultyDepartmentId, disabled 
           {isMaxReached && <span className='text-xs text-muted-foreground ml-2 flex-shrink-0'>Đã đạt giới hạn</span>}
         </>
       )}
-      // Custom badge renderer
       selectedBadgeRenderer={(subject) => (
         <Badge key={subject.id} variant='outline' className='truncate text-xs max-w-[120px] h-6'>
           <span className='truncate'>{subject.name}</span>

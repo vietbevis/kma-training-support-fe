@@ -10,12 +10,9 @@ export const UserCreatePage = () => {
   const createUserMutation = useCreateUserMutation()
   const navigate = useNavigate()
 
-  const handleSubmit = (data: CreateUser) => {
-    createUserMutation.mutate(data, {
-      onSuccess: () => {
-        navigate(ROUTES.USERS.url)
-      }
-    })
+  const handleSubmit = async (data: CreateUser) => {
+    await createUserMutation.mutateAsync(data)
+    navigate(ROUTES.USERS.url)
   }
 
   return (

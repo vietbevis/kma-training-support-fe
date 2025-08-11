@@ -1,6 +1,7 @@
 import { ComboboxAcademicCredential } from '@/features/academic-credentails'
 import { ComboboxExemptionPercentage } from '@/features/exemption-percentages'
 import ComboboxFacultyDepartment from '@/features/faculty-departments/components/ComboboxFacultyDepartment'
+import { ComboboxRole } from '@/features/roles'
 import { ComboboxSubjects } from '@/features/subjects'
 import { Button } from '@/shared/components/ui/button'
 import { Calendar } from '@/shared/components/ui/calendar'
@@ -11,15 +12,15 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 import { Separator } from '@/shared/components/ui/separator'
 import { Switch } from '@/shared/components/ui/switch'
-import { FileTypeGroups, Gender } from '@/shared/lib/enum'
+import { Gender } from '@/shared/lib/enum'
 import { cn } from '@/shared/lib/utils'
+import UploadFiles from '@/shared/upload-files/UploadFiles'
 import { CreateUserSchema, type CreateUser, type UpdateUser, type User } from '@/shared/validations/UserSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { vi } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { FileUpload } from './FileUpload'
 
 interface UserFormProps {
   user?: User
@@ -32,31 +33,34 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
   const form = useForm<CreateUser>({
     resolver: zodResolver(CreateUserSchema) as any,
     defaultValues: {
-      fullName: user?.fullName || '',
+      code: user?.code || undefined,
+      fullName: user?.fullName || undefined,
+      username: mode === 'edit' ? user?.username || undefined : undefined,
+      password: mode === 'edit' ? undefined : '1',
       gender: user?.gender || Gender.OTHER,
-      phone: user?.phone || '',
-      email: user?.email || '',
-      citizenId: user?.citizenId || '',
-      citizenIdFront: user?.citizenIdFront || '',
-      citizenIdBack: user?.citizenIdBack || '',
-      citizenIdIssuePlace: user?.citizenIdIssuePlace || '',
-      citizenIdAddress: user?.citizenIdAddress || '',
-      currentAddress: user?.currentAddress || '',
-      workplace: user?.workplace || '',
-      taxCode: user?.taxCode || '',
-      bankAccount: user?.bankAccount || '',
-      bankName: user?.bankName || '',
-      bankBranch: user?.bankBranch || '',
+      phone: user?.phone || undefined,
+      email: user?.email || undefined,
+      citizenId: user?.citizenId || undefined,
+      citizenIdFront: user?.citizenIdFront || undefined,
+      citizenIdBack: user?.citizenIdBack || undefined,
+      citizenIdIssuePlace: user?.citizenIdIssuePlace || undefined,
+      citizenIdAddress: user?.citizenIdAddress || undefined,
+      currentAddress: user?.currentAddress || undefined,
+      workplace: user?.workplace || undefined,
+      taxCode: user?.taxCode || undefined,
+      bankAccount: user?.bankAccount || undefined,
+      bankName: user?.bankName || undefined,
+      bankBranch: user?.bankBranch || undefined,
       salaryCoefficient: user?.salaryCoefficient || 0,
       salary: user?.salary || 0,
-      profileFile: user?.profileFile || '',
+      profileFile: user?.profileFile || undefined,
       areTeaching: user?.areTeaching || false,
-      facultyDepartmentId: user?.facultyDepartment?.id || '',
-      academicCredentialId: user?.academicCredential?.id || '',
-      exemptionPercentageId: user?.exemptionPercentage?.id || '',
-      subjectId: user?.subject?.id || '',
-      dateOfBirth: user?.dateOfBirth || '',
-      citizenIdIssueDate: user?.citizenIdIssueDate || '',
+      facultyDepartmentId: user?.facultyDepartment?.id || undefined,
+      academicCredentialId: user?.academicCredential?.id || undefined,
+      exemptionPercentageId: user?.exemptionPercentage?.id || undefined,
+      subjectId: user?.subject?.id || undefined,
+      dateOfBirth: user?.dateOfBirth || undefined,
+      citizenIdIssueDate: user?.citizenIdIssueDate || undefined,
       roleIds: user?.roles?.map((role) => role.id) || []
     }
   })
@@ -335,6 +339,48 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         )}
                       />
                     </div>
+                    <div className='grid grid-cols-2 gap-4'>
+                      <FormField
+                        control={form.control}
+                        name='citizenIdFront'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-sm font-medium'>Ảnh CCCD trước</FormLabel>
+                            <FormControl>
+                              <UploadFiles
+                                value={field.value || undefined}
+                                onChange={(value) => (value ? field.onChange(value) : field.onChange(null))}
+                                fileType='image'
+                                multiple={false}
+                                showPreview={true}
+                                placeholder='Chọn ảnh CCCD mặt trước'
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name='citizenIdBack'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-sm font-medium'>Ảnh CCCD sau</FormLabel>
+                            <FormControl>
+                              <UploadFiles
+                                value={field.value || undefined}
+                                onChange={(value) => (value ? field.onChange(value) : field.onChange(null))}
+                                fileType='image'
+                                multiple={false}
+                                showPreview={true}
+                                placeholder='Chọn ảnh CCCD mặt sau'
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -428,6 +474,79 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                               <Switch checked={field.value} onCheckedChange={field.onChange} />
                             </FormControl>
                           </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className='space-y-4'>
+                  <div className='flex items-center gap-2'>
+                    <h3 className='text-lg font-semibold text-primary'>Thông tin tài khoản</h3>
+                  </div>
+
+                  <div className='space-y-4'>
+                    <div className='grid grid-cols-3 gap-4'>
+                      <FormField
+                        control={form.control}
+                        name='code'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-sm font-medium'>Mã nhân viên *</FormLabel>
+                            <FormControl>
+                              <Input placeholder='Nhập mã nhân viên' {...field} disabled={mode === 'edit'} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name='username'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-sm font-medium'>Username *</FormLabel>
+                            <FormControl>
+                              <Input placeholder='Nhập username' {...field} disabled={mode === 'edit'} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name='password'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className='text-sm font-medium'>Mật khẩu</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder={`${
+                                  mode === 'create' ? 'Nhập mật khẩu' : 'Nhập mật khẩu mới nếu muốn reset mật khẩu'
+                                }`}
+                                type='password'
+                                {...field}
+                                defaultValue={mode === 'create' ? '1' : undefined}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name='roleIds'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className='text-sm font-medium'>Vai trò *</FormLabel>
+                          <FormControl>
+                            <ComboboxRole
+                              values={form.watch('roleIds')}
+                              onValuesChange={field.onChange}
+                              multiple={true}
+                            />
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
@@ -576,13 +695,13 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          <FileUpload
-                            value={field.value}
-                            onChange={field.onChange}
-                            label='File lý lịch cá nhân'
-                            description='Tải lên file lý lịch cá nhân'
-                            acceptedFileTypes={FileTypeGroups.PROFILE_FILES}
-                            maxFiles={1}
+                          <UploadFiles
+                            value={field.value || undefined}
+                            onChange={(value) => (value ? field.onChange(value) : field.onChange(null))}
+                            fileType='document'
+                            multiple={false}
+                            showPreview={false}
+                            placeholder='Chọn file lý lịch cá nhân'
                           />
                         </FormControl>
                         <FormMessage />
@@ -596,8 +715,17 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
             <Separator className='my-8' />
 
             {/* Submit Button */}
-            <div className='flex justify-end'>
-              <Button type='submit' disabled={isLoading}>
+            <div
+              className={cn(
+                'flex justify-end',
+                form.formState.isDirty && 'sticky bottom-0 bg-background border rounded-lg border-input p-4'
+              )}
+            >
+              <Button
+                type='submit'
+                disabled={isLoading || !form.formState.isDirty}
+                className={cn('cursor-pointer', !form.formState.isDirty && 'pointer-events-none')}
+              >
                 {isLoading ? (
                   <div className='flex items-center gap-2'>
                     <div className='w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin' />

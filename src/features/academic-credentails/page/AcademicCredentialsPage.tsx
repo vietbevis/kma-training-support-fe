@@ -1,11 +1,11 @@
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
 import { useDialogStore } from '@/shared/stores/dialogStore'
-import type { AcademicCredential } from '@/shared/validations/AcademicCredentialSchema'
 import type {
-  CreateBuildingSchemaType as CreateBuilding,
-  UpdateBuildingSchemaType as UpdateBuilding
-} from '@/shared/validations/BuildingSchema'
+  AcademicCredential,
+  CreateAcademicCredentialSchemaType,
+  UpdateAcademicCredentialSchemaType
+} from '@/shared/validations/AcademicCredentialSchema'
 import { Plus } from 'lucide-react'
 import { useSearchParams } from 'react-router'
 import {
@@ -39,12 +39,8 @@ export const AcademicCredentialsPage = () => {
       description: 'Bạn có chắc chắn muốn xóa học hàm/học vị này? Hành động này không thể hoàn tác.',
       loading: isDeleting,
       onConfirm: async () => {
-        try {
-          await deleteMutation(id)
-          dialogStore.closeDialog()
-        } catch (error) {
-          console.error(error)
-        }
+        await deleteMutation(id)
+        dialogStore.closeDialog()
       }
     })
   }
@@ -81,20 +77,16 @@ export const AcademicCredentialsPage = () => {
   }
 
   const handleFormSubmit = async (
-    formData: CreateBuilding | UpdateBuilding,
+    formData: CreateAcademicCredentialSchemaType | UpdateAcademicCredentialSchemaType,
     formMode: 'create' | 'edit',
     editingId?: string
   ) => {
-    try {
-      if (formMode === 'create') {
-        await createMutation(formData as CreateBuilding)
-      } else if (formMode === 'edit' && editingId) {
-        await updateMutation({ id: editingId, data: formData as UpdateBuilding })
-      }
-      dialogStore.closeDialog()
-    } catch (error) {
-      console.error(error)
+    if (formMode === 'create') {
+      await createMutation(formData as CreateAcademicCredentialSchemaType)
+    } else if (formMode === 'edit' && editingId) {
+      await updateMutation({ id: editingId, data: formData as UpdateAcademicCredentialSchemaType })
     }
+    dialogStore.closeDialog()
   }
 
   return (

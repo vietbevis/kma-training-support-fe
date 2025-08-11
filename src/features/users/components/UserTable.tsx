@@ -42,7 +42,6 @@ const getTeachingStatusVariant = (status: boolean) => {
 }
 
 export const UserTable = ({ data, isLoading, isFilterLoading, onDelete }: UserTableProps) => {
-  // Show initial loading spinner when no data yet
   if (isLoading && data.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>

@@ -4,7 +4,8 @@ import ROUTES from '@/shared/lib/routes'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import { Plus } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router'
-import { useDeleteUserMutation, useGetUsersQuery } from '../api/UserService'
+import { toast } from 'sonner'
+import { useGetUsersQuery } from '../api/UserService'
 import { UserFilters, UserTable } from '../components'
 
 export const UsersPage = () => {
@@ -23,7 +24,6 @@ export const UsersPage = () => {
 
   const users = data?.data.data || []
 
-  const deleteUserMutation = useDeleteUserMutation()
   const dialogStore = useDialogStore()
 
   const handleDelete = (id: string) => {
@@ -34,8 +34,8 @@ export const UsersPage = () => {
       type: 'confirm',
       title: 'Xác nhận xóa nhân viên',
       description: `Bạn có chắc chắn muốn xóa nhân viên "${user.fullName}"? Hành động này không thể hoàn tác.`,
-      onConfirm: () => {
-        deleteUserMutation.mutate(id)
+      onConfirm: async () => {
+        toast.success('Chức năng này đang được phát triển')
         dialogStore.closeDialog()
       }
     })

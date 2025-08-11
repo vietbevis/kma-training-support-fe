@@ -8,8 +8,10 @@ import {
   Percent,
   School,
   School2,
+  Shield,
   SquareTerminal,
   User,
+  UserCheck,
   UserPlus
 } from 'lucide-react'
 
@@ -93,6 +95,26 @@ const ROUTES = {
     title: 'Sửa nhân viên',
     url: '/users/:id/edit',
     icon: Pencil
+  },
+  PERMISSIONS: {
+    title: 'Phân quyền',
+    url: '/permissions',
+    icon: Shield
+  },
+  ROLES: {
+    title: 'Vai trò',
+    url: '/roles',
+    icon: UserCheck
+  },
+  ROLE_EDIT: {
+    title: 'Sửa vai trò',
+    url: '/roles/:id/edit',
+    icon: Pencil
+  },
+  ROLE_CREATE: {
+    title: 'Tạo vai trò',
+    url: '/roles/create',
+    icon: UserPlus
   }
 }
 

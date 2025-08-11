@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   CreateFacultyDepartmentSchemaType,
   FacultyDepartmentResponseSchemaType,
@@ -68,10 +68,8 @@ export const useCreateFacultyDepartmentMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['faculty-departments'] })
       toast.success('Tạo khoa/phòng ban thành công')
     },
-    onError: (error) => {
-      toast.error('Tạo khoa/phòng ban thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Tạo khoa/phòng ban thất bại')
     }
   })
 }
@@ -86,10 +84,8 @@ export const useUpdateFacultyDepartmentMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['faculty-department', id] })
       toast.success('Cập nhật khoa/phòng ban thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật khoa/phòng ban thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật khoa/phòng ban thất bại')
     }
   })
 }

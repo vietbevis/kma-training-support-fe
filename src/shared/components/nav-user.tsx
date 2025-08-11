@@ -2,6 +2,7 @@
 
 import { ChevronsUpDown, LogOut } from 'lucide-react'
 
+import { useGetAccountDetailQuery } from '@/features/accounts/api/AccountService'
 import { useAuthStore } from '@/features/auth'
 import LogoutWrapper from '@/features/auth/components/ButtonLogout'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui/avatar'
@@ -14,20 +15,14 @@ import {
   DropdownMenuTrigger
 } from '@/shared/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/shared/components/ui/sidebar'
-import { useQuery } from '@tanstack/react-query'
-import api from '../lib/api'
-import API_ROUTES from '../lib/api-routes'
 
 export function NavUser() {
   const { isMobile } = useSidebar()
   const { userId } = useAuthStore()
-  const { data } = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => api.get(`${API_ROUTES.ACCOUNTS}/${userId}`),
-    enabled: !!userId
-  })
+  const { data } = useGetAccountDetailQuery(userId || '')
 
   const user = data?.data || null
+  console.log('🚀 ~ NavUser ~ user:', user)
 
   return (
     <SidebarMenu>

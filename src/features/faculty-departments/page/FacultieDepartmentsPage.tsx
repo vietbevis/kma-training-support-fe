@@ -82,17 +82,12 @@ export const FacultyDepartmentsPage = () => {
     formMode: 'create' | 'edit',
     editingFacultyDepartmentId?: string
   ) => {
-    console.log('🚀 ~ handleFormSubmit ~ formData:', formData)
-    try {
-      if (formMode === 'create') {
-        await createMutation(formData as CreateFacultyDepartmentSchemaType)
-      } else if (formMode === 'edit' && editingFacultyDepartmentId) {
-        await updateMutation({ id: editingFacultyDepartmentId, data: formData as UpdateFacultyDepartmentSchemaType })
-      }
-      dialogStore.closeDialog()
-    } catch (error) {
-      console.error(error)
+    if (formMode === 'create') {
+      await createMutation(formData as CreateFacultyDepartmentSchemaType)
+    } else if (formMode === 'edit' && editingFacultyDepartmentId) {
+      await updateMutation({ id: editingFacultyDepartmentId, data: formData as UpdateFacultyDepartmentSchemaType })
     }
+    dialogStore.closeDialog()
   }
 
   return (

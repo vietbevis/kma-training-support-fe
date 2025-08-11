@@ -157,9 +157,9 @@ export const AcademicDegree = {
 export type AcademicDegree = (typeof AcademicDegree)[keyof typeof AcademicDegree]
 
 export const Gender = {
-  MALE: 'Nam',
-  FEMALE: 'Nữ',
-  OTHER: 'Khác'
+  MALE: 'MALE',
+  FEMALE: 'FEMALE',
+  OTHER: 'OTHER'
 } as const
 
 export type Gender = (typeof Gender)[keyof typeof Gender]

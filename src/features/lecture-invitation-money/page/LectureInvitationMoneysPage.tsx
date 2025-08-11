@@ -40,12 +40,8 @@ export const LectureInvitationMoneysPage = () => {
       description: 'Bạn có chắc chắn muốn xóa tiền mời giảng này? Hành động này không thể hoàn tác.',
       loading: isDeleting,
       onConfirm: async () => {
-        try {
-          await deleteMutation(id)
-          dialogStore.closeDialog()
-        } catch (error) {
-          console.error(error)
-        }
+        await deleteMutation(id)
+        dialogStore.closeDialog()
       }
     })
   }
@@ -86,16 +82,12 @@ export const LectureInvitationMoneysPage = () => {
     formMode: 'create' | 'edit',
     editingId?: string
   ) => {
-    try {
-      if (formMode === 'create') {
-        await createMutation(formData)
-      } else if (formMode === 'edit' && editingId) {
-        await updateMutation({ id: editingId, data: formData })
-      }
-      dialogStore.closeDialog()
-    } catch (error) {
-      console.error(error)
+    if (formMode === 'create') {
+      await createMutation(formData)
+    } else if (formMode === 'edit' && editingId) {
+      await updateMutation({ id: editingId, data: formData })
     }
+    dialogStore.closeDialog()
   }
 
   return (

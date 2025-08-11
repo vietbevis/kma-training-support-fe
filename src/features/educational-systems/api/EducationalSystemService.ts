@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   CreateEducationalSystem as CreateEducationalSystemType,
   EducationalSystemResponse,
@@ -100,10 +100,8 @@ export const useCreateEducationalSystemMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['educational-systems'] })
       toast.success('Thêm hệ đào tạo thành công')
     },
-    onError: (error) => {
-      toast.error('Thêm hệ đào tạo thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm hệ đào tạo thất bại')
     }
   })
 }
@@ -117,10 +115,8 @@ export const useUpdateEducationalSystemMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['educational-systems'] })
       toast.success('Cập nhật hệ đào tạo thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật hệ đào tạo thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật hệ đào tạo thất bại')
     }
   })
 }
@@ -133,10 +129,8 @@ export const useDeleteEducationalSystemMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['educational-systems'] })
       toast.success('Xóa hệ đào tạo thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa hệ đào tạo thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa hệ đào tạo thất bại')
     }
   })
 }

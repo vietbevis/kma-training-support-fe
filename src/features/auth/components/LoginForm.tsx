@@ -3,7 +3,7 @@ import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Input } from '@/shared/components/ui/input'
-import { getErrorMessage } from '@/shared/lib/utils'
+import { cn } from '@/shared/lib/utils'
 import { LoginSchema, type LoginBodyType } from '@/shared/validations/AuthSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AlertCircle, Loader2 } from 'lucide-react'
@@ -37,8 +37,8 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
       await loginMutation(data)
       onSuccess?.()
       navigate(from, { replace: true })
-    } catch (error) {
-      setError(getErrorMessage(error, 'Vui lòng kiểm tra lại thông tin.'))
+    } catch (error: any) {
+      setError(error.message || 'Vui lòng kiểm tra lại thông tin.')
     }
   }
 
@@ -86,7 +86,11 @@ const LoginForm = ({ onSuccess }: LoginFormProps) => {
               )}
             />
 
-            <Button type='submit' className='w-full' disabled={isPending}>
+            <Button
+              type='submit'
+              className={cn('w-full cursor-pointer', !form.formState.isDirty && 'pointer-events-none')}
+              disabled={isPending || !form.formState.isDirty}
+            >
               {isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
               Đăng nhập
             </Button>

@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type { CreateUser, UpdateUser, UserQuery, UserResponse, UsersResponse } from '@/shared/validations/UserSchema'
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -48,10 +48,8 @@ export const useCreateUserMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       toast.success('Thêm nhân viên thành công')
     },
-    onError: (error) => {
-      toast.error('Thêm nhân viên thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm nhân viên thất bại')
     }
   })
 }
@@ -65,10 +63,8 @@ export const useUpdateUserMutation = (id: string) => {
       queryClient.invalidateQueries({ queryKey: ['user', id] })
       toast.success('Cập nhật nhân viên thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật nhân viên thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật nhân viên thất bại')
     }
   })
 }
@@ -81,10 +77,8 @@ export const useDeleteUserMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       toast.success('Xóa nhân viên thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa nhân viên thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa nhân viên thất bại')
     }
   })
 }

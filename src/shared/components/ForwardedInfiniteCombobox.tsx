@@ -422,6 +422,7 @@ function InfiniteCombobox<T extends ComboboxItem>(
               <>
                 {selectedItems
                   .slice(0, 3)
+                  .reverse()
                   .map((item) => (selectedBadgeRenderer ? selectedBadgeRenderer(item) : defaultBadgeRenderer(item)))}
                 {selectedItems.length > 3 && (
                   <Badge variant='secondary' className='text-xs h-6'>

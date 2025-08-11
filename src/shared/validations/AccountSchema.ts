@@ -24,28 +24,22 @@ export const UpdateAccountSchema = z
   .strip()
 
 export const AccountSchema = BaseEntityDTO.extend({
-  username: z.string(),
-  role: z.string(),
-  user: z.object({
+  code: z.string(),
+  facultyDepartment: z.object({
     id: z.number(),
     code: z.string(),
-    fullName: z.string(),
-    faculty: z
-      .object({
-        id: z.number(),
-        name: z.string(),
-        isFaculty: z.coerce.boolean()
-      })
-      .nullable()
-      .default(null),
-    department: z
-      .object({
-        id: z.number(),
-        name: z.string()
-      })
-      .nullable()
-      .default(null)
-  })
+    isFaculty: z.coerce.boolean(),
+    name: z.string()
+  }),
+  fullName: z.string(),
+  username: z.string(),
+  roles: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      description: z.string()
+    })
+  )
 }).strip()
 
 export const AccountResponseSchema = AccountSchema

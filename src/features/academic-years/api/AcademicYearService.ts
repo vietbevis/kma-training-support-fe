@@ -38,8 +38,8 @@ export const useCreateAcademicYearMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['academic-years'] })
       toast.success('Thêm năm học thành công')
     },
-    onError: () => {
-      toast.error('Thêm năm học thất bại')
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm năm học thất bại')
     }
   })
 }
@@ -53,8 +53,8 @@ export const useUpdateAcademicYearMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['academic-years'] })
       toast.success('Cập nhật năm học thành công')
     },
-    onError: () => {
-      toast.error('Cập nhật năm học thất bại')
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật năm học thất bại')
     }
   })
 }
@@ -67,8 +67,8 @@ export const useDeleteAcademicYearMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['academic-years'] })
       toast.success('Xóa năm học thành công')
     },
-    onError: () => {
-      toast.error('Xóa năm học thất bại')
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa năm học thất bại')
     }
   })
 }

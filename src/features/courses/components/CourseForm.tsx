@@ -5,6 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/shared/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 import { KyHoc } from '@/shared/lib/enum'
+import { cn } from '@/shared/lib/utils'
 import type { Course, CreateCourse, UpdateCourse } from '@/shared/validations/CourseSchema'
 import { CreateCourseSchema, UpdateCourseSchema } from '@/shared/validations/CourseSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -160,7 +161,11 @@ export const CourseForm = ({ initialData, onSubmit, isLoading, mode }: CourseFor
         />
 
         <div className='flex gap-2'>
-          <Button type='submit' disabled={isLoading} className='cursor-pointer'>
+          <Button
+            type='submit'
+            disabled={isLoading || !form.formState.isDirty}
+            className={cn('cursor-pointer', !form.formState.isDirty && 'pointer-events-none')}
+          >
             {isLoading ? 'Đang xử lý...' : mode === 'create' ? 'Thêm mới' : 'Cập nhật'}
           </Button>
         </div>

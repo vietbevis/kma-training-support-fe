@@ -2,6 +2,7 @@ import { Button } from '@/shared/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Input } from '@/shared/components/ui/input'
 import { Textarea } from '@/shared/components/ui/textarea'
+import { cn } from '@/shared/lib/utils'
 import {
   MergeFacultyDepartmentSchema,
   type MergeFacultyDepartmentSchemaType
@@ -35,7 +36,6 @@ export const FacultyDepartmentMergeForm = ({ onSubmit, isLoading }: FacultyDepar
     const facultyIds = selectedIds.map((id) => parseInt(id, 10))
     form.setValue('mergeFacultyIds', facultyIds)
 
-    // Clear validation error if user selects enough faculties
     if (facultyIds.length >= 2) {
       form.clearErrors('mergeFacultyIds')
     }
@@ -125,12 +125,21 @@ export const FacultyDepartmentMergeForm = ({ onSubmit, isLoading }: FacultyDepar
         </div>
 
         <div className='flex flex-col gap-3 pt-4 border-t'>
-          <Button type='submit' disabled={isLoading || selectedFacultyIds.length < 2}>
+          <Button
+            type='submit'
+            disabled={isLoading || selectedFacultyIds.length < 2 || !form.formState.isDirty}
+            className={cn(
+              'cursor-pointer',
+              (!form.formState.isDirty || selectedFacultyIds.length < 2) && 'pointer-events-none'
+            )}
+          >
             {isLoading ? 'Đang xử lý...' : 'Gộp khoa'}
           </Button>
           <div className='text-sm text-muted-foreground flex items-center'>
             {selectedFacultyIds.length < 2
               ? 'Vui lòng chọn ít nhất 2 khoa để gộp'
+              : !form.formState.isDirty
+              ? 'Vui lòng thực hiện thay đổi để tiến hành gộp khoa'
               : `Sẽ gộp ${selectedFacultyIds.length} khoa thành 1`}
           </div>
         </div>

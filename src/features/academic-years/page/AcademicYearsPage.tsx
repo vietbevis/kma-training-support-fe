@@ -81,16 +81,12 @@ export const AcademicYearsPage = () => {
     formMode: 'create' | 'edit',
     editingAcademicYearId?: string
   ) => {
-    try {
-      if (formMode === 'create') {
-        await createMutation(formData as CreateAcademicYearSchemaType)
-      } else if (formMode === 'edit' && editingAcademicYearId) {
-        await updateMutation({ id: editingAcademicYearId, data: formData as UpdateAcademicYearSchemaType })
-      }
-      dialogStore.closeDialog()
-    } catch (error) {
-      console.error(error)
+    if (formMode === 'create') {
+      await createMutation(formData as CreateAcademicYearSchemaType)
+    } else if (formMode === 'edit' && editingAcademicYearId) {
+      await updateMutation({ id: editingAcademicYearId, data: formData as UpdateAcademicYearSchemaType })
     }
+    dialogStore.closeDialog()
   }
 
   return (

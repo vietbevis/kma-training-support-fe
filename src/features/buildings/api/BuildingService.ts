@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   BuildingResponse,
   BuildingsResponse,
@@ -58,10 +58,8 @@ export const useCreateBuildingMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['buildings'] })
       toast.success('Tạo tòa nhà thành công')
     },
-    onError: (error) => {
-      toast.error('Tạo tòa nhà thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Tạo tòa nhà thất bại')
     }
   })
 }
@@ -76,10 +74,8 @@ export const useUpdateBuildingMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['classrooms'] })
       toast.success('Cập nhật tòa nhà thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật tòa nhà thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật tòa nhà thất bại')
     }
   })
 }
@@ -92,10 +88,8 @@ export const useDeleteBuildingMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['buildings'] })
       toast.success('Xóa tòa nhà thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa tòa nhà thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa tòa nhà thất bại')
     }
   })
 }

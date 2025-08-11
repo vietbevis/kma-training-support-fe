@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   CourseQuery,
   CourseResponse,
@@ -56,10 +56,8 @@ export const useCreateCourseMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['courses'] })
       toast.success('Tạo học phần thành công')
     },
-    onError: (error) => {
-      toast.error('Tạo học phần thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Tạo học phần thất bại')
     }
   })
 }
@@ -74,10 +72,8 @@ export const useUpdateCourseMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['course', res.data.id] })
       toast.success('Cập nhật học phần thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật học phần thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật học phần thất bại')
     }
   })
 }
@@ -90,10 +86,8 @@ export const useDeleteCourseMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['courses'] })
       toast.success('Xóa học phần thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa học phần thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa học phần thất bại')
     }
   })
 }

@@ -15,6 +15,14 @@ const navMain = [
       {
         title: ROUTES.USERS.title,
         url: ROUTES.USERS.url
+      },
+      {
+        title: ROUTES.PERMISSIONS.title,
+        url: ROUTES.PERMISSIONS.url
+      },
+      {
+        title: ROUTES.ROLES.title,
+        url: ROUTES.ROLES.url
       }
     ]
   },

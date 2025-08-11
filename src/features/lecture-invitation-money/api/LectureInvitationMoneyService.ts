@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   CreateLectureInvitationMoney,
   LectureInvitationMoneyResponse,
@@ -63,10 +63,8 @@ export const useCreateLectureInvitationMoneyMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['lecture-invitation-moneys'] })
       toast.success('Thêm tiền mời giảng thành công')
     },
-    onError: (error) => {
-      toast.error('Thêm tiền mời giảng thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm tiền mời giảng thất bại')
     }
   })
 }
@@ -80,10 +78,8 @@ export const useUpdateLectureInvitationMoneyMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['lecture-invitation-moneys'] })
       toast.success('Cập nhật tiền mời giảng thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật tiền mời giảng thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật tiền mời giảng thất bại')
     }
   })
 }
@@ -96,10 +92,8 @@ export const useDeleteLectureInvitationMoneyMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['lecture-invitation-moneys'] })
       toast.success('Xóa tiền mời giảng thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa tiền mời giảng thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa tiền mời giảng thất bại')
     }
   })
 }

@@ -7,6 +7,18 @@ export const BaseResponseSchema = z
   })
   .strip()
 
+export const FileSchema = z.object({
+  originalName: z.string(),
+  fileName: z.string(),
+  url: z.string(),
+  size: z.number(),
+  mimeType: z.string(),
+  fileType: z.string(),
+  uploadedAt: z.string()
+})
+
+export type FileType = z.infer<typeof FileSchema>
+
 export const MetaPagination = z
   .object({
     page: z.number(),

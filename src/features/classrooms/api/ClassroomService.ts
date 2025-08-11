@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   ClassroomResponse,
   ClassroomsResponse,
@@ -62,10 +62,8 @@ export const useCreateClassroomMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['classrooms'] })
       toast.success('Tạo phòng học thành công')
     },
-    onError: (error) => {
-      toast.error('Tạo phòng học thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Tạo phòng học thất bại')
     }
   })
 }
@@ -79,10 +77,8 @@ export const useUpdateClassroomMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['classrooms'] })
       toast.success('Cập nhật phòng học thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật phòng học thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật phòng học thất bại')
     }
   })
 }
@@ -95,10 +91,8 @@ export const useDeleteClassroomMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['classrooms'] })
       toast.success('Xóa phòng học thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa phòng học thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa phòng học thất bại')
     }
   })
 }

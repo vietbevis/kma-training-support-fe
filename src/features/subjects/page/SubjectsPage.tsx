@@ -82,16 +82,12 @@ export const SubjectsPage = () => {
     formMode: 'create' | 'edit',
     editingSubjectId?: string
   ) => {
-    try {
-      if (formMode === 'create') {
-        await createSubject(formData as CreateSubjectSchemaType)
-      } else if (formMode === 'edit' && editingSubjectId) {
-        await updateSubject({ id: editingSubjectId, data: formData as UpdateSubjectSchemaType })
-      }
-      closeDialog()
-    } catch (error) {
-      console.error(error)
+    if (formMode === 'create') {
+      await createSubject(formData as CreateSubjectSchemaType)
+    } else if (formMode === 'edit' && editingSubjectId) {
+      await updateSubject({ id: editingSubjectId, data: formData as UpdateSubjectSchemaType })
     }
+    closeDialog()
   }
 
   return (

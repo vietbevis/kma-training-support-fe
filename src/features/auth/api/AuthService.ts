@@ -1,7 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
 import ROUTES from '@/shared/lib/routes'
-import { getErrorMessage } from '@/shared/lib/utils'
 import type {
   LoginBodyType,
   LoginResponse,
@@ -21,10 +20,8 @@ export const useLoginMutation = () => {
       login(data.data)
       toast.success('Đăng nhập thành công.')
     },
-    onError: (error) => {
-      toast.error('Đăng nhập thất bại.', {
-        description: getErrorMessage(error, 'Vui lòng kiểm tra lại thông tin.')
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Đăng nhập thất bại.')
     }
   })
 }
@@ -39,10 +36,10 @@ export const useLogoutMutation = () => {
       queryClient.clear()
       toast.success('Đăng xuất thành công.')
     },
-    onError: () => {
+    onError: (error: any) => {
       logout()
       queryClient.clear()
-      toast.success('Đăng xuất thành công.')
+      toast.error(error.message || 'Đăng xuất thất bại.')
     }
   })
 }
@@ -56,8 +53,8 @@ export const useRefreshTokenMutation = () => {
     onSuccess: (data) => {
       login(data.data)
     },
-    onError: () => {
-      toast.error('Phiên đăng nhập hết hạn.')
+    onError: (error: any) => {
+      toast.error(error.message || 'Phiên đăng nhập hết hạn.')
       logout()
       navigate(ROUTES.LOGIN.url)
     }

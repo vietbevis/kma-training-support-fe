@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   CreateExemptionPercentage,
   ExemptionPercentageResponse,
@@ -61,10 +61,8 @@ export const useCreateExemptionPercentageMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['exemption-percentages'] })
       toast.success('Thêm phần trăm miễn giảm thành công')
     },
-    onError: (error) => {
-      toast.error('Thêm phần trăm miễn giảm thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm phần trăm miễn giảm thất bại')
     }
   })
 }
@@ -78,10 +76,8 @@ export const useUpdateExemptionPercentageMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['exemption-percentages'] })
       toast.success('Cập nhật phần trăm miễn giảm thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật phần trăm miễn giảm thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật phần trăm miễn giảm thất bại')
     }
   })
 }
@@ -94,10 +90,8 @@ export const useDeleteExemptionPercentageMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['exemption-percentages'] })
       toast.success('Xóa phần trăm miễn giảm thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa phần trăm miễn giảm thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa phần trăm miễn giảm thất bại')
     }
   })
 }

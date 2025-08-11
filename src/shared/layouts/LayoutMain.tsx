@@ -40,7 +40,7 @@ export default function LayoutMain() {
           </div>
         </header>
         <ErrorBoundary>
-          <main className='px-6'>
+          <main className='px-6 pb-6'>
             <Outlet />
             <CommonDialog />
           </main>

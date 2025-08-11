@@ -60,7 +60,6 @@ const ComboboxAcademicCredential = ({ value, onValueChange }: ComboboxAcademicCr
           {isMaxReached && <span className='text-xs text-muted-foreground ml-2 flex-shrink-0'>Đã đạt giới hạn</span>}
         </>
       )}
-      // Custom badge renderer
       selectedBadgeRenderer={(academicCredential) => (
         <Badge key={academicCredential.id} variant='outline' className='truncate text-xs max-w-[120px] h-6'>
           <span className='truncate'>{academicCredential.name}</span>

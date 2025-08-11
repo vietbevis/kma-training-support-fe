@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   CreateSubjectSchemaType,
   GetSubjectsSchemaType,
@@ -56,10 +56,8 @@ export const useCreateSubjectMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] })
       toast.success('Tạo bộ môn thành công')
     },
-    onError: (error) => {
-      toast.error('Tạo bộ môn thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Tạo bộ môn thất bại')
     }
   })
 }
@@ -74,10 +72,8 @@ export const useUpdateSubjectMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['subject', res.data.id] })
       toast.success('Cập nhật bộ môn thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật bộ môn thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật bộ môn thất bại')
     }
   })
 }
@@ -90,10 +86,8 @@ export const useDeleteSubjectMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] })
       toast.success('Xóa bộ môn thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa bộ môn thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa bộ môn thất bại')
     }
   })
 }

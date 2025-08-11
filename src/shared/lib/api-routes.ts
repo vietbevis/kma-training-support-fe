@@ -22,7 +22,10 @@ const API_ROUTES = {
   LECTURE_INVITATION_MONEYS: '/v1/lecture-invitation-money',
   COURSES: '/v1/courses',
   SUBJECTS: '/v1/subjects',
-  EXEMPTION_PERCENTAGES: '/v1/exemption-percentages'
+  EXEMPTION_PERCENTAGES: '/v1/exemption-percentages',
+  UPLOAD_FILES: '/v1/files/upload',
+  PERMISSIONS: '/v1/permissions',
+  ROLES: '/v1/roles'
 }
 
 export default API_ROUTES

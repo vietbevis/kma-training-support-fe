@@ -1,6 +1,6 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
-import { getErrorMessage, normalizeObject } from '@/shared/lib/utils'
+import { normalizeObject } from '@/shared/lib/utils'
 import type {
   AcademicCredentialResponse,
   AcademicCredentialsResponse,
@@ -61,10 +61,8 @@ export const useCreateAcademicCredentialMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['academic-credentials'] })
       toast.success('Thêm học hàm/học vị thành công')
     },
-    onError: (error) => {
-      toast.error('Thêm học hàm/học vị thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm học hàm/học vị thất bại')
     }
   })
 }
@@ -78,10 +76,8 @@ export const useUpdateAcademicCredentialMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['academic-credentials'] })
       toast.success('Cập nhật học hàm/học vị thành công')
     },
-    onError: (error) => {
-      toast.error('Cập nhật học hàm/học vị thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Cập nhật học hàm/học vị thất bại')
     }
   })
 }
@@ -94,10 +90,8 @@ export const useDeleteAcademicCredentialMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['academic-credentials'] })
       toast.success('Xóa học hàm/học vị thành công')
     },
-    onError: (error) => {
-      toast.error('Xóa học hàm/học vị thất bại', {
-        description: getErrorMessage(error)
-      })
+    onError: (error: any) => {
+      toast.error(error.message || 'Xóa học hàm/học vị thất bại')
     }
   })
 }

@@ -13,12 +13,9 @@ export const UserEditPage = () => {
   const { data: userResponse, isLoading } = useGetUserDetailQuery(id)
   const updateUserMutation = useUpdateUserMutation(id || '')
 
-  const handleSubmit = (data: UpdateUser) => {
-    updateUserMutation.mutate(data, {
-      onSuccess: () => {
-        navigate(ROUTES.USERS.url)
-      }
-    })
+  const handleSubmit = async (data: UpdateUser) => {
+    await updateUserMutation.mutateAsync(data)
+    navigate(ROUTES.USERS.url)
   }
 
   if (isLoading) {
