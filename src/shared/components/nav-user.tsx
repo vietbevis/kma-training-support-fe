@@ -22,7 +22,6 @@ export function NavUser() {
   const { data } = useGetAccountDetailQuery(userId || '')
 
   const user = data?.data || null
-  console.log('🚀 ~ NavUser ~ user:', user)
 
   return (
     <SidebarMenu>
