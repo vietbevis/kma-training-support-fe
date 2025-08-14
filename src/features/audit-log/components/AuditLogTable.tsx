@@ -63,7 +63,7 @@ const getStatusLabel = (status: string) => {
 
 const getEntityLabel = (entityName: string) => {
   const entityMap: Record<string, string> = {
-    UserEntity: 'Người dùng',
+    UserEntity: 'Nhân viên',
     RoleEntity: 'Vai trò',
     PermissionEntity: 'Quyền',
     AcademicYearEntity: 'Năm học',
@@ -71,7 +71,12 @@ const getEntityLabel = (entityName: string) => {
     ClassroomEntity: 'Phòng học',
     CourseEntity: 'Khóa học',
     SubjectEntity: 'Môn học',
-    FacultyDepartmentEntity: 'Khoa/Bộ môn'
+    FacultyDepartmentEntity: 'Khoa/Bộ môn',
+    AcademicCredentialsEntity: 'Học hàm/học vị',
+    EducationalSystemEntity: 'Hệ đào tạo',
+    ExemptionPercentageEntity: 'Phần trăm miễn giảm',
+    LectureInvitationMoneyEntity: 'Tiền mời giảng',
+    StandardLectureHoursEntity: 'Số giờ định mức'
   }
   return entityMap[entityName] || entityName
 }
