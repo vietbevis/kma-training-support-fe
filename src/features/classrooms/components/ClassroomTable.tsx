@@ -10,9 +10,10 @@ interface ClassroomTableProps {
   isLoading: boolean
   onEdit: (classroom: Classroom) => void
   onDelete: (id: string) => void
+  isFilterLoading?: boolean
 }
 
-const ClassroomTable = ({ data, isLoading, onEdit, onDelete }: ClassroomTableProps) => {
+const ClassroomTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: ClassroomTableProps) => {
   if (isLoading && data.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -27,6 +28,11 @@ const ClassroomTable = ({ data, isLoading, onEdit, onDelete }: ClassroomTablePro
 
   return (
     <div className='relative'>
+      {isFilterLoading && (
+        <div className='absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex justify-center items-center'>
+          <LoadingSpinner isLoading={true} className='relative py-20' />
+        </div>
+      )}
       <div className='rounded-md border'>
         <Table>
           <TableHeader>

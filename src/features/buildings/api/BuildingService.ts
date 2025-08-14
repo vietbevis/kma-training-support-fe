@@ -11,12 +11,12 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 import { toast } from 'sonner'
 
 export const useGetBuildingsQuery = ({
-  page = 1,
-  limit = 10,
+  page = '1',
+  limit = '10',
   search = ''
 }: {
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
   search?: string
 }) => {
   return useQuery({

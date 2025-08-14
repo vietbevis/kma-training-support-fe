@@ -28,6 +28,8 @@ export const MetaPagination = z
   })
   .strip()
 
+export type MetaPagination = z.infer<typeof MetaPagination>
+
 export const BaseEntityDTO = z.object({
   id: z.string(),
   createdAt: z.date(),

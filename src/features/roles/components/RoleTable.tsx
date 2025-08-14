@@ -3,16 +3,17 @@ import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
 import type { RoleType } from '@/shared/validations/RoleSchema'
-import { Edit, Trash2 } from 'lucide-react'
+import { Copy, Edit, Trash2 } from 'lucide-react'
 
 interface RoleTableProps {
   roles: RoleType[]
   onEdit?: (role: RoleType) => void
   onDelete?: (id: string) => void
+  onDuplicate?: (role: RoleType) => void
   isLoading?: boolean
 }
 
-export const RoleTable = ({ roles, onEdit, onDelete, isLoading }: RoleTableProps) => {
+export const RoleTable = ({ roles, onEdit, onDelete, onDuplicate, isLoading }: RoleTableProps) => {
   if (isLoading && roles.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -72,6 +73,11 @@ export const RoleTable = ({ roles, onEdit, onDelete, isLoading }: RoleTableProps
                   {onEdit && (
                     <Button variant='outline' size='icon' onClick={() => onEdit(role)} title='Chỉnh sửa'>
                       <Edit className='h-4 w-4' />
+                    </Button>
+                  )}
+                  {onDuplicate && (
+                    <Button variant='outline' size='icon' onClick={() => onDuplicate(role)} title='Nhân bản'>
+                      <Copy className='h-4 w-4' />
                     </Button>
                   )}
                   {onDelete && !role.isSystemRole && (

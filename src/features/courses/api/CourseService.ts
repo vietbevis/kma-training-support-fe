@@ -66,7 +66,7 @@ export const useUpdateCourseMutation = () => {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateCourse }) =>
-      api.put<CourseResponse>(`${API_ROUTES.COURSES}/${id}`, data),
+      api.put<CourseResponse>(`${API_ROUTES.COURSES}/${id}`, normalizeObject(data)),
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['courses'] })
       queryClient.invalidateQueries({ queryKey: ['course', res.data.id] })

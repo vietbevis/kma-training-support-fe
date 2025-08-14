@@ -1,6 +1,7 @@
 import {
   BookOpen,
   Building,
+  ClipboardList,
   GraduationCap,
   Home,
   LogIn,
@@ -93,8 +94,9 @@ const ROUTES = {
   },
   USER_EDIT: {
     title: 'Sửa nhân viên',
-    url: '/users/:id/edit',
-    icon: Pencil
+    url: `/users/:id/edit`,
+    icon: Pencil,
+    getPath: (id: string) => `/users/${id}/edit`
   },
   PERMISSIONS: {
     title: 'Phân quyền',
@@ -115,6 +117,11 @@ const ROUTES = {
     title: 'Tạo vai trò',
     url: '/roles/create',
     icon: UserPlus
+  },
+  AUDIT_LOGS: {
+    title: 'Lịch sử hoạt động',
+    url: '/audit-logs',
+    icon: ClipboardList
   }
 }
 

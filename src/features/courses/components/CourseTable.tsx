@@ -9,9 +9,10 @@ interface CourseTableProps {
   isLoading: boolean
   onEdit: (item: Course) => void
   onDelete: (id: string) => void
+  isFilterLoading?: boolean
 }
 
-const CourseTable = ({ data, isLoading, onEdit, onDelete }: CourseTableProps) => {
+const CourseTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: CourseTableProps) => {
   if (isLoading && data.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -26,6 +27,11 @@ const CourseTable = ({ data, isLoading, onEdit, onDelete }: CourseTableProps) =>
 
   return (
     <div className='relative'>
+      {isFilterLoading && (
+        <div className='absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex justify-center items-center'>
+          <LoadingSpinner isLoading={true} className='relative py-20' />
+        </div>
+      )}
       <div className='rounded-md border'>
         <Table>
           <TableHeader>

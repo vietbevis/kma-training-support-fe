@@ -27,10 +27,8 @@ export const DotNumber = {
 export type DotNumber = (typeof DotNumber)[keyof typeof DotNumber]
 
 export const KyHoc = {
-  KI_1: 'Kỳ 1',
   KI_1_1: 'Kỳ 1 đợt 1',
   KI_1_2: 'Kỳ 1 đợt 2',
-  KI_2: 'Kỳ 2',
   KI_2_1: 'Kỳ 2 đợt 1',
   KI_2_2: 'Kỳ 2 đợt 2'
 } as const

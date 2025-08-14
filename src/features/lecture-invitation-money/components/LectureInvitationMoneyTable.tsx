@@ -9,9 +9,16 @@ interface LectureInvitationMoneyTableProps {
   isLoading: boolean
   onEdit: (item: LectureInvitationMoney) => void
   onDelete: (id: string) => void
+  isFilterLoading?: boolean
 }
 
-const LectureInvitationMoneyTable = ({ data, isLoading, onEdit, onDelete }: LectureInvitationMoneyTableProps) => {
+const LectureInvitationMoneyTable = ({
+  data,
+  isLoading,
+  onEdit,
+  onDelete,
+  isFilterLoading
+}: LectureInvitationMoneyTableProps) => {
   if (isLoading && data.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -26,6 +33,11 @@ const LectureInvitationMoneyTable = ({ data, isLoading, onEdit, onDelete }: Lect
 
   return (
     <div className='relative'>
+      {isFilterLoading && (
+        <div className='absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex justify-center items-center'>
+          <LoadingSpinner isLoading={true} className='relative py-20' />
+        </div>
+      )}
       <div className='rounded-md border'>
         <Table>
           <TableHeader>

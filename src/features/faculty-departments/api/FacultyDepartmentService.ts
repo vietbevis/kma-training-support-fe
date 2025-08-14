@@ -9,18 +9,17 @@ import type {
   UpdateFacultyDepartmentSchemaType
 } from '@/shared/validations/FacultyDepartmentSchema'
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { id } from 'date-fns/locale'
 import { toast } from 'sonner'
 
 export const useFacultyDepartmentsQuery = ({
   search,
-  page = 1,
-  limit = 10,
+  page = '1',
+  limit = '10',
   isFaculty
 }: {
   search?: string
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
   isFaculty?: boolean
 }) => {
   return useQuery({
@@ -79,7 +78,7 @@ export const useUpdateFacultyDepartmentMutation = () => {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateFacultyDepartmentSchemaType }) =>
       api.put<FacultyDepartmentResponseSchemaType>(`${API_ROUTES.FACULTY_DEPARTMENTS}/${id}`, data),
-    onSuccess: async () => {
+    onSuccess: async (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ['faculty-departments'] })
       queryClient.invalidateQueries({ queryKey: ['faculty-department', id] })
       toast.success('Cập nhật khoa/phòng ban thành công')

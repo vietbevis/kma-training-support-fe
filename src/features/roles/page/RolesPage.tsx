@@ -1,29 +1,38 @@
 import { useDeleteRole, useGetRoles } from '@/features/roles/api/RoleService'
 import { RoleFilters, RoleTable } from '@/features/roles/components'
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import ROUTES from '@/shared/lib/routes'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { RoleType } from '@/shared/validations/RoleSchema'
 import { Plus } from 'lucide-react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 export const RolesPage = () => {
   const { openDialog, closeDialog } = useDialogStore()
   const navigate = useNavigate()
 
-  const [searchParams] = useSearchParams()
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    isActive: '',
+    isSystemRole: '',
+    scopeFacultyDepartmentId: ''
+  })
   const { data, isLoading } = useGetRoles({
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    search: searchParams.get('search') || '',
-    isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined,
-    isSystemRole: searchParams.get('isSystemRole') ? searchParams.get('isSystemRole') === 'true' : undefined,
-    scopeFacultyDepartmentId: searchParams.get('scopeFacultyDepartmentId') || undefined
+    ...filters,
+    page: Number(filters.page),
+    limit: Number(filters.limit),
+    isActive: filters.isActive !== '' ? filters.isActive === 'true' : undefined,
+    isSystemRole: filters.isSystemRole !== '' ? filters.isSystemRole === 'true' : undefined
   })
 
   const roles = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: deleteRole } = useDeleteRole()
 
@@ -45,6 +54,10 @@ export const RolesPage = () => {
     navigate(`/roles/${role.id}/edit`)
   }
 
+  const handleDuplicate = (role: RoleType) => {
+    navigate(`${ROUTES.ROLE_CREATE.url}?duplicate=${role.id}`)
+  }
+
   return (
     <>
       <div className='space-y-6'>
@@ -60,16 +73,24 @@ export const RolesPage = () => {
           </Button>
         </div>
 
-        <RoleFilters />
+        <RoleFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
         <Card>
           <CardHeader>
             <CardTitle>Danh sách vai trò ({roles.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <RoleTable roles={roles} onEdit={handleEdit} onDelete={handleDelete} isLoading={isLoading} />
+            <RoleTable
+              roles={roles}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onDuplicate={handleDuplicate}
+              isLoading={isLoading}
+            />
           </CardContent>
         </Card>
+
+        {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
       </div>
     </>
   )

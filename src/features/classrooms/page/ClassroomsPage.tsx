@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   Classroom,
@@ -7,7 +9,6 @@ import type {
   UpdateClassroomSchemaType as UpdateClassroom
 } from '@/shared/validations/ClassroomSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateClassroomMutation,
   useDeleteClassroomMutation,
@@ -19,15 +20,17 @@ import { ClassroomFilters, ClassroomForm, ClassroomTable } from '../components'
 export const ClassroomsPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useGetClassroomsQuery({
-    search: searchParams.get('search') || undefined,
-    buildingId: searchParams.get('buildingId') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '',
+    limit: '10',
+    search: '',
+    buildingId: ''
   })
 
+  const { data, isLoading, isFetching } = useGetClassroomsQuery(filters)
+
   const classrooms = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateClassroomMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteClassroomMutation()
@@ -108,16 +111,24 @@ export const ClassroomsPage = () => {
       </div>
 
       {/* Filters */}
-      <ClassroomFilters />
+      <ClassroomFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
           <CardTitle>Danh sách phòng học ({classrooms.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          <ClassroomTable data={classrooms} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+          <ClassroomTable
+            data={classrooms}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isFilterLoading={isFetching}
+          />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

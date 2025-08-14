@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   Building,
@@ -7,7 +9,6 @@ import type {
   UpdateBuildingSchemaType as UpdateBuilding
 } from '@/shared/validations/BuildingSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateBuildingMutation,
   useDeleteBuildingMutation,
@@ -19,14 +20,16 @@ import { BuildingFilters, BuildingForm, BuildingTable } from '../components'
 export const BuildingsPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useGetBuildingsQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '',
+    limit: '10',
+    search: ''
   })
 
+  const { data, isLoading, isFetching } = useGetBuildingsQuery(filters)
+
   const buildings = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateBuildingMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteBuildingMutation()
@@ -105,16 +108,24 @@ export const BuildingsPage = () => {
       </div>
 
       {/* Filters */}
-      <BuildingFilters />
+      <BuildingFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
           <CardTitle>Danh sách tòa nhà ({buildings.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          <BuildingTable data={buildings} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+          <BuildingTable
+            data={buildings}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isFilterLoading={isFetching}
+          />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

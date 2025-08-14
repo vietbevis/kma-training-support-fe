@@ -78,8 +78,8 @@ const navMain = [
         url: ROUTES.EXEMPTION_PERCENTAGES.url
       },
       {
-        title: 'Số tiết định mức',
-        url: '#'
+        title: ROUTES.AUDIT_LOGS.title,
+        url: ROUTES.AUDIT_LOGS.url
       }
     ]
   }

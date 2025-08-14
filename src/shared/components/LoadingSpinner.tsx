@@ -26,13 +26,7 @@ const LoadingSpinner = ({ isLoading, className }: LoadingSpinnerProps) => {
   if (!isVisible) return null
 
   return (
-    <div
-      className={cn(
-        'fixed inset-0 z-[9999] flex items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity duration-300',
-        isHiding ? 'opacity-0' : 'opacity-100',
-        className
-      )}
-    >
+    <div className={cn(isHiding ? 'opacity-0' : 'opacity-100', className)}>
       <div
         className={cn(
           'relative transition-all duration-500 ease-in-out',

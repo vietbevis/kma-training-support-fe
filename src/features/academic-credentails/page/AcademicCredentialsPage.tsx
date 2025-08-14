@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   AcademicCredential,
@@ -7,7 +9,6 @@ import type {
   UpdateAcademicCredentialSchemaType
 } from '@/shared/validations/AcademicCredentialSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useAcademicCredentialsQuery,
   useCreateAcademicCredentialMutation,
@@ -19,14 +20,16 @@ import { AcademicCredentialFilters, AcademicCredentialForm, AcademicCredentialTa
 export const AcademicCredentialsPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useAcademicCredentialsQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '',
+    limit: '10',
+    search: ''
   })
 
+  const { data, isLoading, isFetching } = useAcademicCredentialsQuery(filters)
+
   const academicCredentials = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateAcademicCredentialMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteAcademicCredentialMutation()
@@ -105,7 +108,7 @@ export const AcademicCredentialsPage = () => {
       </div>
 
       {/* Filters */}
-      <AcademicCredentialFilters />
+      <AcademicCredentialFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
@@ -117,9 +120,12 @@ export const AcademicCredentialsPage = () => {
             isLoading={isLoading}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            isFilterLoading={isFetching}
           />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

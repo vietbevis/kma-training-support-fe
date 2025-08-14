@@ -38,6 +38,7 @@ const PermissionsPage = lazy(() => import('./features/permissions/page').then((m
 const RolesPage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RolesPage })))
 const RoleEditPage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RoleEditPage })))
 const RoleCreatePage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RoleCreatePage })))
+const AuditLogsPage = lazy(() => import('./features/audit-log/page').then((m) => ({ default: m.AuditLogsPage })))
 
 const router = createBrowserRouter([
   {
@@ -115,6 +116,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.ROLE_CREATE.url,
             element: <RoleCreatePage />
+          },
+          {
+            path: ROUTES.AUDIT_LOGS.url,
+            element: <AuditLogsPage />
           }
         ]
       }

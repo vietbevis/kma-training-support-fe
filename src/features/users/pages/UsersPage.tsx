@@ -1,28 +1,40 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import ROUTES from '@/shared/lib/routes'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import { Plus } from 'lucide-react'
-import { Link, useSearchParams } from 'react-router'
+import { Link } from 'react-router'
 import { toast } from 'sonner'
 import { useGetUsersQuery } from '../api/UserService'
 import { UserFilters, UserTable } from '../components'
 
 export const UsersPage = () => {
-  const [searchParams] = useSearchParams()
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    facultyDepartmentId: '',
+    subjectId: '',
+    academicCredentialId: '',
+    gender: '',
+    areTeaching: ''
+  })
 
   const { data, isLoading, isFetching } = useGetUsersQuery({
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    search: searchParams.get('search') || '',
-    facultyDepartmentId: searchParams.get('facultyDepartmentId') || '',
-    subjectId: searchParams.get('subjectId') || '',
-    academicCredentialId: searchParams.get('academicCredentialId') || '',
-    gender: searchParams.get('gender') || '',
-    areTeaching: searchParams.get('areTeaching') ? searchParams.get('areTeaching') === 'true' : undefined
+    ...filters,
+    page: Number(filters.page),
+    limit: Number(filters.limit),
+    facultyDepartmentId: filters.facultyDepartmentId || '',
+    subjectId: filters.subjectId || '',
+    academicCredentialId: filters.academicCredentialId || '',
+    gender: filters.gender || '',
+    areTeaching: filters.areTeaching ? filters.areTeaching === 'true' : undefined
   })
 
   const users = data?.data.data || []
+  const meta = data?.data.meta
 
   const dialogStore = useDialogStore()
 
@@ -56,7 +68,7 @@ export const UsersPage = () => {
         </Button>
       </div>
 
-      <UserFilters />
+      <UserFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
@@ -66,6 +78,8 @@ export const UsersPage = () => {
           <UserTable data={users} isLoading={isLoading} isFilterLoading={isFetching} onDelete={handleDelete} />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

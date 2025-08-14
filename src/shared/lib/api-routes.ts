@@ -25,7 +25,8 @@ const API_ROUTES = {
   EXEMPTION_PERCENTAGES: '/v1/exemption-percentages',
   UPLOAD_FILES: '/v1/files/upload',
   PERMISSIONS: '/v1/permissions',
-  ROLES: '/v1/roles'
+  ROLES: '/v1/roles',
+  AUDIT_LOGS: '/v1/audit-logs'
 }
 
 export default API_ROUTES

@@ -12,12 +12,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 export const useGetAcademicYearsQuery = ({
-  page = 1,
-  limit = 10,
+  page = '1',
+  limit = '10',
   search = ''
 }: {
-  page?: number
-  limit?: number
+  page?: string
+  limit?: string
   search?: string
 }) => {
   return useQuery({

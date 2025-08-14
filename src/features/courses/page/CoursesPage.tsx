@@ -1,9 +1,11 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
+import type { KyHoc } from '@/shared/lib/enum'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { Course, CreateCourse, UpdateCourse } from '@/shared/validations/CourseSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateCourseMutation,
   useDeleteCourseMutation,
@@ -15,17 +17,24 @@ import { CourseFilters, CourseForm, CourseTable } from '../components'
 export const CoursesPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useGetCoursesQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    facultyDepartmentId: searchParams.get('facultyDepartmentId') || '',
-    subjectId: searchParams.get('subjectId') || '',
-    semester: (searchParams.get('semester') as any) || ''
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    facultyDepartmentId: '',
+    subjectId: '',
+    semester: ''
+  })
+
+  const { data, isLoading, isFetching } = useGetCoursesQuery({
+    ...filters,
+    page: Number(filters.page),
+    limit: Number(filters.limit),
+    semester: filters.semester as KyHoc
   })
 
   const items = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateCourseMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteCourseMutation()
@@ -103,16 +112,24 @@ export const CoursesPage = () => {
         </div>
       </div>
 
-      <CourseFilters />
+      <CourseFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
           <CardTitle>Danh sách học phần ({items.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          <CourseTable data={items} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+          <CourseTable
+            data={items}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isFilterLoading={isFetching}
+          />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

@@ -9,6 +9,8 @@ import { useState } from 'react'
 interface RoleComboboxItem {
   id: string
   name: string
+  facultyDepartmentName?: string
+  facultyDepartmentCode?: string
 }
 
 interface ComboboxRoleProps {
@@ -69,7 +71,9 @@ const ComboboxRole = ({
             ...page,
             data: page.data.map((role) => ({
               id: role.id,
-              name: role.name
+              name: role.name,
+              facultyDepartmentName: role.scopeFacultyDepartment?.name,
+              facultyDepartmentCode: role.scopeFacultyDepartment?.code
             }))
           }))
         }
@@ -99,6 +103,9 @@ const ComboboxRole = ({
           <Check className={cn('mr-2 h-4 w-4 flex-shrink-0', isSelected ? 'opacity-100' : 'opacity-0')} />
           <div className='flex-1 min-w-0'>
             <div className='truncate font-medium'>{role.name}</div>
+            <div className='truncate text-xs text-muted-foreground'>
+              Phạm vi: {role.facultyDepartmentCode} - {role.facultyDepartmentName}
+            </div>
           </div>
           {isMaxReached && <span className='text-xs text-muted-foreground ml-2 flex-shrink-0'>Đã đạt giới hạn</span>}
         </>

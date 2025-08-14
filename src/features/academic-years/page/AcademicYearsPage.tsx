@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   AcademicYearSchemaType,
@@ -7,7 +9,6 @@ import type {
   UpdateAcademicYearSchemaType
 } from '@/shared/validations/AcademicYearSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateAcademicYearMutation,
   useDeleteAcademicYearMutation,
@@ -19,15 +20,16 @@ import { AcademicYearFilters, AcademicYearForm, AcademicYearTable } from '../com
 export const AcademicYearsPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useGetAcademicYearsQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '',
+    limit: '10',
+    search: ''
   })
 
-  const academicYears = data?.data.data || []
+  const { data, isLoading, isFetching } = useGetAcademicYearsQuery(filters)
 
+  const academicYears = data?.data.data || []
+  const meta = data?.data.meta
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateAcademicYearMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteAcademicYearMutation()
   const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateAcademicYearMutation()
@@ -103,16 +105,24 @@ export const AcademicYearsPage = () => {
           </Button>
         </div>
 
-        <AcademicYearFilters />
+        <AcademicYearFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
         <Card>
           <CardHeader>
             <CardTitle>Danh sách năm học ({academicYears.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <AcademicYearTable data={academicYears} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+            <AcademicYearTable
+              data={academicYears}
+              isLoading={isLoading}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              isFilterLoading={isFetching}
+            />
           </CardContent>
         </Card>
+
+        {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
       </div>
     </>
   )

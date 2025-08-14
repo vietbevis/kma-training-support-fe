@@ -1,11 +1,29 @@
 import ComboboxBuilding from '@/features/buildings/components/ComboboxBuilding'
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
-import { useDebounceSearchParams } from '@/shared/hooks/useDebounceSearchParams'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Search, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-export const ClassroomFilters = () => {
-  const [searchParams, setSearchParams] = useDebounceSearchParams()
+interface ClassroomFiltersProps {
+  filters: Record<string, string>
+  setFilters: (filters: Record<string, string>) => void
+  resetFilters: () => void
+}
+
+export const ClassroomFilters = ({ filters, setFilters, resetFilters }: ClassroomFiltersProps) => {
+  const [search, setSearch] = useState(filters.search || '')
+  const debouncedSearch = useDebounce(search)
+
+  useEffect(() => {
+    setFilters({ search: debouncedSearch })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  const handleResetFilters = () => {
+    setSearch('')
+    resetFilters()
+  }
 
   return (
     <div className='flex items-center gap-4 flex-wrap'>
@@ -14,8 +32,8 @@ export const ClassroomFilters = () => {
           <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
           <Input
             placeholder='Tìm kiếm theo tên phòng học...'
-            value={searchParams.get('search') || ''}
-            onChange={(e) => setSearchParams({ search: e.target.value, page: '1' })}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className='pl-10'
           />
         </div>
@@ -23,12 +41,12 @@ export const ClassroomFilters = () => {
 
       <div className='max-w-md min-w-sm'>
         <ComboboxBuilding
-          value={searchParams.get('buildingId') || ''}
-          onValueChange={(value: string) => setSearchParams({ buildingId: value, page: '1' })}
+          value={filters.buildingId || ''}
+          onValueChange={(value: string) => setFilters({ buildingId: value })}
         />
       </div>
 
-      <Button variant='outline' onClick={() => setSearchParams(null)} className='flex items-center gap-2'>
+      <Button variant='outline' onClick={handleResetFilters} className='flex items-center gap-2'>
         <X className='h-4 w-4' />
         Xóa bộ lọc
       </Button>

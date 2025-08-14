@@ -3,16 +3,31 @@ import ComboboxSubjects from '@/features/subjects/components/ComboboxSubjects'
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
-import { useDebounceSearchParams } from '@/shared/hooks/useDebounceSearchParams'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { KyHoc } from '@/shared/lib/enum'
 import { Search, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-export const CourseFilters = () => {
-  const [searchParams, setSearchParams] = useDebounceSearchParams()
+interface CourseFiltersProps {
+  filters: Record<string, string>
+  setFilters: (filters: Record<string, string>) => void
+  resetFilters: () => void
+}
 
-  const facultyDepartmentId = searchParams.get('facultyDepartmentId') || ''
-  const subjectId = searchParams.get('subjectId') || ''
-  const semester = searchParams.get('semester') || 'all'
+export const CourseFilters = ({ filters, setFilters, resetFilters }: CourseFiltersProps) => {
+  const [search, setSearch] = useState(filters.search || '')
+
+  const debouncedSearch = useDebounce(search)
+
+  useEffect(() => {
+    setFilters({ search: debouncedSearch })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  const handleResetFilters = () => {
+    setSearch('')
+    resetFilters()
+  }
 
   return (
     <div className='flex items-center gap-4 flex-wrap'>
@@ -21,8 +36,8 @@ export const CourseFilters = () => {
           <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
           <Input
             placeholder='Tìm kiếm theo mã/tên học phần...'
-            value={searchParams.get('search') || ''}
-            onChange={(e) => setSearchParams({ search: e.target.value, page: '1' })}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className='pl-10'
           />
         </div>
@@ -30,23 +45,23 @@ export const CourseFilters = () => {
 
       <div className='max-w-sm w-full'>
         <ComboboxFacultyDepartment
-          value={facultyDepartmentId}
-          onValueChange={(value) => setSearchParams({ facultyDepartmentId: value || '', subjectId: '', page: '1' })}
+          value={filters.facultyDepartmentId || ''}
+          onValueChange={(value: string) => setFilters({ facultyDepartmentId: value })}
           isFaculty
         />
       </div>
 
       <div className='max-w-sm w-full'>
         <ComboboxSubjects
-          value={subjectId}
-          facultyDepartmentId={facultyDepartmentId}
-          onValueChange={(value) => setSearchParams({ subjectId: value || '', page: '1' })}
+          value={filters.subjectId || ''}
+          facultyDepartmentId={filters.facultyDepartmentId || ''}
+          onValueChange={(value: string) => setFilters({ subjectId: value })}
         />
       </div>
 
       <Select
-        value={semester}
-        onValueChange={(value) => setSearchParams({ semester: value === 'all' ? '' : value, page: '1' })}
+        value={filters.semester || ''}
+        onValueChange={(value: string) => setFilters({ semester: value === 'all' ? '' : value })}
       >
         <SelectTrigger className='w-40'>
           <SelectValue placeholder='Kỳ học' />
@@ -61,7 +76,7 @@ export const CourseFilters = () => {
         </SelectContent>
       </Select>
 
-      <Button variant='outline' onClick={() => setSearchParams(null)} className='flex items-center gap-2'>
+      <Button variant='outline' onClick={handleResetFilters} className='flex items-center gap-2'>
         <X className='h-4 w-4' />
         Xóa bộ lọc
       </Button>

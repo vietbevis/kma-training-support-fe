@@ -18,10 +18,11 @@ export const useGetRoles = (query: Partial<GetRoleQueryType>) => {
   })
 }
 
-export const useGetRoleById = (id: string) => {
+export const useGetRoleById = (id: string, options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: ['roles', id],
-    queryFn: () => api.get<RoleType>(`${API_ROUTES.ROLES}/${id}`)
+    queryFn: () => api.get<RoleType>(`${API_ROUTES.ROLES}/${id}`),
+    enabled: options?.enabled ?? !!id
   })
 }
 

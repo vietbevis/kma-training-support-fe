@@ -1,9 +1,10 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { EducationalSystem } from '@/shared/validations/EducationalSystemSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateEducationalSystemMutation,
   useDeleteEducationalSystemMutation,
@@ -15,16 +16,18 @@ import { EducationalSystemFilters, EducationalSystemForm, EducationalSystemTable
 export const EducationalSystemsPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useEducationalSystemsQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    educationLevels: searchParams.get('educationLevels') || undefined,
-    tuitions: searchParams.get('tuitions') || undefined
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    educationLevels: '',
+    tuitions: ''
   })
 
+  const { data, isLoading, isFetching } = useEducationalSystemsQuery(filters)
+
   const items = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateEducationalSystemMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteEducationalSystemMutation()
@@ -102,16 +105,24 @@ export const EducationalSystemsPage = () => {
         </div>
       </div>
 
-      <EducationalSystemFilters />
+      <EducationalSystemFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
           <CardTitle>Danh sách hệ đào tạo ({items.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          <EducationalSystemTable data={items} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+          <EducationalSystemTable
+            data={items}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isFilterLoading={isFetching}
+          />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

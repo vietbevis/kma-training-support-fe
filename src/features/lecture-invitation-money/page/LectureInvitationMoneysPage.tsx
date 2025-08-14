@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   CreateLectureInvitationMoney,
@@ -7,7 +9,6 @@ import type {
   UpdateLectureInvitationMoney
 } from '@/shared/validations/LectureInvitationMoneySchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateLectureInvitationMoneyMutation,
   useDeleteLectureInvitationMoneyMutation,
@@ -19,15 +20,17 @@ import { LectureInvitationMoneyFilters, LectureInvitationMoneyForm, LectureInvit
 export const LectureInvitationMoneysPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useLectureInvitationMoneysQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    academicCredentialId: searchParams.get('academicCredentialId') || undefined
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    academicCredentialId: ''
   })
 
+  const { data, isLoading, isFetching } = useLectureInvitationMoneysQuery(filters)
+
   const items = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateLectureInvitationMoneyMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteLectureInvitationMoneyMutation()
@@ -105,16 +108,24 @@ export const LectureInvitationMoneysPage = () => {
         </div>
       </div>
 
-      <LectureInvitationMoneyFilters />
+      <LectureInvitationMoneyFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
           <CardTitle>Danh sách tiền mời giảng ({items.length})</CardTitle>
         </CardHeader>
         <CardContent>
-          <LectureInvitationMoneyTable data={items} isLoading={isLoading} onEdit={handleEdit} onDelete={handleDelete} />
+          <LectureInvitationMoneyTable
+            data={items}
+            isLoading={isLoading}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            isFilterLoading={isFetching}
+          />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

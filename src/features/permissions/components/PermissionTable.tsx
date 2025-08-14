@@ -10,9 +10,10 @@ interface PermissionTableProps {
   permissions: PermissionType[]
   onEdit?: (permission: PermissionType) => void
   isLoading?: boolean
+  isFilterLoading?: boolean
 }
 
-export const PermissionTable = ({ permissions, onEdit, isLoading }: PermissionTableProps) => {
+export const PermissionTable = ({ permissions, onEdit, isLoading, isFilterLoading }: PermissionTableProps) => {
   if (isLoading && permissions.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -26,43 +27,50 @@ export const PermissionTable = ({ permissions, onEdit, isLoading }: PermissionTa
   }
 
   return (
-    <div className='rounded-md border'>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Phương thức</TableHead>
-            <TableHead>Tên quyền</TableHead>
-            <TableHead>Mô tả</TableHead>
-            <TableHead>Đường dẫn</TableHead>
-            <TableHead className='w-[50px]'></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {permissions.map((permission) => (
-            <TableRow key={permission.id}>
-              <TableCell>
-                <Badge variant={getMethodBadgeVariant(permission.method)}>{permission.method}</Badge>
-              </TableCell>
-              <TableCell className='font-medium'>{permission.name}</TableCell>
-              <TableCell className='max-w-[200px] truncate' title={permission.description}>
-                {permission.description || <span className='text-muted-foreground'>Không có mô tả</span>}
-              </TableCell>
-              <TableCell>
-                <code className='text-sm bg-muted px-2 py-1 rounded'>{permission.path}</code>
-              </TableCell>
-              <TableCell className='text-right w-20'>
-                <div className='flex justify-end gap-2'>
-                  {onEdit && (
-                    <Button variant='outline' size='icon' onClick={() => onEdit(permission)}>
-                      <Edit className='h-4 w-4' />
-                    </Button>
-                  )}
-                </div>
-              </TableCell>
+    <div className='relative'>
+      {isFilterLoading && (
+        <div className='absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex justify-center items-center'>
+          <LoadingSpinner isLoading={true} className='relative py-20' />
+        </div>
+      )}
+      <div className='rounded-md border'>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Phương thức</TableHead>
+              <TableHead>Tên quyền</TableHead>
+              <TableHead>Mô tả</TableHead>
+              <TableHead>Đường dẫn</TableHead>
+              <TableHead className='w-[50px]'></TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {permissions.map((permission) => (
+              <TableRow key={permission.id}>
+                <TableCell>
+                  <Badge variant={getMethodBadgeVariant(permission.method)}>{permission.method}</Badge>
+                </TableCell>
+                <TableCell className='font-medium'>{permission.name}</TableCell>
+                <TableCell className='max-w-[200px] truncate' title={permission.description}>
+                  {permission.description || <span className='text-muted-foreground'>Không có mô tả</span>}
+                </TableCell>
+                <TableCell>
+                  <code className='text-sm bg-muted px-2 py-1 rounded'>{permission.path}</code>
+                </TableCell>
+                <TableCell className='text-right w-20'>
+                  <div className='flex justify-end gap-2'>
+                    {onEdit && (
+                      <Button variant='outline' size='icon' onClick={() => onEdit(permission)}>
+                        <Edit className='h-4 w-4' />
+                      </Button>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }

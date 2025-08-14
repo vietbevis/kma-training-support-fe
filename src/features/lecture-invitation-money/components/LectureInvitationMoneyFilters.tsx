@@ -1,11 +1,34 @@
 import { ComboboxAcademicCredential } from '@/features/academic-credentails'
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
-import { useDebounceSearchParams } from '@/shared/hooks/useDebounceSearchParams'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Search, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-export const LectureInvitationMoneyFilters = () => {
-  const [searchParams, setSearchParams] = useDebounceSearchParams()
+interface LectureInvitationMoneyFiltersProps {
+  filters: Record<string, string>
+  setFilters: (filters: Record<string, string>) => void
+  resetFilters: () => void
+}
+
+export const LectureInvitationMoneyFilters = ({
+  filters,
+  setFilters,
+  resetFilters
+}: LectureInvitationMoneyFiltersProps) => {
+  const [search, setSearch] = useState(filters.search || '')
+
+  const debouncedSearch = useDebounce(search)
+
+  useEffect(() => {
+    setFilters({ search: debouncedSearch })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  const handleResetFilters = () => {
+    setSearch('')
+    resetFilters()
+  }
 
   return (
     <div className='flex items-center gap-4 flex-wrap'>
@@ -14,8 +37,8 @@ export const LectureInvitationMoneyFilters = () => {
           <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
           <Input
             placeholder='Tìm kiếm theo hệ đào tạo, số tiền...'
-            value={searchParams.get('search') || ''}
-            onChange={(e) => setSearchParams({ search: e.target.value, page: '1' })}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className='pl-10'
           />
         </div>
@@ -23,12 +46,12 @@ export const LectureInvitationMoneyFilters = () => {
 
       <div className='max-w-sm w-full'>
         <ComboboxAcademicCredential
-          value={searchParams.get('academicCredentialId') || ''}
-          onValueChange={(value) => setSearchParams({ academicCredentialId: value || '', page: '1' })}
+          value={filters.academicCredentialId || ''}
+          onValueChange={(value: string) => setFilters({ academicCredentialId: value })}
         />
       </div>
 
-      <Button variant='outline' onClick={() => setSearchParams(null)} className='flex items-center gap-2'>
+      <Button variant='outline' onClick={handleResetFilters} className='flex items-center gap-2'>
         <X className='h-4 w-4' />
         Xóa bộ lọc
       </Button>

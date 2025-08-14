@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   CreateFacultyDepartmentSchemaType,
@@ -7,7 +9,6 @@ import type {
   UpdateFacultyDepartmentSchemaType
 } from '@/shared/validations/FacultyDepartmentSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import {
   useCreateFacultyDepartmentMutation,
@@ -19,15 +20,20 @@ import { FacultyDepartmentFilters, FacultyDepartmentForm, FacultyDepartmentTable
 export const FacultyDepartmentsPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useFacultyDepartmentsQuery({
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    search: searchParams.get('search') || undefined,
-    isFaculty: searchParams.get('isFaculty') ? searchParams.get('isFaculty') === 'true' : undefined
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    isFaculty: ''
+  })
+
+  const { data, isLoading, isFetching } = useFacultyDepartmentsQuery({
+    ...filters,
+    isFaculty: filters.isFaculty !== '' ? filters.isFaculty === 'true' : undefined
   })
 
   const facultyDepartments = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateFacultyDepartmentMutation()
   const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateFacultyDepartmentMutation()
@@ -106,7 +112,7 @@ export const FacultyDepartmentsPage = () => {
           </div>
         </div>
 
-        <FacultyDepartmentFilters />
+        <FacultyDepartmentFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
         <Card>
           <CardHeader>
@@ -118,9 +124,12 @@ export const FacultyDepartmentsPage = () => {
               isLoading={isLoading}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              isFilterLoading={isFetching}
             />
           </CardContent>
         </Card>
+
+        {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
       </div>
     </>
   )

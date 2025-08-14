@@ -9,13 +9,22 @@ export function getErrorMessage(error: any, defaultMessage = 'Lỗi không xác 
   return (error as any).response?.data.message || defaultMessage
 }
 
-export function normalizeObject(obj: any) {
+export function normalizeObject<T>(obj: T): T {
+  if (typeof obj !== 'object' || obj === null) return obj
+
+  if (Array.isArray(obj)) {
+    return obj
+      .map((item) => normalizeObject(item))
+      .filter((value) => value !== null && value !== undefined && value !== '' && value !== 'null') as T
+  }
+
   return Object.fromEntries(
-    Object.entries(obj).filter(
-      ([_, value]) => value !== null && value !== undefined && value !== '' && value !== 'null'
-    )
-  )
+    Object.entries(obj as Record<string, unknown>)
+      .map(([key, value]) => [key, normalizeObject(value)])
+      .filter(([, value]) => value !== null && value !== undefined && value !== '' && value !== 'null')
+  ) as T
 }
+
 export const translateModule = (module: string) => {
   switch (module) {
     case 'AcademicCredentialModule':
@@ -37,21 +46,21 @@ export const translateModule = (module: string) => {
     case 'EducationalSystemModule':
       return 'Quản lý hệ đào tạo'
     case 'ExemptionPercentageModule':
-      return 'Quản lý tỷ lệ miễn giảm'
+      return 'Quản lý phần trăm miễn giảm'
     case 'FacultyDepartmentModule':
-      return 'Quản lý khoa/bộ môn'
+      return 'Quản lý khoa/phòng ban'
     case 'FilesModule':
       return 'Quản lý tài liệu'
     case 'LectureInvitationMoneyModule':
-      return 'Quản lý tiền dạy'
+      return 'Quản lý tiền mời giảng'
     case 'PermissionModule':
       return 'Quản lý quyền'
     case 'RoleModule':
       return 'Quản lý vai trò'
     case 'StandardLectureHoursModule':
-      return 'Quản lý số tiết dạy'
+      return 'Quản lý số tiết định mức'
     case 'SubjectModule':
-      return 'Quản lý môn học'
+      return 'Quản lý bộ môn'
     case 'UserModule':
       return 'Quản lý người dùng'
     default:

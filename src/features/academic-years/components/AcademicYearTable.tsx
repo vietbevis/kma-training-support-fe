@@ -10,9 +10,10 @@ interface AcademicYearTableProps {
   isLoading: boolean
   onEdit: (academicYear: AcademicYearSchemaType) => void
   onDelete: (id: string) => void
+  isFilterLoading?: boolean
 }
 
-export const AcademicYearTable = ({ data, isLoading, onEdit, onDelete }: AcademicYearTableProps) => {
+export const AcademicYearTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: AcademicYearTableProps) => {
   if (isLoading) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -26,54 +27,61 @@ export const AcademicYearTable = ({ data, isLoading, onEdit, onDelete }: Academi
   }
 
   return (
-    <div className='rounded-md border'>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Mã năm học</TableHead>
-            <TableHead>Ngày tạo</TableHead>
-            <TableHead>Ngày cập nhật</TableHead>
-            <TableHead className='text-right'>Thao tác</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((academicYear) => (
-            <TableRow key={academicYear.id}>
-              <TableCell>
-                <Badge variant='outline'>{academicYear.yearCode}</Badge>
-              </TableCell>
-              <TableCell>
-                {new Date(academicYear.createdAt).toLocaleDateString('vi-VN', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-              </TableCell>
-              <TableCell>
-                {new Date(academicYear.updatedAt).toLocaleDateString('vi-VN', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit'
-                })}
-              </TableCell>
-              <TableCell className='text-right'>
-                <div className='flex justify-end gap-2'>
-                  <Button variant='outline' size='icon' onClick={() => onEdit(academicYear)}>
-                    <Edit className='h-4 w-4' />
-                  </Button>
-                  <Button variant='outline' size='icon' onClick={() => onDelete(academicYear.id)}>
-                    <Trash2 className='h-4 w-4' />
-                  </Button>
-                </div>
-              </TableCell>
+    <div className='relative'>
+      {isFilterLoading && (
+        <div className='absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex justify-center items-center'>
+          <LoadingSpinner isLoading={true} className='relative py-20' />
+        </div>
+      )}
+      <div className='rounded-md border'>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Mã năm học</TableHead>
+              <TableHead>Ngày tạo</TableHead>
+              <TableHead>Ngày cập nhật</TableHead>
+              <TableHead className='text-right'>Thao tác</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data.map((academicYear) => (
+              <TableRow key={academicYear.id}>
+                <TableCell>
+                  <Badge variant='outline'>{academicYear.yearCode}</Badge>
+                </TableCell>
+                <TableCell>
+                  {new Date(academicYear.createdAt).toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </TableCell>
+                <TableCell>
+                  {new Date(academicYear.updatedAt).toLocaleDateString('vi-VN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </TableCell>
+                <TableCell className='text-right'>
+                  <div className='flex justify-end gap-2'>
+                    <Button variant='outline' size='icon' onClick={() => onEdit(academicYear)}>
+                      <Edit className='h-4 w-4' />
+                    </Button>
+                    <Button variant='outline' size='icon' onClick={() => onDelete(academicYear.id)}>
+                      <Trash2 className='h-4 w-4' />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 }

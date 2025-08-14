@@ -1,5 +1,7 @@
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   CreateExemptionPercentage,
@@ -7,7 +9,6 @@ import type {
   UpdateExemptionPercentage
 } from '@/shared/validations/ExemptionPercentageSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import {
   useCreateExemptionPercentageMutation,
   useDeleteExemptionPercentageMutation,
@@ -19,14 +20,16 @@ import { ExemptionPercentageFilters, ExemptionPercentageForm, ExemptionPercentag
 export const ExemptionPercentagesPage = () => {
   const dialogStore = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useExemptionPercentagesQuery({
-    search: searchParams.get('search') || undefined,
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: ''
   })
 
+  const { data, isLoading, isFetching } = useExemptionPercentagesQuery(filters)
+
   const exemptionPercentages = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createMutation, isPending: isCreating } = useCreateExemptionPercentageMutation()
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteExemptionPercentageMutation()
@@ -105,7 +108,7 @@ export const ExemptionPercentagesPage = () => {
       </div>
 
       {/* Filters */}
-      <ExemptionPercentageFilters />
+      <ExemptionPercentageFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
@@ -117,9 +120,12 @@ export const ExemptionPercentagesPage = () => {
             isLoading={isLoading}
             onEdit={handleEdit}
             onDelete={handleDelete}
+            isFilterLoading={isFetching}
           />
         </CardContent>
       </Card>
+
+      {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
     </div>
   )
 }

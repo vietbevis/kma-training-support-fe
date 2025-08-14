@@ -4,11 +4,17 @@ import ComboboxFacultyDepartment from '@/features/faculty-departments/components
 import { ComboboxRole } from '@/features/roles'
 import { ComboboxSubjects } from '@/features/subjects'
 import { Button } from '@/shared/components/ui/button'
-import { Calendar } from '@/shared/components/ui/calendar'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import {
+  DateField,
+  DateFieldDays,
+  DateFieldMonths,
+  DateFieldSeparator,
+  DateFieldYears
+} from '@/shared/components/ui/date-field'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Input } from '@/shared/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/shared/components/ui/popover'
+import { PasswordInput, PasswordInputAdornmentToggle, PasswordInputInput } from '@/shared/components/ui/password-input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 import { Separator } from '@/shared/components/ui/separator'
 import { Switch } from '@/shared/components/ui/switch'
@@ -17,9 +23,6 @@ import { cn } from '@/shared/lib/utils'
 import UploadFiles from '@/shared/upload-files/UploadFiles'
 import { CreateUserSchema, type CreateUser, type UpdateUser, type User } from '@/shared/validations/UserSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
-import { vi } from 'date-fns/locale'
-import { CalendarIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 interface UserFormProps {
@@ -37,6 +40,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
       fullName: user?.fullName || undefined,
       username: mode === 'edit' ? user?.username || undefined : undefined,
       password: mode === 'edit' ? undefined : '1',
+      position: user?.position || undefined,
       gender: user?.gender || Gender.OTHER,
       phone: user?.phone || undefined,
       email: user?.email || undefined,
@@ -73,7 +77,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
     <Card className='py-0'>
       <CardHeader className='sr-only'>
         <CardTitle className='flex items-center gap-2 text-2xl'>
-          {mode === 'create' ? '👤 Thêm nhân viên mới' : '✏️ Chỉnh sửa nhân viên'}
+          {mode === 'create' ? 'Thêm nhân viên mới' : 'Chỉnh sửa nhân viên'}
         </CardTitle>
         <CardDescription className='text-base'>
           {mode === 'create'
@@ -155,34 +159,20 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         control={form.control}
                         name='dateOfBirth'
                         render={({ field }) => (
-                          <FormItem className='flex flex-col'>
+                          <FormItem>
                             <FormLabel className='text-sm font-medium'>Ngày sinh</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={'outline'}
-                                    className={cn(
-                                      'w-full pl-3 text-left font-normal',
-                                      !field.value && 'text-muted-foreground'
-                                    )}
-                                  >
-                                    {field.value ? format(field.value, 'dd/MM/yyyy') : <span>Chọn ngày sinh</span>}
-                                    <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className='w-auto p-0' align='start'>
-                                <Calendar
-                                  mode='single'
-                                  selected={field.value ? new Date(field.value) : undefined}
-                                  onSelect={field.onChange}
-                                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                                  captionLayout='dropdown'
-                                  locale={vi}
-                                />
-                              </PopoverContent>
-                            </Popover>
+                            <DateField
+                              value={field.value ? new Date(field.value) : undefined}
+                              onValueChange={field.onChange}
+                            >
+                              <FormControl>
+                                <DateFieldDays />
+                              </FormControl>
+                              <DateFieldSeparator />
+                              <DateFieldMonths />
+                              <DateFieldSeparator />
+                              <DateFieldYears />
+                            </DateField>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -294,32 +284,18 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         render={({ field }) => (
                           <FormItem className='flex flex-col'>
                             <FormLabel className='text-sm font-medium'>Ngày cấp</FormLabel>
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={'outline'}
-                                    className={cn(
-                                      'w-full pl-3 text-left font-normal',
-                                      !field.value && 'text-muted-foreground'
-                                    )}
-                                  >
-                                    {field.value ? format(field.value, 'dd/MM/yyyy') : <span>Chọn ngày cấp</span>}
-                                    <CalendarIcon className='ml-auto h-4 w-4 opacity-50' />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent className='w-auto p-0' align='start'>
-                                <Calendar
-                                  mode='single'
-                                  selected={field.value ? new Date(field.value) : undefined}
-                                  onSelect={field.onChange}
-                                  disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                                  captionLayout='dropdown'
-                                  locale={vi}
-                                />
-                              </PopoverContent>
-                            </Popover>
+                            <DateField
+                              value={field.value ? new Date(field.value) : undefined}
+                              onValueChange={field.onChange}
+                            >
+                              <FormControl>
+                                <DateFieldDays />
+                              </FormControl>
+                              <DateFieldSeparator />
+                              <DateFieldMonths />
+                              <DateFieldSeparator />
+                              <DateFieldYears />
+                            </DateField>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -403,7 +379,10 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                             <FormControl>
                               <ComboboxFacultyDepartment
                                 value={form.watch('facultyDepartmentId')}
-                                onValueChange={field.onChange}
+                                onValueChange={(value) => {
+                                  field.onChange(value)
+                                  form.setValue('subjectId', undefined)
+                                }}
                               />
                             </FormControl>
                             <FormMessage />
@@ -519,16 +498,16 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className='text-sm font-medium'>Mật khẩu</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder={`${
-                                  mode === 'create' ? 'Nhập mật khẩu' : 'Nhập mật khẩu mới nếu muốn reset mật khẩu'
-                                }`}
-                                type='password'
-                                {...field}
-                                defaultValue={mode === 'create' ? '1' : undefined}
-                              />
-                            </FormControl>
+                            <PasswordInput>
+                              <FormControl>
+                                <PasswordInputInput
+                                  autoComplete='new-password'
+                                  placeholder='Nhập mật khẩu'
+                                  {...field}
+                                />
+                              </FormControl>
+                              <PasswordInputAdornmentToggle />
+                            </PasswordInput>
                             <FormMessage />
                           </FormItem>
                         )}

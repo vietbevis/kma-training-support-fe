@@ -4,8 +4,10 @@ import {
   useUpdateSubjectMutation
 } from '@/features/subjects/api/SubjectService'
 import { SubjectFilters, SubjectForm, SubjectTable } from '@/features/subjects/components'
+import { PaginationComponent } from '@/shared/components/Pagination'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
   CreateSubjectSchemaType,
@@ -13,21 +15,26 @@ import type {
   UpdateSubjectSchemaType
 } from '@/shared/validations/SubjectsSchema'
 import { Plus } from 'lucide-react'
-import { useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 
 export const SubjectsPage = () => {
   const { openDialog, closeDialog } = useDialogStore()
 
-  const [searchParams] = useSearchParams()
-  const { data, isLoading } = useGetSubjectsQuery({
-    page: Number(searchParams.get('page')) || 1,
-    limit: Number(searchParams.get('limit')) || 10,
-    search: searchParams.get('search') || '',
-    facultyDepartmentId: searchParams.get('facultyDepartmentId') || ''
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
+    page: '1',
+    limit: '10',
+    search: '',
+    facultyDepartmentId: ''
+  })
+  const { data, isLoading, isFetching } = useGetSubjectsQuery({
+    ...filters,
+    page: Number(filters.page),
+    limit: Number(filters.limit),
+    facultyDepartmentId: filters.facultyDepartmentId || ''
   })
 
   const subjects = data?.data.data || []
+  const meta = data?.data.meta
 
   const { mutateAsync: createSubject, isPending: isCreatingSubject } = useCreateSubjectMutation()
   const { mutateAsync: updateSubject, isPending: isUpdatingSubject } = useUpdateSubjectMutation()
@@ -105,16 +112,24 @@ export const SubjectsPage = () => {
           </Button>
         </div>
 
-        <SubjectFilters />
+        <SubjectFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
         <Card>
           <CardHeader>
             <CardTitle>Danh sách bộ môn ({subjects.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <SubjectTable subjects={subjects} onEdit={handleEdit} onDelete={handleDelete} isLoading={isLoading} />
+            <SubjectTable
+              subjects={subjects}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              isLoading={isLoading}
+              isFilterLoading={isFetching}
+            />
           </CardContent>
         </Card>
+
+        {meta && <PaginationComponent meta={meta} setFilter={setFilters} />}
       </div>
     </>
   )

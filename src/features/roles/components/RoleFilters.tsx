@@ -2,11 +2,30 @@ import ComboboxFacultyDepartment from '@/features/faculty-departments/components
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
-import { useDebounceSearchParams } from '@/shared/hooks/useDebounceSearchParams'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Search, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-export const RoleFilters = () => {
-  const [searchParams, setSearchParams] = useDebounceSearchParams()
+interface RoleFiltersProps {
+  filters: Record<string, string>
+  setFilters: (filters: Record<string, string>) => void
+  resetFilters: () => void
+}
+
+export const RoleFilters = ({ filters, setFilters, resetFilters }: RoleFiltersProps) => {
+  const [search, setSearch] = useState(filters.search || '')
+
+  const debouncedSearch = useDebounce(search)
+
+  useEffect(() => {
+    setFilters({ search: debouncedSearch })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
+
+  const handleResetFilters = () => {
+    setSearch('')
+    resetFilters()
+  }
 
   return (
     <div className='flex items-center gap-4 flex-wrap'>
@@ -15,8 +34,8 @@ export const RoleFilters = () => {
           <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4' />
           <Input
             placeholder='Tìm kiếm theo tên vai trò...'
-            value={searchParams.get('search') || ''}
-            onChange={(e) => setSearchParams({ search: e.target.value, page: '1' })}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             className='pl-10'
           />
         </div>
@@ -24,19 +43,8 @@ export const RoleFilters = () => {
 
       <div className='max-w-xs'>
         <Select
-          value={searchParams.get('isActive') || 'all'}
-          onValueChange={(value) =>
-            setSearchParams((prev) => {
-              const params = new URLSearchParams(prev)
-              params.set('page', '1')
-              if (value === 'all') {
-                params.delete('isActive')
-              } else {
-                params.set('isActive', value)
-              }
-              return params
-            })
-          }
+          value={filters.isActive || 'all'}
+          onValueChange={(value: string) => setFilters({ isActive: value === 'all' ? '' : value })}
         >
           <SelectTrigger>
             <SelectValue placeholder='Trạng thái' />
@@ -51,19 +59,8 @@ export const RoleFilters = () => {
 
       <div className='max-w-xs'>
         <Select
-          value={searchParams.get('isSystemRole') || 'all'}
-          onValueChange={(value) =>
-            setSearchParams((prev) => {
-              const params = new URLSearchParams(prev)
-              params.set('page', '1')
-              if (value === 'all') {
-                params.delete('isSystemRole')
-              } else {
-                params.set('isSystemRole', value)
-              }
-              return params
-            })
-          }
+          value={filters.isSystemRole || 'all'}
+          onValueChange={(value: string) => setFilters({ isSystemRole: value === 'all' ? '' : value })}
         >
           <SelectTrigger>
             <SelectValue placeholder='Loại vai trò' />
@@ -78,26 +75,15 @@ export const RoleFilters = () => {
 
       <div className='max-w-sm'>
         <ComboboxFacultyDepartment
-          value={searchParams.get('scopeFacultyDepartmentId') || ''}
-          onValueChange={(value: string) =>
-            setSearchParams((prev) => {
-              const params = new URLSearchParams(prev)
-              params.set('page', '1')
-              if (value) {
-                params.set('scopeFacultyDepartmentId', value)
-              } else {
-                params.delete('scopeFacultyDepartmentId')
-              }
-              return params
-            })
-          }
+          value={filters.scopeFacultyDepartmentId || ''}
+          onValueChange={(value: string) => setFilters({ scopeFacultyDepartmentId: value })}
           placeholder='Phạm vi khoa/phòng ban...'
           width='100%'
           className='min-w-72'
         />
       </div>
 
-      <Button variant='outline' onClick={() => setSearchParams(null)} className='flex items-center gap-2'>
+      <Button variant='outline' onClick={handleResetFilters} className='flex items-center gap-2'>
         <X className='h-4 w-4' />
         Xóa bộ lọc
       </Button>
