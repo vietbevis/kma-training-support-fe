@@ -65,7 +65,7 @@ export const RolesPage = () => {
         <div className='flex items-center justify-between'>
           <div>
             <h1 className='text-3xl font-bold tracking-tight'>Quản lý vai trò</h1>
-            <p className='text-muted-foreground'>Tạo vai trò và phân quyền cho người dùng trong hệ thống</p>
+            <p className='text-muted-foreground'>Tạo vai trò và phân quyền cho nhân viên trong hệ thống</p>
           </div>
           <Button onClick={() => navigate(ROUTES.ROLE_CREATE.url)} className='cursor-pointer'>
             <Plus className='mr-2 h-4 w-4' />

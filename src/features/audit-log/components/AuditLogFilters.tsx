@@ -31,7 +31,7 @@ const actionOptions = [
 ]
 
 const entityOptions = [
-  { value: 'UserEntity', label: 'Người dùng' },
+  { value: 'UserEntity', label: 'Nhân viên' },
   { value: 'RoleEntity', label: 'Vai trò' },
   { value: 'PermissionEntity', label: 'Quyền' },
   { value: 'AcademicYearEntity', label: 'Năm học' },

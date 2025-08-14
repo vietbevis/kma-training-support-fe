@@ -2,6 +2,7 @@ import LoadingSpinner from '@/shared/components/LoadingSpinner'
 import { Badge } from '@/shared/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
 import ROUTES from '@/shared/lib/routes'
+import { entityNameToEditPath } from '@/shared/lib/utils'
 import type { AuditLog } from '@/shared/validations/AuditLogSchema'
 import { useState } from 'react'
 import { Link } from 'react-router'
@@ -150,47 +151,59 @@ export const AuditLogTable = ({ data, isLoading, isFilterLoading }: AuditLogTabl
               <TableHead>Tài nguyên ảnh hưởng</TableHead>
               <TableHead>Trạng thái</TableHead>
               <TableHead>Địa chỉ IP</TableHead>
-              <TableHead>Mô tả</TableHead>
+              <TableHead className='min-w-96'>Mô tả</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((log) => (
-              <TableRow key={log.id}>
-                <TableCell>
-                  {new Date(log.createdAt).toLocaleDateString('vi-VN', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                  })}
-                </TableCell>
-                <TableCell>
-                  <Badge variant={getActionVariant(log.action)}>{getActionLabel(log.action)}</Badge>
-                </TableCell>
-                <TableCell>
-                  <Link to={ROUTES.USER_EDIT.getPath(log.user.id)}>
-                    {log.user.code} - {log.user.fullName}
-                    <p className='text-xs text-muted-foreground'>
-                      <strong>Thuộc khoa/phòng ban:</strong> {log.user.facultyDepartment.name}
+            {data.map((log) => {
+              const entityPath = entityNameToEditPath(log.entityName)
+
+              const path = typeof entityPath === 'string' ? entityPath : entityPath(log.entityId)
+
+              return (
+                <TableRow key={log.id}>
+                  <TableCell>
+                    {new Date(log.createdAt).toLocaleDateString('vi-VN', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit'
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={getActionVariant(log.action)}>{getActionLabel(log.action)}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Link to={ROUTES.USER_EDIT.getPath(log.user.id)}>
+                      {log.user.code} - {log.user.fullName}
+                      <p className='text-xs text-muted-foreground'>
+                        <strong>Thuộc khoa/phòng ban:</strong> {log.user.facultyDepartment.name}
+                      </p>
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant='outline'>{getEntityLabel(log.entityName)}</Badge>
+                    <p className='text-xs text-muted-foreground mt-2'>
+                      <strong>Tại bản ghi:</strong>{' '}
+                      <Link to={path} className='hover:underline'>
+                        Click để xem
+                      </Link>
                     </p>
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Badge variant='outline'>{getEntityLabel(log.entityName)}</Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge variant={getStatusVariant(log.status)}>{getStatusLabel(log.status)}</Badge>
-                </TableCell>
-                <TableCell>
-                  <code className='text-sm bg-muted px-2 py-1 rounded'>{log.ipAddress}</code>
-                </TableCell>
-                <TableCell className='max-w-[300px]'>
-                  <ExpandableCell content={log.description || ''} maxLength={100} />
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={getStatusVariant(log.status)}>{getStatusLabel(log.status)}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <code className='text-sm bg-muted px-2 py-1 rounded'>{log.ipAddress}</code>
+                  </TableCell>
+                  <TableCell className='max-w-[300px]'>
+                    <ExpandableCell content={log.description || ''} maxLength={100} />
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>

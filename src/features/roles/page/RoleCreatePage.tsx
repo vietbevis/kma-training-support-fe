@@ -44,7 +44,7 @@ export const RoleCreatePage = () => {
   const pageTitle = isDuplicating ? 'Nhân bản vai trò' : 'Tạo vai trò'
   const pageDescription = isDuplicating
     ? 'Nhân bản vai trò và chỉnh sửa thông tin cần thiết'
-    : 'Tạo vai trò mới cho người dùng trong hệ thống'
+    : 'Tạo vai trò mới cho nhân viên trong hệ thống'
 
   return (
     <div className='space-y-6'>

@@ -19,7 +19,11 @@ export const UserEditPage = () => {
   }
 
   if (isLoading) {
-    return <LoadingSpinner isLoading={true} className='py-20' />
+    return (
+      <div className='flex justify-center items-center py-8 absolute inset-0 bg-background/80 backdrop-blur-sm z-10'>
+        <LoadingSpinner isLoading={true} className='relative py-20' />
+      </div>
+    )
   }
 
   if (!userResponse) {

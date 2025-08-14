@@ -50,7 +50,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
       citizenIdIssuePlace: user?.citizenIdIssuePlace || undefined,
       citizenIdAddress: user?.citizenIdAddress || undefined,
       currentAddress: user?.currentAddress || undefined,
-      workplace: user?.workplace || undefined,
+      workPlace: user?.workPlace || undefined,
       taxCode: user?.taxCode || undefined,
       bankAccount: user?.bankAccount || undefined,
       bankName: user?.bankName || undefined,
@@ -425,7 +425,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                       />
                       <FormField
                         control={form.control}
-                        name='workplace'
+                        name='workPlace'
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className='text-sm font-medium'>Nơi công tác</FormLabel>

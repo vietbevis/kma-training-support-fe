@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import ROUTES from './routes'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -62,7 +63,7 @@ export const translateModule = (module: string) => {
     case 'SubjectModule':
       return 'Quản lý bộ môn'
     case 'UserModule':
-      return 'Quản lý người dùng'
+      return 'Quản lý nhân viên'
     default:
       return module
   }
@@ -80,5 +81,42 @@ export const getMethodBadgeVariant = (method: string) => {
       return 'destructive'
     default:
       return 'secondary'
+  }
+}
+
+export const entityNameToEditPath = (entityName: string) => {
+  switch (entityName) {
+    case 'UserEntity':
+      return ROUTES.USER_EDIT.getPath
+    case 'RoleEntity':
+      return ROUTES.ROLE_EDIT.getPath
+    case 'PermissionEntity':
+      return ROUTES.PERMISSIONS.url
+    case 'AcademicYearEntity':
+      return ROUTES.ACADEMIC_YEARS.url
+    case 'AcademicCredentialsEntity':
+      return ROUTES.ACADEMIC_CREDENTIALS.url
+    case 'BuildingEntity':
+      return ROUTES.BUILDINGS.url
+    case 'ClassroomEntity':
+      return ROUTES.CLASSROOMS.url
+    case 'CourseEntity':
+      return ROUTES.COURSES.url
+    case 'EducationalSystemEntity':
+      return ROUTES.EDUCATIONAL_SYSTEMS.url
+    case 'ExemptionPercentageEntity':
+      return ROUTES.EXEMPTION_PERCENTAGES.url
+    case 'FacultyDepartmentEntity':
+      return ROUTES.FACULTY_DEPARTMENTS.url
+    case 'LectureInvitationMoneyEntity':
+      return ROUTES.LECTURE_INVITATION_MONEYS.url
+    case 'SubjectEntity':
+      return ROUTES.SUBJECTS.url
+    case 'AccountEntity':
+      return ROUTES.ACCOUNTS.url
+    case 'AuditLogEntity':
+      return ROUTES.AUDIT_LOGS.url
+    default:
+      return ''
   }
 }

@@ -116,8 +116,8 @@ export const RoleForm = ({ initialData, initialPermissions = [], onSubmit, isLoa
         <AccordionContent>
           <div className='pl-6 space-y-3'>
             {isLoadingPermissions ? (
-              <div className='py-3'>
-                <LoadingSpinner isLoading={true} className='relative py-6' />
+              <div className='py-3 flex items-center justify-center'>
+                <LoadingSpinner isLoading={true} className='py-6' />
               </div>
             ) : permissions.length === 0 ? (
               <p className='text-muted-foreground py-3 text-sm'>Không có quyền nào trong module này</p>
@@ -245,8 +245,8 @@ export const RoleForm = ({ initialData, initialPermissions = [], onSubmit, isLoa
           </div>
 
           {isLoadingModules ? (
-            <div className='py-8'>
-              <LoadingSpinner isLoading={true} className='relative py-12' />
+            <div className='py-8 flex items-center justify-center'>
+              <LoadingSpinner isLoading={true} className='py-12' />
             </div>
           ) : (
             <div className='border rounded-lg'>

@@ -111,7 +111,8 @@ const ROUTES = {
   ROLE_EDIT: {
     title: 'Sửa vai trò',
     url: '/roles/:id/edit',
-    icon: Pencil
+    icon: Pencil,
+    getPath: (id: string) => `/roles/${id}/edit`
   },
   ROLE_CREATE: {
     title: 'Tạo vai trò',
