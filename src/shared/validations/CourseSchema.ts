@@ -6,7 +6,7 @@ export const CreateCourseSchema = z
   .object({
     courseCode: z.string().min(1, 'Mã học phần không được để trống').max(50, 'Mã học phần không được quá 50 ký tự'),
     courseName: z.string().min(1, 'Tên học phần không được để trống').max(255, 'Tên học phần không được quá 255 ký tự'),
-    credits: z.number().min(1, 'Số tín chỉ phải lớn hơn 0').max(10, 'Số tín chỉ không được quá 10'),
+    credits: z.coerce.number().min(1, 'Số tín chỉ phải lớn hơn 0'),
     semester: z.enum(KyHoc, { message: 'Kỳ học không hợp lệ' }).optional(),
     description: z.string().optional(),
     facultyDepartmentId: z.string().min(1, 'ID khoa không hợp lệ'),

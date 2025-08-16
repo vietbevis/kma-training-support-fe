@@ -22,7 +22,7 @@ export const CourseForm = ({ initialData, onSubmit, isLoading, mode }: CourseFor
   const schema = mode === 'create' ? CreateCourseSchema : UpdateCourseSchema
 
   const form = useForm<CreateCourse | UpdateCourse>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
     defaultValues: {
       courseCode: initialData?.courseCode || '',
       courseName: initialData?.courseName || '',
@@ -118,9 +118,16 @@ export const CourseForm = ({ initialData, onSubmit, isLoading, mode }: CourseFor
           name='facultyDepartmentId'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Khoa/Bộ môn *</FormLabel>
+              <FormLabel>Khoa *</FormLabel>
               <FormControl>
-                <ComboboxFacultyDepartment value={field.value as any} onValueChange={field.onChange} isFaculty />
+                <ComboboxFacultyDepartment
+                  value={field.value}
+                  onValueChange={(value) => {
+                    field.onChange(value)
+                    form.setValue('subjectId', undefined)
+                  }}
+                  isFaculty
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -135,9 +142,9 @@ export const CourseForm = ({ initialData, onSubmit, isLoading, mode }: CourseFor
               <FormLabel>Bộ môn</FormLabel>
               <FormControl>
                 <ComboboxSubjects
-                  value={field.value as any}
+                  value={form.watch('subjectId')}
                   onValueChange={field.onChange}
-                  facultyDepartmentId={(form.watch('facultyDepartmentId') as any) || ''}
+                  facultyDepartmentId={form.watch('facultyDepartmentId')}
                   disabled={!form.watch('facultyDepartmentId')}
                 />
               </FormControl>

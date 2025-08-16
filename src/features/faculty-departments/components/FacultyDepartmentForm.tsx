@@ -72,10 +72,10 @@ export const FacultyDepartmentForm = ({ initialData, onSubmit, isLoading, mode }
           control={form.control}
           name='isFaculty'
           render={({ field }) => (
-            <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
+            <FormItem className='flex flex-row items-center justify-between rounded-lg border py-3 px-3'>
               <div className='space-y-0.5'>
-                <FormLabel className='text-base'>Loại đơn vị</FormLabel>
-                <div className='text-sm text-muted-foreground'>
+                <FormLabel>Loại đơn vị</FormLabel>
+                <div className='text-xs text-muted-foreground mt-1'>
                   {field.value ? 'Đây là một khoa' : 'Đây là một phòng ban'}
                 </div>
               </div>

@@ -40,7 +40,7 @@ const CourseTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: Cou
               <TableHead>Tên học phần</TableHead>
               <TableHead>Tín chỉ</TableHead>
               <TableHead>Kỳ học</TableHead>
-              <TableHead>Khoa/Bộ môn</TableHead>
+              <TableHead>Khoa</TableHead>
               <TableHead>Bộ môn</TableHead>
               <TableHead>Ngày tạo</TableHead>
               <TableHead>Ngày cập nhật</TableHead>
