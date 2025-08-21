@@ -32,10 +32,10 @@ export const CreateUserSchema = z
     bankName: z.string().max(255, 'Tên ngân hàng không được quá 255 ký tự').optional(),
     bankBranch: z.string().max(255, 'Chi nhánh không được quá 255 ký tự').optional(),
     taxCode: z.string().max(20, 'Mã số thuế không được quá 20 ký tự').optional(),
-    exemptionPercentageId: z.string().optional(),
+    exemptionPercentageId: z.string().min(1, 'Phần trăm miễn giảm không được để trống'),
     subjectId: z.string().optional(),
-    academicCredentialId: z.string(),
-    facultyDepartmentId: z.string(),
+    academicCredentialId: z.string().min(1, 'Học hàm/học vị không được để trống'),
+    facultyDepartmentId: z.string().min(1, 'Khoa/phòng ban không được để trống'),
     roleIds: z.array(z.string()).optional(),
     profileFile: FileSchema.nullable().optional()
   })

@@ -90,7 +90,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
             {/* Row 1: Thông tin cơ bản và Thông tin liên hệ */}
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-start'>
               {/* Cột trái: Thông tin cơ bản */}
               <div className='space-y-6'>
                 <div className='space-y-4'>
@@ -99,7 +99,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                   </div>
 
                   <div className='space-y-4'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='fullName'
@@ -131,7 +131,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                       />
                     </div>
 
-                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='gender'
@@ -190,7 +190,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                   </div>
 
                   <div className='space-y-4'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='email'
@@ -240,7 +240,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
             <Separator className='my-8' />
 
             {/* Row 2: Thông tin CCCD và Công việc */}
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-start'>
               {/* Cột trái: Thông tin CCCD */}
               <div className='space-y-6'>
                 <div className='space-y-4'>
@@ -249,7 +249,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                   </div>
 
                   <div className='space-y-4'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='citizenId'
@@ -277,7 +277,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         )}
                       />
                     </div>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='citizenIdIssueDate'
@@ -315,7 +315,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         )}
                       />
                     </div>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='citizenIdFront'
@@ -369,7 +369,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                   </div>
 
                   <div className='space-y-4'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='facultyDepartmentId'
@@ -409,7 +409,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                       />
                     </div>
 
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='position'
@@ -538,7 +538,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
             <Separator className='my-8' />
 
             {/* Row 3: Thông tin tài chính và File đính kèm */}
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 items-start'>
               {/* Cột trái: Thông tin tài chính */}
               <div className='space-y-6'>
                 <div className='space-y-4'>
@@ -547,7 +547,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                   </div>
 
                   <div className='space-y-4'>
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='taxCode'
@@ -566,7 +566,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                         name='exemptionPercentageId'
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className='text-sm font-medium'>Phần trăm miễn giảm</FormLabel>
+                            <FormLabel className='text-sm font-medium'>Phần trăm miễn giảm *</FormLabel>
                             <FormControl>
                               <ComboboxExemptionPercentage
                                 value={form.watch('exemptionPercentageId')}
@@ -579,7 +579,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                       />
                     </div>
 
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='salaryCoefficient'
@@ -615,7 +615,7 @@ export const UserForm = ({ user, onSubmit, isLoading, mode }: UserFormProps) => 
                       />
                     </div>
 
-                    <div className='grid grid-cols-2 gap-4'>
+                    <div className='grid grid-cols-2 gap-4 items-start'>
                       <FormField
                         control={form.control}
                         name='bankAccount'
