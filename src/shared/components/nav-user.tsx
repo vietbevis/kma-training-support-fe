@@ -2,8 +2,6 @@
 
 import { ChevronsUpDown, LogOut } from 'lucide-react'
 
-import { useGetAccountDetailQuery } from '@/features/accounts/api/AccountService'
-import { useAuthStore } from '@/features/auth'
 import LogoutWrapper from '@/features/auth/components/ButtonLogout'
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/components/ui/avatar'
 import {
@@ -15,13 +13,10 @@ import {
   DropdownMenuTrigger
 } from '@/shared/components/ui/dropdown-menu'
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/shared/components/ui/sidebar'
+import type { AccountResponse } from '../validations/AccountSchema'
 
-export function NavUser() {
+export function NavUser({ user }: { user?: AccountResponse | null }) {
   const { isMobile } = useSidebar()
-  const { userId } = useAuthStore()
-  const { data } = useGetAccountDetailQuery(userId || '')
-
-  const user = data?.data || null
 
   return (
     <SidebarMenu>

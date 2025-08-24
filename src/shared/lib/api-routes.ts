@@ -26,7 +26,8 @@ const API_ROUTES = {
   UPLOAD_FILES: '/v1/files/upload',
   PERMISSIONS: '/v1/permissions',
   ROLES: '/v1/roles',
-  AUDIT_LOGS: '/v1/audit-logs'
+  AUDIT_LOGS: '/v1/audit-logs',
+  VISITING_LECTURERS: '/v1/visiting-lecturers'
 }
 
 export default API_ROUTES

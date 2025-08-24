@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
@@ -17,7 +19,7 @@ import {
 } from '../api/ExemptionPercentageService'
 import { ExemptionPercentageFilters, ExemptionPercentageForm, ExemptionPercentageTable } from '../components'
 
-export const ExemptionPercentagesPage = () => {
+const ExemptionPercentagesPageComponent = () => {
   const dialogStore = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -129,3 +131,8 @@ export const ExemptionPercentagesPage = () => {
     </div>
   )
 }
+
+export const ExemptionPercentagesPage = withPermissionGuard(
+  ExemptionPercentagesPageComponent,
+  PERMISSIONS.EXEMPTION_PERCENTAGES.LIST
+)

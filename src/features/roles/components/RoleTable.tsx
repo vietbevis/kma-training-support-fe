@@ -1,7 +1,8 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import type { RoleType } from '@/shared/validations/RoleSchema'
 import { Copy, Edit, Trash2 } from 'lucide-react'
 
@@ -71,19 +72,37 @@ export const RoleTable = ({ roles, onEdit, onDelete, onDuplicate, isLoading }: R
               <TableCell className='text-right'>
                 <div className='flex justify-end gap-1'>
                   {onEdit && (
-                    <Button variant='outline' size='icon' onClick={() => onEdit(role)} title='Chỉnh sửa'>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onEdit(role)}
+                      title='Chỉnh sửa'
+                      requiredPermission={PERMISSIONS.ROLES.UPDATE}
+                    >
                       <Edit className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   )}
                   {onDuplicate && (
-                    <Button variant='outline' size='icon' onClick={() => onDuplicate(role)} title='Nhân bản'>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDuplicate(role)}
+                      title='Nhân bản'
+                      requiredPermission={PERMISSIONS.ROLES.CREATE}
+                    >
                       <Copy className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   )}
                   {onDelete && !role.isSystemRole && (
-                    <Button variant='outline' size='icon' onClick={() => onDelete(role.id)} title='Xóa'>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDelete(role.id)}
+                      title='Xóa'
+                      requiredPermission={PERMISSIONS.ROLES.DELETE}
+                    >
                       <Trash2 className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   )}
                 </div>
               </TableCell>

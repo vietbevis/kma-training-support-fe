@@ -39,6 +39,15 @@ const RolesPage = lazy(() => import('./features/roles/page').then((m) => ({ defa
 const RoleEditPage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RoleEditPage })))
 const RoleCreatePage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RoleCreatePage })))
 const AuditLogsPage = lazy(() => import('./features/audit-log/page').then((m) => ({ default: m.AuditLogsPage })))
+const VisitingLecturersPage = lazy(() =>
+  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturersPage }))
+)
+const VisitingLecturerCreatePage = lazy(() =>
+  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturerCreatePage }))
+)
+const VisitingLecturerEditPage = lazy(() =>
+  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturerEditPage }))
+)
 
 const router = createBrowserRouter([
   {
@@ -120,6 +129,18 @@ const router = createBrowserRouter([
           {
             path: ROUTES.AUDIT_LOGS.url,
             element: <AuditLogsPage />
+          },
+          {
+            path: ROUTES.VISITING_LECTURERS.url,
+            element: <VisitingLecturersPage />
+          },
+          {
+            path: ROUTES.VISITING_LECTURER_CREATE.url,
+            element: <VisitingLecturerCreatePage />
+          },
+          {
+            path: ROUTES.VISITING_LECTURER_EDIT.url,
+            element: <VisitingLecturerEditPage />
           }
         ]
       }

@@ -1,4 +1,6 @@
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Button } from '@/shared/components/ui/button'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import ROUTES from '@/shared/lib/routes'
 import type { CreateUser } from '@/shared/validations/UserSchema'
 import { ArrowLeft } from 'lucide-react'
@@ -6,7 +8,7 @@ import { Link, useNavigate } from 'react-router'
 import { useCreateUserMutation } from '../api/UserService'
 import { UserForm } from '../components'
 
-export const UserCreatePage = () => {
+const UserCreatePageComponent = () => {
   const createUserMutation = useCreateUserMutation()
   const navigate = useNavigate()
 
@@ -35,3 +37,6 @@ export const UserCreatePage = () => {
     </>
   )
 }
+
+// Apply permission guard
+export const UserCreatePage = withPermissionGuard(UserCreatePageComponent, PERMISSIONS.USERS.CREATE)

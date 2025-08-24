@@ -1,7 +1,8 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import type { FacultyDepartmentSchemaType } from '@/shared/validations/FacultyDepartmentSchema'
 import { Edit, Trash2 } from 'lucide-react'
 
@@ -77,12 +78,22 @@ export const FacultyDepartmentTable = ({
                 </TableCell>
                 <TableCell className='text-right w-20'>
                   <div className='flex justify-end gap-2'>
-                    <Button variant='outline' size='icon' onClick={() => onEdit(faculty)}>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onEdit(faculty)}
+                      requiredPermission={PERMISSIONS.FACULTY_DEPARTMENTS.UPDATE}
+                    >
                       <Edit className='h-4 w-4' />
-                    </Button>
-                    <Button variant='outline' size='icon' onClick={() => onDelete(faculty.id)}>
+                    </PermissionButton>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDelete(faculty.id)}
+                      requiredPermission={PERMISSIONS.FACULTY_DEPARTMENTS.DELETE}
+                    >
                       <Trash2 className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   </div>
                 </TableCell>
               </TableRow>

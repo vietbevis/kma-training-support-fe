@@ -1,8 +1,10 @@
 import { useDeleteRole, useGetRoles } from '@/features/roles/api/RoleService'
 import { RoleFilters, RoleTable } from '@/features/roles/components'
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import ROUTES from '@/shared/lib/routes'
 import { useDialogStore } from '@/shared/stores/dialogStore'
@@ -11,7 +13,7 @@ import { Plus } from 'lucide-react'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
-export const RolesPage = () => {
+const RolesPageComponent = () => {
   const { openDialog, closeDialog } = useDialogStore()
   const navigate = useNavigate()
 
@@ -67,10 +69,14 @@ export const RolesPage = () => {
             <h1 className='text-3xl font-bold tracking-tight'>Quản lý vai trò</h1>
             <p className='text-muted-foreground'>Tạo vai trò và phân quyền cho nhân viên trong hệ thống</p>
           </div>
-          <Button onClick={() => navigate(ROUTES.ROLE_CREATE.url)} className='cursor-pointer'>
+          <PermissionButton
+            onClick={() => navigate(ROUTES.ROLE_CREATE.url)}
+            className='cursor-pointer'
+            requiredPermission={PERMISSIONS.ROLES.CREATE}
+          >
             <Plus className='mr-2 h-4 w-4' />
             Thêm vai trò
-          </Button>
+          </PermissionButton>
         </div>
 
         <RoleFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
@@ -95,3 +101,6 @@ export const RolesPage = () => {
     </>
   )
 }
+
+// Apply permission guard
+export const RolesPage = withPermissionGuard(RolesPageComponent, PERMISSIONS.ROLES.LIST)

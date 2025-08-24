@@ -1,6 +1,7 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import type { Building } from '@/shared/validations/BuildingSchema'
 import { Edit, Trash2 } from 'lucide-react'
 
@@ -68,12 +69,22 @@ const BuildingTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: B
                 </TableCell>
                 <TableCell className='text-right w-20'>
                   <div className='flex justify-end gap-2'>
-                    <Button variant='outline' size='icon' onClick={() => onEdit(building)}>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onEdit(building)}
+                      requiredPermission={PERMISSIONS.BUILDINGS.UPDATE}
+                    >
                       <Edit className='h-4 w-4' />
-                    </Button>
-                    <Button variant='outline' size='icon' onClick={() => onDelete(building.id)}>
+                    </PermissionButton>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDelete(building.id)}
+                      requiredPermission={PERMISSIONS.BUILDINGS.DELETE}
+                    >
                       <Trash2 className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   </div>
                 </TableCell>
               </TableRow>

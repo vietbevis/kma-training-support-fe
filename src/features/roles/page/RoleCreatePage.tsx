@@ -1,15 +1,17 @@
 import { useCreateRole, useGetRoleById } from '@/features/roles/api/RoleService'
 import { RoleForm } from '@/features/roles/components'
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import ROUTES from '@/shared/lib/routes'
 import type { UpdateRoleType } from '@/shared/validations/RoleSchema'
 import { ArrowLeft } from 'lucide-react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 
-export const RoleCreatePage = () => {
+const RoleCreatePageComponent = () => {
   const { mutateAsync: createRole, isPending: isCreatingRole } = useCreateRole()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
@@ -76,3 +78,6 @@ export const RoleCreatePage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const RoleCreatePage = withPermissionGuard(RoleCreatePageComponent, PERMISSIONS.ROLES.CREATE)

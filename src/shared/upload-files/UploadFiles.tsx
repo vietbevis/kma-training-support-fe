@@ -28,6 +28,7 @@ export interface UploadFilesProps {
 
   showPreview?: boolean
   previewSize?: 'sm' | 'md' | 'lg'
+  square?: boolean
 
   error?: string
 
@@ -75,6 +76,7 @@ const UploadFiles = forwardRef<HTMLDivElement, UploadFilesProps>(
       onChange,
       showPreview = true,
       previewSize = 'md',
+      square = false,
       error,
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedBy
@@ -252,7 +254,9 @@ const UploadFiles = forwardRef<HTMLDivElement, UploadFilesProps>(
       <div className='flex flex-col items-center justify-center p-4 text-center relative'>
         <div className='relative mb-4'>
           {showPreview && file.url && isImageFile(file) ? (
-            <div className='h-32 max-w-72 rounded-lg overflow-hidden bg-muted border'>
+            <div
+              className={cn('max-w-72 rounded-lg overflow-hidden bg-muted border', square ? 'aspect-square' : 'h-32')}
+            >
               <img
                 src={`${envConfig.VITE_IMAGE_URL}${file.url}`}
                 alt={file.originalName}

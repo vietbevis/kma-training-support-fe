@@ -1,7 +1,8 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { getMethodBadgeVariant } from '@/shared/lib/utils'
 import type { PermissionType } from '@/shared/validations/PermissionSchema'
 import { Edit } from 'lucide-react'
@@ -60,9 +61,14 @@ export const PermissionTable = ({ permissions, onEdit, isLoading, isFilterLoadin
                 <TableCell className='text-right w-20'>
                   <div className='flex justify-end gap-2'>
                     {onEdit && (
-                      <Button variant='outline' size='icon' onClick={() => onEdit(permission)}>
+                      <PermissionButton
+                        variant='outline'
+                        size='icon'
+                        onClick={() => onEdit(permission)}
+                        requiredPermission={PERMISSIONS.PERMISSIONS.UPDATE}
+                      >
                         <Edit className='h-4 w-4' />
-                      </Button>
+                      </PermissionButton>
                     )}
                   </div>
                 </TableCell>

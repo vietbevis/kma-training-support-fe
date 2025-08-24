@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { EducationalSystem } from '@/shared/validations/EducationalSystemSchema'
@@ -13,7 +15,7 @@ import {
 } from '../api/EducationalSystemService'
 import { EducationalSystemFilters, EducationalSystemForm, EducationalSystemTable } from '../components'
 
-export const EducationalSystemsPage = () => {
+const EducationalSystemsPageComponent = () => {
   const dialogStore = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -98,10 +100,10 @@ export const EducationalSystemsPage = () => {
           <p className='text-muted-foreground'>Quản lý danh sách các hệ đào tạo trong hệ thống</p>
         </div>
         <div className='flex gap-2'>
-          <Button onClick={handleOpenCreate}>
+          <PermissionButton onClick={handleOpenCreate} requiredPermission={PERMISSIONS.EDUCATIONAL_SYSTEMS.CREATE}>
             <Plus className='h-4 w-4 mr-2' />
             Thêm hệ đào tạo
-          </Button>
+          </PermissionButton>
         </div>
       </div>
 
@@ -126,3 +128,9 @@ export const EducationalSystemsPage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const EducationalSystemsPage = withPermissionGuard(
+  EducationalSystemsPageComponent,
+  PERMISSIONS.EDUCATIONAL_SYSTEMS.LIST
+)

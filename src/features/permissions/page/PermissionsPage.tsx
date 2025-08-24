@@ -6,8 +6,10 @@ import {
 } from '@/features/permissions/api/PermissionService'
 import { PermissionFilters, PermissionForm, PermissionTable } from '@/features/permissions/components'
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/shared/components/ui/accordion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { translateModule } from '@/shared/lib/utils'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { PermissionType, UpdatePermission } from '@/shared/validations/PermissionSchema'
@@ -15,7 +17,7 @@ import { Shield } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 
-export const PermissionsPage = () => {
+const PermissionsPageComponent = () => {
   const { openDialog, closeDialog } = useDialogStore()
   const [searchParams] = useSearchParams()
   const [moduleSelected, setModuleSelected] = useState<string | null>(null)
@@ -115,3 +117,6 @@ export const PermissionsPage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const PermissionsPage = withPermissionGuard(PermissionsPageComponent, PERMISSIONS.PERMISSIONS.LIST)

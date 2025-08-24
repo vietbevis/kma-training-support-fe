@@ -1,7 +1,8 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { Gender } from '@/shared/lib/enum'
 import ROUTES from '@/shared/lib/routes'
 import type { User } from '@/shared/validations/UserSchema'
@@ -111,19 +112,24 @@ export const UserTable = ({ data, isLoading, isFilterLoading, onDelete }: UserTa
                 </TableCell>
                 <TableCell className='text-right w-32'>
                   <div className='flex justify-end gap-2'>
-                    {/* <Button variant='outline' size='icon' asChild>
-                      <Link to={ROUTES.STAFF.DETAIL(user.id)}>
-                        <Eye className='h-4 w-4' />
-                      </Link>
-                    </Button> */}
-                    <Button variant='outline' size='icon' asChild>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      asChild
+                      requiredPermission={PERMISSIONS.USERS.UPDATE}
+                    >
                       <Link to={ROUTES.USER_EDIT.url.replace(':id', user.id)}>
                         <Edit className='h-4 w-4' />
                       </Link>
-                    </Button>
-                    <Button variant='outline' size='icon' onClick={() => onDelete(user.id)}>
+                    </PermissionButton>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDelete(user.id)}
+                      requiredPermission={PERMISSIONS.USERS.DELETE}
+                    >
                       <Trash2 className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   </div>
                 </TableCell>
               </TableRow>

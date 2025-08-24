@@ -6,6 +6,50 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+// Permission checking utility
+export interface PermissionRequirement {
+  method: string
+  path: string
+}
+
+export interface UserPermission {
+  method: string
+  path: string
+}
+
+/**
+ * Kiểm tra xem user có permission để truy cập một resource không
+ * @param userPermissions - Danh sách permissions của user
+ * @param requiredPermission - Permission cần thiết để truy cập
+ * @returns true nếu user có permission, false nếu không
+ */
+export function hasPermission(userPermissions: UserPermission[], requiredPermission: PermissionRequirement): boolean {
+  if (!userPermissions || userPermissions.length === 0) {
+    return false
+  }
+
+  return userPermissions.some(
+    (permission) => permission.method === requiredPermission.method && permission.path === requiredPermission.path
+  )
+}
+
+/**
+ * Kiểm tra xem user có ít nhất một trong các permissions cần thiết không
+ * @param userPermissions - Danh sách permissions của user
+ * @param requiredPermissions - Danh sách permissions cần thiết
+ * @returns true nếu user có ít nhất một permission, false nếu không
+ */
+export function hasAnyPermission(
+  userPermissions: UserPermission[],
+  requiredPermissions: PermissionRequirement[]
+): boolean {
+  if (!userPermissions || userPermissions.length === 0 || !requiredPermissions || requiredPermissions.length === 0) {
+    return false
+  }
+
+  return requiredPermissions.some((required) => hasPermission(userPermissions, required))
+}
+
 export function getErrorMessage(error: any, defaultMessage = 'Lỗi không xác định.') {
   return (error as any).response?.data.message || defaultMessage
 }
@@ -64,6 +108,8 @@ export const translateModule = (module: string) => {
       return 'Quản lý bộ môn'
     case 'UserModule':
       return 'Quản lý nhân viên'
+    case 'VisitingLecturerModule':
+      return 'Giảng viên mời'
     default:
       return module
   }
@@ -116,6 +162,8 @@ export const entityNameToEditPath = (entityName: string) => {
       return ROUTES.ACCOUNTS.url
     case 'AuditLogEntity':
       return ROUTES.AUDIT_LOGS.url
+    case 'VisitingLecturerEntity':
+      return ROUTES.VISITING_LECTURER_EDIT.getPath
     default:
       return ''
   }

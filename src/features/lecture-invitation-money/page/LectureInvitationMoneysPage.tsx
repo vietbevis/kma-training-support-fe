@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
@@ -17,7 +19,7 @@ import {
 } from '../api/LectureInvitationMoneyService'
 import { LectureInvitationMoneyFilters, LectureInvitationMoneyForm, LectureInvitationMoneyTable } from '../components'
 
-export const LectureInvitationMoneysPage = () => {
+const LectureInvitationMoneysPageComponent = () => {
   const dialogStore = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -101,10 +103,10 @@ export const LectureInvitationMoneysPage = () => {
           <p className='text-muted-foreground'>Quản lý danh sách các tiền mời giảng trong hệ thống</p>
         </div>
         <div className='flex gap-2'>
-          <Button onClick={handleOpenCreate}>
+          <PermissionButton onClick={handleOpenCreate} requiredPermission={PERMISSIONS.LECTURE_INVITATION_MONEY.CREATE}>
             <Plus className='h-4 w-4 mr-2' />
             Thêm tiền mời giảng
-          </Button>
+          </PermissionButton>
         </div>
       </div>
 
@@ -129,3 +131,8 @@ export const LectureInvitationMoneysPage = () => {
     </div>
   )
 }
+
+export const LectureInvitationMoneysPage = withPermissionGuard(
+  LectureInvitationMoneysPageComponent,
+  PERMISSIONS.LECTURE_INVITATION_MONEY.LIST
+)

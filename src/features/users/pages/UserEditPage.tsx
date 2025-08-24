@@ -1,5 +1,7 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Button } from '@/shared/components/ui/button'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import ROUTES from '@/shared/lib/routes'
 import type { UpdateUser } from '@/shared/validations/UserSchema'
 import { ArrowLeft } from 'lucide-react'
@@ -7,7 +9,7 @@ import { Link, useNavigate, useParams } from 'react-router'
 import { useGetUserDetailQuery, useUpdateUserMutation } from '../api/UserService'
 import { UserForm } from '../components'
 
-export const UserEditPage = () => {
+const UserEditPageComponent = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { data: userResponse, isLoading } = useGetUserDetailQuery(id)
@@ -64,3 +66,6 @@ export const UserEditPage = () => {
     </>
   )
 }
+
+// Apply permission guard
+export const UserEditPage = withPermissionGuard(UserEditPageComponent, PERMISSIONS.USERS.UPDATE)

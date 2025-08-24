@@ -1,6 +1,7 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import type { LectureInvitationMoney } from '@/shared/validations/LectureInvitationMoneySchema'
 import { Edit, Trash2 } from 'lucide-react'
 
@@ -76,12 +77,22 @@ const LectureInvitationMoneyTable = ({
                 </TableCell>
                 <TableCell className='text-right w-20'>
                   <div className='flex justify-end gap-2'>
-                    <Button variant='outline' size='icon' onClick={() => onEdit(item)}>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onEdit(item)}
+                      requiredPermission={PERMISSIONS.LECTURE_INVITATION_MONEY.UPDATE}
+                    >
                       <Edit className='h-4 w-4' />
-                    </Button>
-                    <Button variant='outline' size='icon' onClick={() => onDelete(item.id)}>
+                    </PermissionButton>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDelete(item.id)}
+                      requiredPermission={PERMISSIONS.LECTURE_INVITATION_MONEY.DELETE}
+                    >
                       <Trash2 className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   </div>
                 </TableCell>
               </TableRow>

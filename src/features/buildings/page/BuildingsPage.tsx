@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
@@ -17,7 +19,7 @@ import {
 } from '../api/BuildingService'
 import { BuildingFilters, BuildingForm, BuildingTable } from '../components'
 
-export const BuildingsPage = () => {
+const BuildingsPageComponent = () => {
   const dialogStore = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -100,10 +102,10 @@ export const BuildingsPage = () => {
           <p className='text-muted-foreground'>Quản lý danh sách các tòa nhà trong hệ thống</p>
         </div>
         <div className='flex gap-2'>
-          <Button onClick={handleOpenCreate}>
+          <PermissionButton onClick={handleOpenCreate} requiredPermission={PERMISSIONS.BUILDINGS.CREATE}>
             <Plus className='h-4 w-4 mr-2' />
             Thêm tòa nhà
-          </Button>
+          </PermissionButton>
         </div>
       </div>
 
@@ -129,3 +131,6 @@ export const BuildingsPage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const BuildingsPage = withPermissionGuard(BuildingsPageComponent, PERMISSIONS.BUILDINGS.LIST)

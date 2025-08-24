@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
@@ -17,7 +19,7 @@ import {
 } from '../api/AcademicYearService'
 import { AcademicYearFilters, AcademicYearForm, AcademicYearTable } from '../components'
 
-export const AcademicYearsPage = () => {
+const AcademicYearsPageComponent = () => {
   const dialogStore = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -99,10 +101,10 @@ export const AcademicYearsPage = () => {
             <h1 className='text-3xl font-bold'>Quản lý năm học</h1>
             <p className='text-muted-foreground'>Quản lý danh sách năm học trong hệ thống</p>
           </div>
-          <Button onClick={handleOpenCreate}>
+          <PermissionButton onClick={handleOpenCreate} requiredPermission={PERMISSIONS.ACADEMIC_YEARS.CREATE}>
             <Plus className='h-4 w-4 mr-2' />
             Thêm năm học
-          </Button>
+          </PermissionButton>
         </div>
 
         <AcademicYearFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
@@ -127,3 +129,6 @@ export const AcademicYearsPage = () => {
     </>
   )
 }
+
+// Apply permission guard
+export const AcademicYearsPage = withPermissionGuard(AcademicYearsPageComponent, PERMISSIONS.ACADEMIC_YEARS.LIST)

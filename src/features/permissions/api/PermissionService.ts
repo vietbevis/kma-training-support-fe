@@ -19,6 +19,13 @@ export const useGetPermissionByModule = (module: string, enabled: boolean) => {
   })
 }
 
+export const useGetPermissionByUserId = (userId: string) => {
+  return useQuery({
+    queryKey: ['permission-by-user', userId],
+    queryFn: () => api.get<PermissionType[]>(`${API_ROUTES.ACCOUNTS}/${userId}/permissions`)
+  })
+}
+
 export const useUpdatePermission = () => {
   const queryClient = useQueryClient()
   return useMutation({

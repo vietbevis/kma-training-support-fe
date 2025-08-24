@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
@@ -17,7 +19,7 @@ import {
 } from '../api/ClassroomService'
 import { ClassroomFilters, ClassroomForm, ClassroomTable } from '../components'
 
-export const ClassroomsPage = () => {
+const ClassroomsPageComponent = () => {
   const dialogStore = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -103,10 +105,10 @@ export const ClassroomsPage = () => {
           <p className='text-muted-foreground'>Quản lý danh sách các phòng học trong hệ thống</p>
         </div>
         <div className='flex gap-2'>
-          <Button onClick={handleOpenCreate}>
+          <PermissionButton onClick={handleOpenCreate} requiredPermission={PERMISSIONS.CLASSROOMS.CREATE}>
             <Plus className='h-4 w-4 mr-2' />
             Thêm phòng học
-          </Button>
+          </PermissionButton>
         </div>
       </div>
 
@@ -132,3 +134,6 @@ export const ClassroomsPage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const ClassroomsPage = withPermissionGuard(ClassroomsPageComponent, PERMISSIONS.CLASSROOMS.LIST)

@@ -1,6 +1,8 @@
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import ROUTES from '@/shared/lib/routes'
 import { useDialogStore } from '@/shared/stores/dialogStore'
@@ -10,7 +12,7 @@ import { toast } from 'sonner'
 import { useGetUsersQuery } from '../api/UserService'
 import { UserFilters, UserTable } from '../components'
 
-export const UsersPage = () => {
+const UsersPageComponent = () => {
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
     page: '1',
     limit: '10',
@@ -60,12 +62,12 @@ export const UsersPage = () => {
           <h1 className='text-3xl font-bold tracking-tight'>Quản lý nhân viên</h1>
           <p className='text-muted-foreground'>Quản lý thông tin nhân viên trong hệ thống ({users.length} nhân viên)</p>
         </div>
-        <Button asChild className='flex items-center gap-2'>
+        <PermissionButton asChild className='flex items-center gap-2' requiredPermission={PERMISSIONS.USERS.CREATE}>
           <Link to={ROUTES.USER_CREATE.url}>
             <Plus className='h-4 w-4' />
             Thêm nhân viên mới
           </Link>
-        </Button>
+        </PermissionButton>
       </div>
 
       <UserFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
@@ -83,3 +85,6 @@ export const UsersPage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const UsersPage = withPermissionGuard(UsersPageComponent, PERMISSIONS.USERS.LIST)

@@ -1,7 +1,8 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import type { AcademicYearSchemaType } from '@/shared/validations/AcademicYearSchema'
 import { Edit, Trash2 } from 'lucide-react'
 
@@ -69,12 +70,22 @@ export const AcademicYearTable = ({ data, isLoading, onEdit, onDelete, isFilterL
                 </TableCell>
                 <TableCell className='text-right'>
                   <div className='flex justify-end gap-2'>
-                    <Button variant='outline' size='icon' onClick={() => onEdit(academicYear)}>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onEdit(academicYear)}
+                      requiredPermission={PERMISSIONS.ACADEMIC_YEARS.UPDATE}
+                    >
                       <Edit className='h-4 w-4' />
-                    </Button>
-                    <Button variant='outline' size='icon' onClick={() => onDelete(academicYear.id)}>
+                    </PermissionButton>
+                    <PermissionButton
+                      variant='outline'
+                      size='icon'
+                      onClick={() => onDelete(academicYear.id)}
+                      requiredPermission={PERMISSIONS.ACADEMIC_YEARS.DELETE}
+                    >
                       <Trash2 className='h-4 w-4' />
-                    </Button>
+                    </PermissionButton>
                   </div>
                 </TableCell>
               </TableRow>

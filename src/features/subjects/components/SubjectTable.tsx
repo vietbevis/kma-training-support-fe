@@ -1,7 +1,8 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Badge } from '@/shared/components/ui/badge'
-import { Button } from '@/shared/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import type { SubjectSchemaType } from '@/shared/validations/SubjectsSchema'
 import { Edit, Trash2 } from 'lucide-react'
 
@@ -73,14 +74,24 @@ export const SubjectTable = ({ subjects, onEdit, onDelete, isLoading, isFilterLo
                 <TableCell className='text-right w-20'>
                   <div className='flex justify-end gap-2'>
                     {onEdit && (
-                      <Button variant='outline' size='icon' onClick={() => onEdit(subject)}>
+                      <PermissionButton
+                        variant='outline'
+                        size='icon'
+                        onClick={() => onEdit(subject)}
+                        requiredPermission={PERMISSIONS.SUBJECTS.UPDATE}
+                      >
                         <Edit className='h-4 w-4' />
-                      </Button>
+                      </PermissionButton>
                     )}
                     {onDelete && (
-                      <Button variant='outline' size='icon' onClick={() => onDelete(subject.id)}>
+                      <PermissionButton
+                        variant='outline'
+                        size='icon'
+                        onClick={() => onDelete(subject.id)}
+                        requiredPermission={PERMISSIONS.SUBJECTS.DELETE}
+                      >
                         <Trash2 className='h-4 w-4' />
-                      </Button>
+                      </PermissionButton>
                     )}
                   </div>
                 </TableCell>

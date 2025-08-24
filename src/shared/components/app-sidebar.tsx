@@ -1,5 +1,8 @@
 import * as React from 'react'
 
+import { useGetAccountDetailQuery } from '@/features/accounts/api/AccountService'
+import { useAuthStore } from '@/features/auth'
+import { useGetPermissionByUserId } from '@/features/permissions'
 import { NavMain } from '@/shared/components/nav-main'
 import { NavUser } from '@/shared/components/nav-user'
 import {
@@ -15,6 +18,10 @@ import {
 import navMain from '../lib/nav-main'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { userId } = useAuthStore()
+  const { data: user } = useGetAccountDetailQuery(userId || '')
+  const { data: permissions } = useGetPermissionByUserId(userId || '')
+
   return (
     <Sidebar collapsible='icon' {...props}>
       <SidebarHeader>
@@ -36,10 +43,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navMain} />
+        <NavMain items={navMain} permissions={permissions?.data || []} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser />
+        <NavUser user={user?.data} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

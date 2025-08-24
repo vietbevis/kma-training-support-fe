@@ -1,15 +1,17 @@
 import { useGetRoleById, useUpdateRole } from '@/features/roles/api/RoleService'
 import { RoleForm } from '@/features/roles/components'
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Button } from '@/shared/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import ROUTES from '@/shared/lib/routes'
 import type { UpdateRoleType } from '@/shared/validations/RoleSchema'
 import { ArrowLeft } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 
-export const RoleEditPage = () => {
+const RoleEditPageComponent = () => {
   const navigate = useNavigate()
   const { id } = useParams<{ id: string }>()
 
@@ -91,3 +93,6 @@ export const RoleEditPage = () => {
     </div>
   )
 }
+
+// Apply permission guard
+export const RoleEditPage = withPermissionGuard(RoleEditPageComponent, PERMISSIONS.ROLES.UPDATE)

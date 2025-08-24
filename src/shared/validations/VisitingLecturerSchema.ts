@@ -2,16 +2,13 @@ import { z } from 'zod'
 import { Gender } from '../lib/enum'
 import { BaseEntityDTO, createPaginationQuerySchema, FileSchema, MetaPagination } from './CommonSchema'
 
-export const CreateUserSchema = z
+export const CreateVisitingLecturerSchema = z
   .object({
     fullName: z.string().min(1, 'Họ và tên không được để trống').max(255, 'Họ và tên không được quá 255 ký tự'),
-    username: z.string().min(1, 'Tên đăng nhập không được để trống').max(255, 'Tên đăng nhập không được quá 255 ký tự'),
-    code: z.string().min(1, 'Mã nhân viên không được để trống').max(255, 'Mã nhân viên không được quá 255 ký tự'),
-    password: z
+    code: z
       .string()
-      .min(1, 'Mật khẩu không được để trống')
-      .max(255, 'Mật khẩu không được quá 255 ký tự')
-      .optional(),
+      .min(1, 'Mã giảng viên mời không được để trống')
+      .max(255, 'Mã giảng viên mời không được quá 255 ký tự'),
     gender: z.enum(Gender, { message: 'Giới tính không hợp lệ' }).optional(),
     dateOfBirth: z.coerce.date().optional(),
     phone: z.string().max(20, 'Số điện thoại không được quá 20 ký tự').optional(),
@@ -38,18 +35,17 @@ export const CreateUserSchema = z
     subjectId: z.string().optional(),
     academicCredentialId: z.string().min(1, 'Học hàm/học vị không được để trống'),
     facultyDepartmentId: z.string().min(1, 'Khoa/phòng ban không được để trống'),
-    roleIds: z.array(z.string()).optional(),
-    profileFile: FileSchema.nullable().optional()
+    profileFile: FileSchema.nullable().optional(),
+    notes: z.string().optional()
   })
   .strict()
   .strip()
 
-export const UpdateUserSchema = CreateUserSchema
+export const UpdateVisitingLecturerSchema = CreateVisitingLecturerSchema
 
-export const UserSchema = BaseEntityDTO.extend({
+export const VisitingLecturerSchema = BaseEntityDTO.extend({
   code: z.string(),
   fullName: z.string(),
-  username: z.string(),
   gender: z.enum(Gender),
   dateOfBirth: z.coerce.date().nullable(),
   phone: z.string().nullable(),
@@ -73,6 +69,10 @@ export const UserSchema = BaseEntityDTO.extend({
   qrCode: FileSchema.nullable().optional(),
   areTeaching: z.boolean(),
   position: z.string().nullable(),
+  trainingApproved: z.boolean(),
+  facultyApproved: z.boolean(),
+  academyApproved: z.boolean(),
+  notes: z.string().nullable(),
   facultyDepartment: z
     .object({
       id: z.string(),
@@ -105,50 +105,60 @@ export const UserSchema = BaseEntityDTO.extend({
       description: z.string().nullable()
     })
     .nullable()
-    .default(null),
-  roles: z.array(z.object({ id: z.string(), name: z.string() }))
+    .default(null)
 }).strip()
 
-export const UserResponseSchema = UserSchema
+export const VisitingLecturerResponseSchema = VisitingLecturerSchema
 
-export const PaginationUserSchema = createPaginationQuerySchema()
+export const PaginationVisitingLecturerSchema = createPaginationQuerySchema()
 
-export const UserQuerySchema = PaginationUserSchema.extend({
+export const VisitingLecturerQuerySchema = PaginationVisitingLecturerSchema.extend({
   search: z.string().optional(),
   facultyDepartmentId: z.string().optional(),
   subjectId: z.string().optional(),
   academicCredentialId: z.string().optional(),
   gender: z.string().optional(),
-  areTeaching: z.boolean().optional()
+  areTeaching: z.boolean().optional(),
+  trainingApproved: z.boolean().optional(),
+  facultyApproved: z.boolean().optional(),
+  academyApproved: z.boolean().optional()
 })
 
-export const PaginatedUserSchema = z
+export const PaginatedVisitingLecturerSchema = z
   .object({
-    data: z.array(UserSchema),
+    data: z.array(VisitingLecturerSchema),
     meta: MetaPagination
   })
   .strip()
 
-export const UsersResponseSchema = PaginatedUserSchema
+export const VisitingLecturersResponseSchema = PaginatedVisitingLecturerSchema
 
-export const DeleteUserSchema = z
+export const DeleteVisitingLecturerSchema = z
   .object({
-    id: z.number().min(1, 'ID nhân viên không hợp lệ')
+    id: z.number().min(1, 'ID giảng viên mời không hợp lệ')
   })
   .strip()
 
-export const RestoreUserSchema = z
+export const ApproveVisitingLecturerSchema = z
   .object({
-    id: z.number().min(1, 'ID nhân viên không hợp lệ')
+    notes: z.string().optional()
   })
   .strip()
 
-export type User = z.infer<typeof UserSchema>
-export type Users = z.infer<typeof PaginatedUserSchema>
-export type UserResponse = z.infer<typeof UserResponseSchema>
-export type UsersResponse = z.infer<typeof UsersResponseSchema>
-export type PaginationUser = z.infer<typeof PaginationUserSchema>
-export type PaginatedUser = z.infer<typeof PaginatedUserSchema>
-export type CreateUser = z.infer<typeof CreateUserSchema>
-export type UpdateUser = z.infer<typeof UpdateUserSchema>
-export type UserQuery = z.infer<typeof UserQuerySchema>
+export const RejectVisitingLecturerSchema = z
+  .object({
+    notes: z.string().min(1, 'Ghi chú từ chối không được để trống')
+  })
+  .strip()
+
+export type VisitingLecturer = z.infer<typeof VisitingLecturerSchema>
+export type VisitingLecturers = z.infer<typeof PaginatedVisitingLecturerSchema>
+export type VisitingLecturerResponse = z.infer<typeof VisitingLecturerResponseSchema>
+export type VisitingLecturersResponse = z.infer<typeof VisitingLecturersResponseSchema>
+export type PaginationVisitingLecturer = z.infer<typeof PaginationVisitingLecturerSchema>
+export type PaginatedVisitingLecturer = z.infer<typeof PaginatedVisitingLecturerSchema>
+export type CreateVisitingLecturer = z.infer<typeof CreateVisitingLecturerSchema>
+export type UpdateVisitingLecturer = z.infer<typeof UpdateVisitingLecturerSchema>
+export type VisitingLecturerQuery = z.infer<typeof VisitingLecturerQuerySchema>
+export type ApproveVisitingLecturer = z.infer<typeof ApproveVisitingLecturerSchema>
+export type RejectVisitingLecturer = z.infer<typeof RejectVisitingLecturerSchema>

@@ -5,8 +5,10 @@ import {
 } from '@/features/subjects/api/SubjectService'
 import { SubjectFilters, SubjectForm, SubjectTable } from '@/features/subjects/components'
 import { PaginationComponent } from '@/shared/components/Pagination'
-import { Button } from '@/shared/components/ui/button'
+import { PermissionButton } from '@/shared/components/PermissionButton'
+import { withPermissionGuard } from '@/shared/components/PermissionGuard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type {
@@ -17,7 +19,7 @@ import type {
 import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 
-export const SubjectsPage = () => {
+const SubjectsPageComponent = () => {
   const { openDialog, closeDialog } = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -106,10 +108,10 @@ export const SubjectsPage = () => {
             <h1 className='text-3xl font-bold tracking-tight'>Quản lý bộ môn</h1>
             <p className='text-muted-foreground'>Quản lý thông tin các bộ môn trong trường</p>
           </div>
-          <Button onClick={handleOpenCreate} className='cursor-pointer'>
-            <Plus className='mr-2 h-4 w-4' />
+          <PermissionButton onClick={handleOpenCreate} requiredPermission={PERMISSIONS.SUBJECTS.CREATE}>
+            <Plus className='h-4 w-4 mr-2' />
             Thêm bộ môn
-          </Button>
+          </PermissionButton>
         </div>
 
         <SubjectFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
@@ -134,3 +136,5 @@ export const SubjectsPage = () => {
     </>
   )
 }
+
+export const SubjectsPage = withPermissionGuard(SubjectsPageComponent, PERMISSIONS.SUBJECTS.LIST)

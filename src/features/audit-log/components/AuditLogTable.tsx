@@ -76,7 +76,8 @@ const getEntityLabel = (entityName: string) => {
     EducationalSystemEntity: 'Hệ đào tạo',
     ExemptionPercentageEntity: 'Phần trăm miễn giảm',
     LectureInvitationMoneyEntity: 'Tiền mời giảng',
-    StandardLectureHoursEntity: 'Số giờ định mức'
+    StandardLectureHoursEntity: 'Số giờ định mức',
+    VisitingLecturerEntity: 'Giảng viên mời'
   }
   return entityMap[entityName] || entityName
 }

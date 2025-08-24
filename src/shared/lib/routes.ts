@@ -123,6 +123,23 @@ const ROUTES = {
     title: 'Lịch sử hoạt động',
     url: '/audit-logs',
     icon: ClipboardList
+  },
+  VISITING_LECTURERS: {
+    title: 'Giảng viên mời',
+    url: '/visiting-lecturers',
+    getPath: (id: string) => `/visiting-lecturers/${id}/edit`,
+    icon: User
+  },
+  VISITING_LECTURER_CREATE: {
+    title: 'Thêm giảng viên mời',
+    url: '/visiting-lecturers/create',
+    icon: UserPlus
+  },
+  VISITING_LECTURER_EDIT: {
+    title: 'Sửa giảng viên mời',
+    url: `/visiting-lecturers/:id/edit`,
+    icon: Pencil,
+    getPath: (id: string) => `/visiting-lecturers/${id}/edit`
   }
 }
 
