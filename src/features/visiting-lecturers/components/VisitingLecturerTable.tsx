@@ -1,26 +1,19 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
-import { PermissionButton } from '@/shared/components/PermissionButton'
+import { PermissionButton, PermissionWrapper } from '@/shared/components/PermissionButton'
 import { Alert, AlertDescription } from '@/shared/components/ui/alert'
 import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/shared/components/ui/dialog'
+import { Label } from '@/shared/components/ui/label'
+import { Switch } from '@/shared/components/ui/switch'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
 import { Textarea } from '@/shared/components/ui/textarea'
 import { PERMISSIONS } from '@/shared/constants/permissions'
 import { Gender } from '@/shared/lib/enum'
 import ROUTES from '@/shared/lib/routes'
 import type { PermissionRequirement } from '@/shared/lib/utils'
+import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { VisitingLecturer } from '@/shared/validations/VisitingLecturerSchema'
-import { AlertCircle, Check, Edit, MessageSquare, Trash2, X } from 'lucide-react'
-import { useState } from 'react'
+import { AlertCircle, Edit, MessageSquare, Trash2 } from 'lucide-react'
 import { Link } from 'react-router'
 
 interface VisitingLecturerTableProps {
@@ -28,11 +21,11 @@ interface VisitingLecturerTableProps {
   isLoading: boolean
   isFilterLoading?: boolean
   onDelete: (id: string) => void
-  onTrainingApprove: (id: string, notes?: string) => void
+  onTrainingApprove: (id: string) => void
   onTrainingReject: (id: string, notes: string) => void
-  onFacultyApprove: (id: string, notes?: string) => void
+  onFacultyApprove: (id: string) => void
   onFacultyReject: (id: string, notes: string) => void
-  onAcademyApprove: (id: string, notes?: string) => void
+  onAcademyApprove: (id: string) => void
   onAcademyReject: (id: string, notes: string) => void
 }
 
@@ -62,134 +55,11 @@ const getTeachingStatusVariant = (status: boolean) => {
   return status ? 'default' : 'secondary'
 }
 
-const NotesDialog = ({ notes, title, children }: { notes: string; title: string; children: React.ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>Lý do từ chối/bỏ duyệt:</DialogDescription>
-        </DialogHeader>
-        <div className='space-y-4'>
-          <Alert>
-            <AlertCircle className='h-4 w-4' />
-            <AlertDescription className='whitespace-pre-wrap'>{notes || 'Không có ghi chú'}</AlertDescription>
-          </Alert>
-        </div>
-        <DialogFooter>
-          <Button type='button' onClick={() => setIsOpen(false)}>
-            Đóng
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-const ApprovalDialog = ({
-  title,
-  description,
-  onApprove,
-  onReject,
-  showApprove = true,
-  showReject = true,
-  requireNotesForReject = true,
-  children
-}: {
-  title: string
-  description: string
-  onApprove?: (notes?: string) => void
-  onReject?: (notes: string) => void
-  showApprove?: boolean
-  showReject?: boolean
-  requireNotesForReject?: boolean
-  children: React.ReactNode
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [notes, setNotes] = useState('')
-
-  const handleApprove = () => {
-    onApprove?.(notes || undefined)
-    setIsOpen(false)
-    setNotes('')
-  }
-
-  const handleReject = () => {
-    if (requireNotesForReject && !notes.trim()) {
-      return // Không cho phép reject mà không có ghi chú
-    }
-    onReject?.(notes)
-    setIsOpen(false)
-    setNotes('')
-  }
-
-  const handleClose = () => {
-    setIsOpen(false)
-    setNotes('')
-  }
-
-  return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-        <div className='space-y-4'>
-          {(showReject || showApprove) && (
-            <div>
-              <label className='text-sm font-medium'>
-                Ghi chú {requireNotesForReject && showReject && '(bắt buộc khi từ chối)'}
-              </label>
-              <Textarea
-                placeholder={
-                  requireNotesForReject && showReject ? 'Nhập ghi chú (bắt buộc khi từ chối)...' : 'Nhập ghi chú...'
-                }
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                rows={3}
-              />
-            </div>
-          )}
-        </div>
-        <DialogFooter>
-          <Button type='button' variant='outline' onClick={handleClose}>
-            Hủy
-          </Button>
-          {showReject && (
-            <Button
-              type='button'
-              variant='destructive'
-              onClick={handleReject}
-              disabled={requireNotesForReject && !notes.trim()}
-            >
-              {showApprove ? 'Từ chối' : 'Bỏ duyệt'}
-              <X className='h-4 w-4' />
-            </Button>
-          )}
-          {showApprove && (
-            <Button type='button' onClick={handleApprove}>
-              Duyệt
-              <Check className='h-4 w-4' />
-            </Button>
-          )}
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-const ApprovalCell = ({
+const ApprovalSwitch = ({
   isApproved,
   canApprove,
   canReject,
-  approveTitle,
   rejectTitle,
-  approveDescription,
   rejectDescription,
   onApprove,
   onReject,
@@ -199,78 +69,111 @@ const ApprovalCell = ({
   isApproved: boolean
   canApprove: boolean
   canReject: boolean
-  approveTitle: string
   rejectTitle: string
-  approveDescription: string
   rejectDescription: string
-  onApprove: (notes?: string) => void
+  onApprove: () => void
   onReject: (notes: string) => void
   approvePermission: PermissionRequirement
   rejectPermission?: PermissionRequirement
 }) => {
-  return (
-    <div className='flex items-center gap-1'>
-      {/* Nút duyệt/hiển thị trạng thái */}
-      {canApprove && (
-        <PermissionButton
-          variant='ghost'
-          size='icon'
-          className='cursor-pointer'
-          title={approveTitle}
-          requiredPermission={approvePermission}
-          fallback={
-            <Button variant='ghost' size='icon' className='cursor-not-allowed' disabled>
-              {isApproved ? <Check className='h-3 w-3 text-green-500' /> : <X className='h-3 w-3 text-gray-400' />}
-            </Button>
-          }
-        >
-          <ApprovalDialog
-            title={approveTitle}
-            description={approveDescription}
-            onApprove={onApprove}
-            onReject={onReject}
-            showApprove={!isApproved}
-            showReject={false}
-          >
-            <Button variant='ghost' size='icon' className='cursor-pointer'>
-              {isApproved ? <Check className='h-3 w-3 text-green-500' /> : <X className='h-3 w-3 text-gray-400' />}
-            </Button>
-          </ApprovalDialog>
-        </PermissionButton>
-      )}
+  const { openDialog, closeDialog } = useDialogStore()
 
-      {/* Nút bỏ duyệt (chỉ hiện khi đã được duyệt và có quyền) */}
-      {isApproved && canReject && rejectPermission && (
-        <PermissionButton
-          variant='ghost'
-          size='icon'
-          className='cursor-pointer'
-          title={rejectTitle}
-          requiredPermission={rejectPermission}
-        >
-          <ApprovalDialog
-            title={rejectTitle}
-            description={rejectDescription}
-            onReject={onReject}
-            showApprove={false}
-            showReject={true}
-            requireNotesForReject={true}
-          >
-            <Button variant='ghost' size='icon' className='cursor-pointer'>
-              <Check className='h-3 w-3 text-green-500' />
-            </Button>
-          </ApprovalDialog>
-        </PermissionButton>
-      )}
+  const handleSwitchChange = (checked: boolean) => {
+    if (checked && !isApproved) {
+      // Duyệt - không cần ghi chú
+      onApprove()
+    } else if (!checked && isApproved && canReject) {
+      // Bỏ duyệt - cần ghi chú, sử dụng dialogStore
+      openDialog({
+        type: 'custom',
+        title: rejectTitle,
+        description: rejectDescription,
+        content: (
+          <div className='space-y-4'>
+            <div>
+              <Label className='text-sm font-medium mb-1' htmlFor='reject-notes-input'>
+                Ghi chú bỏ duyệt (bắt buộc)
+              </Label>
+              <Textarea
+                id='reject-notes-input'
+                placeholder='Nhập lý do bỏ duyệt...'
+                rows={3}
+                className='max-h-40'
+                required
+              />
+            </div>
+            <div className='flex justify-end'>
+              <Button
+                variant='destructive'
+                onClick={() => {
+                  const textarea = document.getElementById('reject-notes-input') as HTMLTextAreaElement
+                  const notes = textarea?.value?.trim() || ''
+                  if (notes) {
+                    onReject(notes)
+                    closeDialog()
+                  } else {
+                    textarea?.focus()
+                    return // Không đóng dialog nếu chưa nhập ghi chú
+                  }
+                }}
+              >
+                Bỏ duyệt
+              </Button>
+            </div>
+          </div>
+        )
+      })
+    }
+  }
 
-      {/* Hiển thị trạng thái khi không có quyền */}
-      {!canApprove && (
-        <Button variant='ghost' size='icon' className='cursor-not-allowed' disabled>
-          {isApproved ? <Check className='h-3 w-3 text-green-500' /> : <X className='h-3 w-3 text-gray-400' />}
-        </Button>
-      )}
-    </div>
-  )
+  // Render switch với quyền approve
+  if (canApprove) {
+    return (
+      <PermissionWrapper
+        requiredPermission={approvePermission}
+        fallback={
+          <div className='flex items-center gap-2'>
+            <Switch checked={isApproved} disabled />
+            <span className='text-xs text-muted-foreground'>{isApproved ? 'Đã duyệt' : 'Chưa duyệt'}</span>
+          </div>
+        }
+      >
+        <div className='flex items-center gap-2'>
+          <Switch checked={isApproved} onCheckedChange={handleSwitchChange} />
+          <span className='text-xs text-muted-foreground'>{isApproved ? 'Đã duyệt' : 'Chưa duyệt'}</span>
+        </div>
+      </PermissionWrapper>
+    )
+  }
+
+  // Render switch với quyền reject (khi không có quyền approve)
+  else if (canReject && rejectPermission && isApproved) {
+    return (
+      <PermissionWrapper
+        requiredPermission={rejectPermission}
+        fallback={
+          <div className='flex items-center gap-2'>
+            <Switch checked={isApproved} disabled />
+            <span className='text-xs text-muted-foreground'>{isApproved ? 'Đã duyệt' : 'Chưa duyệt'}</span>
+          </div>
+        }
+      >
+        <div className='flex items-center gap-2'>
+          <Switch checked={isApproved} onCheckedChange={handleSwitchChange} />
+          <span className='text-xs text-muted-foreground'>{isApproved ? 'Đã duyệt' : 'Chưa duyệt'}</span>
+        </div>
+      </PermissionWrapper>
+    )
+  }
+  // Hiển thị trạng thái khi không có quyền
+  else {
+    return (
+      <div className='flex items-center gap-2'>
+        <Switch checked={isApproved} disabled />
+        <span className='text-xs text-muted-foreground'>{isApproved ? 'Đã duyệt' : 'Chưa duyệt'}</span>
+      </div>
+    )
+  }
 }
 
 export const VisitingLecturerTable = ({
@@ -285,6 +188,8 @@ export const VisitingLecturerTable = ({
   onAcademyApprove,
   onAcademyReject
 }: VisitingLecturerTableProps) => {
+  const { openDialog } = useDialogStore()
+
   if (isLoading && data.length === 0) {
     return (
       <div className='flex justify-center items-center py-8'>
@@ -344,101 +249,45 @@ export const VisitingLecturerTable = ({
                   </Badge>
                 </TableCell>
 
-                {/* Khoa duyệt - Khoa chỉ có thể duyệt */}
+                {/* Khoa duyệt */}
                 <TableCell>
-                  <div className='flex items-center gap-1'>
-                    <ApprovalCell
-                      isApproved={visitingLecturer.facultyApproved}
-                      canApprove={true}
-                      canReject={false}
-                      approveTitle='Khoa duyệt giảng viên mời'
-                      rejectTitle=''
-                      approveDescription='Bạn có muốn duyệt giảng viên mời này không?'
-                      rejectDescription=''
-                      onApprove={(notes) => onFacultyApprove(visitingLecturer.id, notes)}
-                      onReject={(notes) => onFacultyReject(visitingLecturer.id, notes)}
-                      approvePermission={PERMISSIONS.VISITING_LECTURERS.FACULTY_APPROVE}
-                    />
-                    {/* Đào tạo bỏ duyệt khoa (chỉ hiện khi khoa đã duyệt và đào tạo chưa duyệt) */}
-                    {visitingLecturer.facultyApproved && !visitingLecturer.trainingApproved && (
-                      <PermissionButton
-                        variant='ghost'
-                        size='icon'
-                        className='cursor-pointer ml-1'
-                        title='Đào tạo bỏ duyệt khoa'
-                        requiredPermission={PERMISSIONS.VISITING_LECTURERS.TRAINING_REJECT_FACULTY}
-                      >
-                        <ApprovalDialog
-                          title='Đào tạo bỏ duyệt khoa'
-                          description='Bạn có muốn bỏ duyệt khoa cho giảng viên mời này không?'
-                          onReject={(notes) => onFacultyReject(visitingLecturer.id, notes)}
-                          showApprove={false}
-                          showReject={true}
-                          requireNotesForReject={true}
-                        >
-                          <Button variant='ghost' size='icon' className='cursor-pointer'>
-                            <X className='h-3 w-3 text-red-500' />
-                          </Button>
-                        </ApprovalDialog>
-                      </PermissionButton>
-                    )}
-                  </div>
+                  <ApprovalSwitch
+                    isApproved={visitingLecturer.facultyApproved}
+                    canApprove={!visitingLecturer.facultyApproved}
+                    canReject={!visitingLecturer.trainingApproved} // Chỉ cho phép bỏ duyệt khi đào tạo chưa duyệt
+                    rejectTitle='Bỏ duyệt khoa'
+                    rejectDescription='Bạn có muốn bỏ duyệt khoa cho giảng viên mời này không?'
+                    onApprove={() => onFacultyApprove(visitingLecturer.id)}
+                    onReject={(notes) => onFacultyReject(visitingLecturer.id, notes)}
+                    approvePermission={PERMISSIONS.VISITING_LECTURERS.FACULTY_APPROVE}
+                    rejectPermission={PERMISSIONS.VISITING_LECTURERS.TRAINING_REJECT_FACULTY}
+                  />
                 </TableCell>
 
-                {/* Đào tạo duyệt - Đào tạo có thể duyệt của đào tạo hoặc bỏ duyệt của khoa */}
+                {/* Đào tạo duyệt */}
                 <TableCell>
-                  <div className='flex items-center gap-1'>
-                    {/* Duyệt đào tạo */}
-                    <ApprovalCell
-                      isApproved={visitingLecturer.trainingApproved}
-                      canApprove={true}
-                      canReject={false}
-                      approveTitle='Đào tạo duyệt giảng viên mời'
-                      rejectTitle=''
-                      approveDescription='Bạn có muốn duyệt giảng viên mời này không?'
-                      rejectDescription=''
-                      onApprove={(notes) => onTrainingApprove(visitingLecturer.id, notes)}
-                      onReject={(notes) => onTrainingReject(visitingLecturer.id, notes)}
-                      approvePermission={PERMISSIONS.VISITING_LECTURERS.TRAINING_APPROVE}
-                    />
-                    {/* Học viện bỏ duyệt đào tạo (chỉ hiện khi đào tạo đã duyệt) */}
-                    {visitingLecturer.trainingApproved && (
-                      <PermissionButton
-                        variant='ghost'
-                        size='icon'
-                        className='cursor-pointer ml-1'
-                        title='Học viện bỏ duyệt đào tạo'
-                        requiredPermission={PERMISSIONS.VISITING_LECTURERS.ACADEMY_REJECT_TRAINING}
-                      >
-                        <ApprovalDialog
-                          title='Học viện bỏ duyệt đào tạo'
-                          description='Bạn có muốn bỏ duyệt đào tạo cho giảng viên mời này không?'
-                          onReject={(notes) => onTrainingReject(visitingLecturer.id, notes)}
-                          showApprove={false}
-                          showReject={true}
-                          requireNotesForReject={true}
-                        >
-                          <Button variant='ghost' size='icon' className='cursor-pointer'>
-                            <X className='h-3 w-3 text-red-500' />
-                          </Button>
-                        </ApprovalDialog>
-                      </PermissionButton>
-                    )}
-                  </div>
+                  <ApprovalSwitch
+                    isApproved={visitingLecturer.trainingApproved}
+                    canApprove={!visitingLecturer.trainingApproved}
+                    canReject={!visitingLecturer.academyApproved} // Chỉ cho phép bỏ duyệt khi học viện chưa duyệt
+                    rejectTitle='Bỏ duyệt đào tạo'
+                    rejectDescription='Bạn có muốn bỏ duyệt đào tạo cho giảng viên mời này không?'
+                    onApprove={() => onTrainingApprove(visitingLecturer.id)}
+                    onReject={(notes) => onTrainingReject(visitingLecturer.id, notes)}
+                    approvePermission={PERMISSIONS.VISITING_LECTURERS.TRAINING_APPROVE}
+                    rejectPermission={PERMISSIONS.VISITING_LECTURERS.ACADEMY_REJECT_TRAINING}
+                  />
                 </TableCell>
 
-                {/* Học viện duyệt - Học viện có thể duyệt/bỏ duyệt của học viện và bỏ duyệt của đào tạo */}
+                {/* Học viện duyệt */}
                 <TableCell>
-                  {/* Duyệt học viện */}
-                  <ApprovalCell
+                  <ApprovalSwitch
                     isApproved={visitingLecturer.academyApproved}
                     canApprove={true}
-                    canReject={visitingLecturer.academyApproved}
-                    approveTitle='Học viện duyệt giảng viên mời'
-                    rejectTitle='Học viện bỏ duyệt'
-                    approveDescription='Bạn có muốn duyệt giảng viên mời này không?'
+                    canReject={true} // Học viện luôn có thể bỏ duyệt
+                    rejectTitle='Bỏ duyệt học viện'
                     rejectDescription='Bạn có muốn bỏ duyệt học viện cho giảng viên mời này không?'
-                    onApprove={(notes) => onAcademyApprove(visitingLecturer.id, notes)}
+                    onApprove={() => onAcademyApprove(visitingLecturer.id)}
                     onReject={(notes) => onAcademyReject(visitingLecturer.id, notes)}
                     approvePermission={PERMISSIONS.VISITING_LECTURERS.ACADEMY_APPROVE}
                     rejectPermission={PERMISSIONS.VISITING_LECTURERS.ACADEMY_REJECT}
@@ -448,16 +297,28 @@ export const VisitingLecturerTable = ({
                 <TableCell className='text-right w-32'>
                   <div className='flex justify-end gap-2'>
                     {visitingLecturer.notes && visitingLecturer.notes.trim() !== '' && (
-                      <NotesDialog notes={visitingLecturer.notes} title='Lý do từ chối'>
-                        <Button
-                          variant='outline'
-                          size='icon'
-                          className='cursor-pointer text-orange-600 hover:text-orange-700'
-                          title='Xem lý do từ chối'
-                        >
-                          <MessageSquare className='h-3 w-3' />
-                        </Button>
-                      </NotesDialog>
+                      <Button
+                        variant='outline'
+                        size='icon'
+                        className='cursor-pointer text-orange-600 hover:text-orange-700'
+                        title='Xem lý do từ chối'
+                        onClick={() =>
+                          openDialog({
+                            type: 'custom',
+                            title: 'Lý do từ chối',
+                            content: (
+                              <Alert>
+                                <AlertCircle className='h-4 w-4' />
+                                <AlertDescription className='whitespace-pre-wrap'>
+                                  {visitingLecturer.notes || 'Không có ghi chú'}
+                                </AlertDescription>
+                              </Alert>
+                            )
+                          })
+                        }
+                      >
+                        <MessageSquare className='h-3 w-3' />
+                      </Button>
                     )}
                     <PermissionButton
                       variant='outline'
