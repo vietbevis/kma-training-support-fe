@@ -129,7 +129,7 @@ const VisitingLecturersPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách giảng viên mời ({visitingLecturers.length})</CardTitle>
+          <CardTitle>Danh sách giảng viên mời ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <VisitingLecturerTable

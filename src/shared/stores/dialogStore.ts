@@ -19,6 +19,7 @@ interface DialogState {
   content?: React.ReactNode
   data?: any
   fileUploadParams?: FileUploadDialogParams
+  className?: string
   openDialog: (
     params: Omit<DialogState, 'open' | 'openDialog' | 'closeDialog'> & { type: 'confirm' | 'custom' }
   ) => void
@@ -37,6 +38,7 @@ export const useDialogStore = create<DialogState>((set) => ({
   content: undefined,
   data: undefined,
   fileUploadParams: undefined,
+  className: '',
   openDialog: (params) => set({ ...params, open: true }),
   openFileUploadDialog: (params) =>
     set({
@@ -46,5 +48,5 @@ export const useDialogStore = create<DialogState>((set) => ({
       description: params.description || 'Chọn file để tải lên',
       fileUploadParams: params
     }),
-  closeDialog: () => set({ open: false, loading: false, fileUploadParams: undefined })
+  closeDialog: () => set({ open: false, loading: false, fileUploadParams: undefined, className: '' })
 }))

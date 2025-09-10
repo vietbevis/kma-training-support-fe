@@ -211,3 +211,23 @@ export const FileTypeGroups = {
 } as const
 
 export type FileTypeGroups = (typeof FileTypeGroups)[keyof typeof FileTypeGroups]
+
+export const DayOfWeek = {
+  MONDAY: 2,
+  TUESDAY: 3,
+  WEDNESDAY: 4,
+  THURSDAY: 5,
+  FRIDAY: 6,
+  SATURDAY: 7,
+  SUNDAY: 1
+} as const
+
+export const DayOfWeekLabels = {
+  [DayOfWeek.MONDAY]: 'Thứ 2',
+  [DayOfWeek.TUESDAY]: 'Thứ 3',
+  [DayOfWeek.WEDNESDAY]: 'Thứ 4',
+  [DayOfWeek.THURSDAY]: 'Thứ 5',
+  [DayOfWeek.FRIDAY]: 'Thứ 6',
+  [DayOfWeek.SATURDAY]: 'Thứ 7',
+  [DayOfWeek.SUNDAY]: 'Chủ nhật'
+} as const

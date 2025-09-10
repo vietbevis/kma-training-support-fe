@@ -62,7 +62,7 @@ export const AuditLogsPage = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách hoạt động</CardTitle>
+          <CardTitle>Danh sách hoạt động ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <AuditLogTable data={auditLogs} isLoading={isLoading} isFilterLoading={isFetching} />

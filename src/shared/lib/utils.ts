@@ -168,3 +168,11 @@ export const entityNameToEditPath = (entityName: string) => {
       return ''
   }
 }
+
+export function formatCurrencyVND(value: number | string): string {
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+    minimumFractionDigits: 0 // bỏ phần lẻ (vd: .00)
+  }).format(Number(value))
+}

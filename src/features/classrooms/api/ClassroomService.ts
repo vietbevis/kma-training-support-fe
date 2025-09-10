@@ -30,12 +30,23 @@ export const useGetClassroomsQuery = ({
   })
 }
 
-export const useInfiniteClassroomQuery = ({ search = '' }: { search?: string }) => {
+export const useInfiniteClassroomQuery = ({
+  search = '',
+  buildingName = ''
+}: {
+  search?: string
+  buildingName?: string
+}) => {
   return useInfiniteQuery({
-    queryKey: ['classrooms', normalizeObject({ search })],
+    queryKey: ['classrooms', normalizeObject({ search, buildingName })],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await api.get<ClassroomsResponse>(API_ROUTES.CLASSROOMS, {
-        params: normalizeObject({ search, page: pageParam })
+        params: normalizeObject({
+          search,
+          buildingName,
+          page: pageParam,
+          limit: 20
+        })
       })
       return response.data
     },

@@ -117,7 +117,7 @@ const ClassroomsPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách phòng học ({classrooms.length})</CardTitle>
+          <CardTitle>Danh sách phòng học ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <ClassroomTable

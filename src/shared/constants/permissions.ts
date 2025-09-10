@@ -151,6 +151,16 @@ export const PERMISSIONS = {
       method: 'POST',
       path: '/visiting-lecturers/:id/academy-reject-training'
     } as PermissionRequirement
+  },
+
+  // Timetables
+  TIMETABLES: {
+    LIST: { method: 'GET', path: '/timetables' } as PermissionRequirement,
+    CREATE: { method: 'POST', path: '/timetables' } as PermissionRequirement,
+    UPDATE: { method: 'PATCH', path: '/timetables/:id' } as PermissionRequirement,
+    DELETE: { method: 'DELETE', path: '/timetables/:id' } as PermissionRequirement,
+    VIEW: { method: 'GET', path: '/timetables/:id' } as PermissionRequirement,
+    UPLOAD_EXCEL: { method: 'POST', path: '/timetables/upload-excel' } as PermissionRequirement
   }
 } as const
 

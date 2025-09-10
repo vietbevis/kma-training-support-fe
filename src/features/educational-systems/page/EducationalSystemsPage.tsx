@@ -111,7 +111,7 @@ const EducationalSystemsPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách hệ đào tạo ({items.length})</CardTitle>
+          <CardTitle>Danh sách hệ đào tạo ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <EducationalSystemTable

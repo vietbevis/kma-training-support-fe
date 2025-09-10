@@ -114,7 +114,7 @@ const LectureInvitationMoneysPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách tiền mời giảng ({items.length})</CardTitle>
+          <CardTitle>Danh sách tiền mời giảng ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <LectureInvitationMoneyTable

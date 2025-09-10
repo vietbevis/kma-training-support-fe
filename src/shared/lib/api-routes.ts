@@ -16,6 +16,8 @@ const API_ROUTES = {
   POSITIONS: '/v1/positions',
   BUILDINGS: '/v1/buildings',
   CLASSROOMS: '/v1/classrooms',
+  CLASSROOM_TIMESLOTS: '/v1/timeslots',
+  CLASSROOM_AVAILABILITY: '/v1/classrooms/availability',
   ACCOUNTS: '/v1/accounts',
   ACADEMIC_CREDENTIALS: '/v1/academic-credentials',
   EDUCATIONAL_SYSTEMS: '/v1/educational-systems',
@@ -27,7 +29,8 @@ const API_ROUTES = {
   PERMISSIONS: '/v1/permissions',
   ROLES: '/v1/roles',
   AUDIT_LOGS: '/v1/audit-logs',
-  VISITING_LECTURERS: '/v1/visiting-lecturers'
+  VISITING_LECTURERS: '/v1/visiting-lecturers',
+  TIMETABLES: '/v1/timetables'
 }
 
 export default API_ROUTES

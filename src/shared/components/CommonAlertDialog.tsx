@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { cn } from '../lib/utils'
 import { useDialogStore } from '../stores/dialogStore'
 import { Button } from './ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog'
 
 const CommonDialog = () => {
-  const { open, type, title, description, loading, onConfirm, content, closeDialog } = useDialogStore()
+  const { open, type, title, description, loading, onConfirm, content, closeDialog, className } = useDialogStore()
+  console.log('🚀 ~ CommonDialog ~ className:', className)
   const [showOverlay, setShowOverlay] = useState(false)
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const CommonDialog = () => {
     <>
       <Dialog open={open} onOpenChange={closeDialog} modal={false}>
         <DialogContent
-          className='overflow-y-auto'
+          className={cn('overflow-y-auto', className)}
           onInteractOutside={(e) => {
             e.preventDefault()
           }}

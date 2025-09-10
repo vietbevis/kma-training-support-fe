@@ -48,6 +48,10 @@ const VisitingLecturerCreatePage = lazy(() =>
 const VisitingLecturerEditPage = lazy(() =>
   import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturerEditPage }))
 )
+const TimetablesPage = lazy(() => import('./features/timetables/page').then((m) => ({ default: m.TimetablesPage })))
+const TimetableClassroomPage = lazy(() =>
+  import('./features/timetable-classroom/page').then((m) => ({ default: m.TimetableClassroomPage }))
+)
 
 const router = createBrowserRouter([
   {
@@ -141,6 +145,14 @@ const router = createBrowserRouter([
           {
             path: ROUTES.VISITING_LECTURER_EDIT.url,
             element: <VisitingLecturerEditPage />
+          },
+          {
+            path: ROUTES.TIMETABLES.url,
+            element: <TimetablesPage />
+          },
+          {
+            path: ROUTES.TIMETABLE_CLASSROOM.url,
+            element: <TimetableClassroomPage />
           }
         ]
       }

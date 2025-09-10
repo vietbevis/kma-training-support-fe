@@ -118,7 +118,7 @@ const CoursesPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách học phần ({items.length})</CardTitle>
+          <CardTitle>Danh sách học phần ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <CourseTable

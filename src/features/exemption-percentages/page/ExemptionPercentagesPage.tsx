@@ -114,7 +114,7 @@ const ExemptionPercentagesPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách phần trăm miễn giảm ({exemptionPercentages.length})</CardTitle>
+          <CardTitle>Danh sách phần trăm miễn giảm ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <ExemptionPercentageTable

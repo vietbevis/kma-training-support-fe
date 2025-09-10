@@ -1,6 +1,7 @@
 import {
   BookOpen,
   Building,
+  Calendar,
   ClipboardList,
   GraduationCap,
   Home,
@@ -9,6 +10,7 @@ import {
   Percent,
   School,
   School2,
+  Search,
   Shield,
   SquareTerminal,
   User,
@@ -82,6 +84,11 @@ const ROUTES = {
     url: '/lecture-invitation-money',
     icon: BookOpen
   },
+  TIMETABLES: {
+    title: 'Thời khóa biểu',
+    url: '/timetables',
+    icon: Calendar
+  },
   USERS: {
     title: 'Nhân viên',
     url: '/users',
@@ -140,6 +147,11 @@ const ROUTES = {
     url: `/visiting-lecturers/:id/edit`,
     icon: Pencil,
     getPath: (id: string) => `/visiting-lecturers/${id}/edit`
+  },
+  TIMETABLE_CLASSROOM: {
+    title: 'Tình trạng phòng học',
+    url: '/timetable-classroom',
+    icon: Search
   }
 }
 

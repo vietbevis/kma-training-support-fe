@@ -2,6 +2,7 @@ import LoadingSpinner from '@/shared/components/LoadingSpinner'
 import { PermissionButton } from '@/shared/components/PermissionButton'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/components/ui/table'
 import { PERMISSIONS } from '@/shared/constants/permissions'
+import { formatCurrencyVND } from '@/shared/lib/utils'
 import type { LectureInvitationMoney } from '@/shared/validations/LectureInvitationMoneySchema'
 import { Edit, Trash2 } from 'lucide-react'
 
@@ -54,7 +55,7 @@ const LectureInvitationMoneyTable = ({
           <TableBody>
             {data.map((item) => (
               <TableRow key={item.id}>
-                <TableCell className='font-medium'>{item.money}</TableCell>
+                <TableCell className='font-medium'>{formatCurrencyVND(item.money)}</TableCell>
                 <TableCell>{item.educationalSystem}</TableCell>
                 <TableCell>{item.academicCredential?.name}</TableCell>
                 <TableCell>

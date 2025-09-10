@@ -8,7 +8,7 @@ import type {
   DeleteAcademicYearSchemaType,
   UpdateAcademicYearSchemaType
 } from '@/shared/validations/AcademicYearSchema'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 export const useGetAcademicYearsQuery = ({
@@ -69,6 +69,33 @@ export const useDeleteAcademicYearMutation = () => {
     },
     onError: (error: any) => {
       toast.error(error.message || 'Xóa năm học thất bại')
+    }
+  })
+}
+
+export const useInfiniteAcademicYearQuery = ({
+  search = '',
+  limit = '20'
+}: {
+  search?: string
+  limit?: string | number
+}) => {
+  return useInfiniteQuery({
+    queryKey: ['academic-years-infinite', { search, limit }],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await api.get<AcademicYearsResponseSchemaType>(API_ROUTES.ACADEMIC_YEARS, {
+        params: normalizeObject({
+          search,
+          limit,
+          page: pageParam
+        })
+      })
+      return response.data
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const { page, totalPages } = lastPage.meta
+      return totalPages > page ? page + 1 : undefined
     }
   })
 }

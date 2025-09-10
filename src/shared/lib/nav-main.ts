@@ -1,4 +1,4 @@
-import { BookOpen, Bot, Settings2, SquareTerminal } from 'lucide-react'
+import { BookOpen, Bot, Calendar, Settings2, SquareTerminal } from 'lucide-react'
 import ROUTES from './routes'
 
 export interface NavItem {
@@ -68,6 +68,30 @@ const navMain: NavItem[] = [
           method: 'GET',
           path: '/roles'
         }
+      }
+    ]
+  },
+  {
+    title: 'Thời khóa biểu',
+    url: '#',
+    icon: Calendar,
+    isActive: true,
+    items: [
+      {
+        title: ROUTES.TIMETABLES.title,
+        url: ROUTES.TIMETABLES.url,
+        requiredPermission: {
+          method: 'GET',
+          path: '/timetables'
+        }
+      },
+      {
+        title: ROUTES.TIMETABLE_CLASSROOM.title,
+        url: ROUTES.TIMETABLE_CLASSROOM.url
+        // requiredPermission: {
+        //   method: 'GET',
+        //   path: '/classrooms/availability'
+        // }
       }
     ]
   },

@@ -114,7 +114,7 @@ const AcademicCredentialsPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách học hàm/học vị ({academicCredentials.length})</CardTitle>
+          <CardTitle>Danh sách học hàm/học vị ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <AcademicCredentialTable

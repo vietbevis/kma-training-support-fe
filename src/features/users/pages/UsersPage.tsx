@@ -74,7 +74,7 @@ const UsersPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách nhân viên ({users.length})</CardTitle>
+          <CardTitle>Danh sách nhân viên ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <UserTable data={users} isLoading={isLoading} isFilterLoading={isFetching} onDelete={handleDelete} />

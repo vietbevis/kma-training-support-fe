@@ -118,7 +118,7 @@ const SubjectsPageComponent = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Danh sách bộ môn ({subjects.length})</CardTitle>
+            <CardTitle>Danh sách bộ môn ({meta?.total || 0})</CardTitle>
           </CardHeader>
           <CardContent>
             <SubjectTable

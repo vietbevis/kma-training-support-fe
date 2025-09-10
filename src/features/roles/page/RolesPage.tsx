@@ -83,7 +83,7 @@ const RolesPageComponent = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Danh sách vai trò ({roles.length})</CardTitle>
+            <CardTitle>Danh sách vai trò ({meta?.total || 0})</CardTitle>
           </CardHeader>
           <CardContent>
             <RoleTable

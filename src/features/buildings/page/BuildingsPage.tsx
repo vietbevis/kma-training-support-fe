@@ -114,7 +114,7 @@ const BuildingsPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách tòa nhà ({buildings.length})</CardTitle>
+          <CardTitle>Danh sách tòa nhà ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <BuildingTable

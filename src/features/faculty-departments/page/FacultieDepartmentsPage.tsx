@@ -118,7 +118,7 @@ const FacultyDepartmentsPageComponent = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Danh sách khoa/phòng ban ({facultyDepartments.length})</CardTitle>
+            <CardTitle>Danh sách khoa/phòng ban ({meta?.total || 0})</CardTitle>
           </CardHeader>
           <CardContent>
             <FacultyDepartmentTable

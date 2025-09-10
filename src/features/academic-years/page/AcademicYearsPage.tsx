@@ -111,7 +111,7 @@ const AcademicYearsPageComponent = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>Danh sách năm học ({academicYears.length})</CardTitle>
+            <CardTitle>Danh sách năm học ({meta?.total || 0})</CardTitle>
           </CardHeader>
           <CardContent>
             <AcademicYearTable
