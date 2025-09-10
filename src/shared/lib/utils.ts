@@ -110,6 +110,10 @@ export const translateModule = (module: string) => {
       return 'Quản lý nhân viên'
     case 'VisitingLecturerModule':
       return 'Giảng viên mời'
+    case 'TimeslotsModule':
+      return 'Quản lý ca học'
+    case 'TimetableModule':
+      return 'Thời khóa biểu'
     default:
       return module
   }
@@ -164,6 +168,8 @@ export const entityNameToEditPath = (entityName: string) => {
       return ROUTES.AUDIT_LOGS.url
     case 'VisitingLecturerEntity':
       return ROUTES.VISITING_LECTURER_EDIT.getPath
+    case 'TimetableEntity':
+      return ROUTES.TIMETABLES.url
     default:
       return ''
   }
