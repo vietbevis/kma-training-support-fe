@@ -128,7 +128,7 @@ const ClassroomAvailabilityDisplay = ({ data, isLoading, date, timeSlot }: Class
             <div className='flex items-center justify-between'>
               <div>
                 <p className='text-2xl font-bold text-red-600'>{data.summary.occupied}</p>
-                <p className='text-sm text-red-700 font-medium'>Phòng đã đặt</p>
+                <p className='text-sm text-red-700 font-medium'>Phòng Đã có lớp học</p>
               </div>
               <div className='w-10 h-10 bg-red-100 rounded-full flex items-center justify-center'>
                 <Users className='h-5 w-5 text-red-500' />
@@ -180,7 +180,7 @@ const ClassroomAvailabilityDisplay = ({ data, isLoading, date, timeSlot }: Class
                     </div>
                     {classroom.isOccupied ? (
                       <Badge variant='destructive' className='shadow-sm'>
-                        Đã đặt
+                        Đã có lớp học
                       </Badge>
                     ) : (
                       <Badge className='bg-green-500 hover:bg-green-600 text-white shadow-sm'>Trống</Badge>

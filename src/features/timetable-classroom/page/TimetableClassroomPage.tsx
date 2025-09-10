@@ -8,7 +8,7 @@ import {
   DateFieldSeparator,
   DateFieldYears
 } from '@/shared/components/ui/date-field'
-import { Form, FormControl, FormField, FormItem, FormLabel } from '@/shared/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -40,6 +40,7 @@ const TimetableClassroomPage = () => {
   })
 
   const form = useForm<FilterFormValues>({
+    mode: 'onChange',
     defaultValues: {
       buildingId: '',
       date: new Date(),
@@ -109,18 +110,14 @@ const TimetableClassroomPage = () => {
                   name='timeSlot'
                   render={({ field }) => (
                     <FormItem className='flex-1 max-w-sm'>
-                      <FormLabel>Ca học (Tùy chọn)</FormLabel>
-                      <Select
-                        value={field.value || 'all'}
-                        onValueChange={(value) => field.onChange(value === 'all' ? '' : value)}
-                      >
+                      <FormLabel>Ca học</FormLabel>
+                      <Select value={field.value} onValueChange={field.onChange}>
                         <FormControl>
                           <SelectTrigger className='w-full'>
-                            <SelectValue placeholder='Tất cả các ca' />
+                            <SelectValue placeholder='Chọn ca học' />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value='all'>Tất cả các ca</SelectItem>
                           {(timeslots?.data || [])?.map((slot) => (
                             <SelectItem key={slot} value={slot}>
                               Tiết {slot}
@@ -128,11 +125,14 @@ const TimetableClassroomPage = () => {
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
                 <div className='flex justify-end self-end'>
-                  <Button type='submit'>Tìm kiếm</Button>
+                  <Button type='submit' disabled={!form.formState.isValid}>
+                    Tìm kiếm
+                  </Button>
                 </div>
               </div>
             </form>
