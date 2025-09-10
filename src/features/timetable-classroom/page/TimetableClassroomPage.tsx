@@ -49,6 +49,9 @@ const TimetableClassroomPage = () => {
   })
 
   const handleSubmit = (values: FilterFormValues) => {
+    if (!values.buildingId || !values.date || !values.timeSlot || isLoadingAvailability) {
+      return
+    }
     const formattedDate = values.date.toISOString().split('T')[0]
     setFilter({
       buildingId: values.buildingId,

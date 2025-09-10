@@ -14,7 +14,7 @@ const DayOfWeekLabels = {
   4: 'Thứ 5',
   5: 'Thứ 6',
   6: 'Thứ 7',
-  7: 'Chủ nhật'
+  0: 'Chủ nhật'
 }
 
 interface ClassroomAvailabilityDisplayProps {
@@ -214,7 +214,11 @@ const ClassroomAvailabilityDisplay = ({ data, isLoading, date, timeSlot }: Class
                         <div className='flex justify-between items-center'>
                           <span className='text-xs text-gray-600'>Thứ:</span>
                           <span className='text-xs font-medium text-gray-800'>
-                            {DayOfWeekLabels[classroom.occupancyDetails.dayOfWeek as keyof typeof DayOfWeekLabels]}
+                            {
+                              DayOfWeekLabels[
+                                (classroom.occupancyDetails.dayOfWeek - 1) as keyof typeof DayOfWeekLabels
+                              ]
+                            }
                           </span>
                         </div>
                         <div className='text-xs text-gray-600 pt-1 border-t border-gray-200'>
