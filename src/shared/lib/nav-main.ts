@@ -87,11 +87,11 @@ const navMain: NavItem[] = [
       },
       {
         title: ROUTES.TIMETABLE_CLASSROOM.title,
-        url: ROUTES.TIMETABLE_CLASSROOM.url
-        // requiredPermission: {
-        //   method: 'GET',
-        //   path: '/classrooms/availability'
-        // }
+        url: ROUTES.TIMETABLE_CLASSROOM.url,
+        requiredPermission: {
+          method: 'GET',
+          path: '/classrooms/availability'
+        }
       }
     ]
   },
