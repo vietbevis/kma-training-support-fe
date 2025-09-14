@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router'
 import { AuthGuard } from './features/auth'
 import { authLoader } from './features/auth/api/AuthLoader'
 import { ReactQueryProvider } from './shared/components/ReactQuery'
+import { SocketProvider } from './shared/components/SocketProvider'
 import { Toaster } from './shared/components/ui/sonner'
 import LayoutMain from './shared/layouts/LayoutMain'
 import ROUTES from './shared/lib/routes'
@@ -52,6 +53,7 @@ const TimetablesPage = lazy(() => import('./features/timetables/page').then((m) 
 const TimetableClassroomPage = lazy(() =>
   import('./features/timetable-classroom/page').then((m) => ({ default: m.TimetableClassroomPage }))
 )
+const BackupsPage = lazy(() => import('./features/backups/page').then((m) => ({ default: m.BackupsPage })))
 
 const router = createBrowserRouter([
   {
@@ -153,6 +155,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.TIMETABLE_CLASSROOM.url,
             element: <TimetableClassroomPage />
+          },
+          {
+            path: ROUTES.BACKUPS.url,
+            element: <BackupsPage />
           }
         ]
       }
@@ -171,7 +177,9 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ReactQueryProvider>
-      <RouterProvider router={router} />
+      <SocketProvider>
+        <RouterProvider router={router} />
+      </SocketProvider>
       <Toaster position='top-right' richColors theme='light' />
     </ReactQueryProvider>
   )

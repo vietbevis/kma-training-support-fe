@@ -59,7 +59,8 @@ export const PERMISSIONS = {
     CREATE: { method: 'POST', path: '/classrooms' } as PermissionRequirement,
     UPDATE: { method: 'PUT', path: '/classrooms/:id' } as PermissionRequirement,
     DELETE: { method: 'DELETE', path: '/classrooms/:id/hard' } as PermissionRequirement,
-    VIEW: { method: 'GET', path: '/classrooms/:id' } as PermissionRequirement
+    VIEW: { method: 'GET', path: '/classrooms/:id' } as PermissionRequirement,
+    CLASSROOM_AVAILABILITY: { method: 'GET', path: '/classrooms/availability' } as PermissionRequirement
   },
 
   // Academic Credentials
@@ -161,6 +162,19 @@ export const PERMISSIONS = {
     DELETE: { method: 'DELETE', path: '/timetables/:id' } as PermissionRequirement,
     VIEW: { method: 'GET', path: '/timetables/:id' } as PermissionRequirement,
     UPLOAD_EXCEL: { method: 'POST', path: '/timetables/upload-excel' } as PermissionRequirement
+  },
+
+  // Backups
+  BACKUPS: {
+    VIEW: { method: 'GET', path: '/backup/:id' } as PermissionRequirement,
+    LIST: { method: 'GET', path: '/backup' } as PermissionRequirement,
+    CREATE: { method: 'POST', path: '/backup' } as PermissionRequirement,
+    DOWNLOAD: { method: 'GET', path: '/backup/:id/download' } as PermissionRequirement,
+    DELETE: { method: 'DELETE', path: '/backup/:id' } as PermissionRequirement,
+    RESTORE: { method: 'POST', path: '/backup/:id/restore' } as PermissionRequirement,
+    RESTORE_FROM_UPLOAD: { method: 'POST', path: '/backup/restore-from-upload' } as PermissionRequirement,
+    CLEANUP: { method: 'POST', path: '/backup/cleanup' } as PermissionRequirement,
+    REBUILD_METADATA: { method: 'POST', path: '/backup/rebuild-metadata' } as PermissionRequirement
   }
 } as const
 

@@ -30,7 +30,16 @@ const API_ROUTES = {
   ROLES: '/v1/roles',
   AUDIT_LOGS: '/v1/audit-logs',
   VISITING_LECTURERS: '/v1/visiting-lecturers',
-  TIMETABLES: '/v1/timetables'
+  TIMETABLES: '/v1/timetables',
+  BACKUPS: {
+    ROOT: '/v1/backup',
+    RESTORE: (id: string) => `/v1/backup/${id}/restore`,
+    DOWNLOAD: (id: string) => `/v1/backup/${id}/download`,
+    RESTORE_FROM_UPLOAD: '/v1/backup/restore-from-upload',
+    STATISTICS: '/v1/backup/statistics',
+    CLEANUP: '/v1/backup/cleanup',
+    REBUILD_METADATA: '/v1/backup/rebuild-metadata'
+  }
 }
 
 export default API_ROUTES

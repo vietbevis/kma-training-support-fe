@@ -3,6 +3,7 @@ import {
   Building,
   Calendar,
   ClipboardList,
+  Database,
   GraduationCap,
   Home,
   LogIn,
@@ -152,6 +153,11 @@ const ROUTES = {
     title: 'Tình trạng phòng học',
     url: '/timetable-classroom',
     icon: Search
+  },
+  BACKUPS: {
+    title: 'Backup hệ thống',
+    url: '/backups',
+    icon: Database
   }
 }
 

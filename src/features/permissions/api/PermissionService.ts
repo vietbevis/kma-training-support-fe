@@ -22,7 +22,8 @@ export const useGetPermissionByModule = (module: string, enabled: boolean) => {
 export const useGetPermissionByUserId = (userId: string) => {
   return useQuery({
     queryKey: ['permission-by-user', userId],
-    queryFn: () => api.get<PermissionType[]>(`${API_ROUTES.ACCOUNTS}/${userId}/permissions`)
+    queryFn: () => api.get<PermissionType[]>(`${API_ROUTES.ACCOUNTS}/${userId}/permissions`),
+    enabled: !!userId
   })
 }
 
@@ -43,6 +44,7 @@ export const useUpdatePermission = () => {
 export const useGetPermissionByRoleId = (roleId: string) => {
   return useQuery({
     queryKey: ['permission-by-role', roleId],
-    queryFn: () => api.get<PermissionType[]>(`${API_ROUTES.PERMISSIONS}/role/${roleId}`)
+    queryFn: () => api.get<PermissionType[]>(`${API_ROUTES.PERMISSIONS}/role/${roleId}`),
+    enabled: !!roleId
   })
 }

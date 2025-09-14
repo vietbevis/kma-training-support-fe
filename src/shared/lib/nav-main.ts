@@ -1,4 +1,5 @@
 import { BookOpen, Bot, Calendar, Settings2, SquareTerminal } from 'lucide-react'
+import { PERMISSIONS } from '../constants/permissions'
 import ROUTES from './routes'
 
 export interface NavItem {
@@ -32,42 +33,27 @@ const navMain: NavItem[] = [
       {
         title: ROUTES.ACCOUNTS.title,
         url: ROUTES.ACCOUNTS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/accounts'
-        }
+        requiredPermission: PERMISSIONS.ACCOUNTS.LIST
       },
       {
         title: ROUTES.USERS.title,
         url: ROUTES.USERS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/users'
-        }
+        requiredPermission: PERMISSIONS.USERS.LIST
       },
       {
         title: ROUTES.VISITING_LECTURERS.title,
         url: ROUTES.VISITING_LECTURERS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/visiting-lecturers'
-        }
+        requiredPermission: PERMISSIONS.VISITING_LECTURERS.LIST
       },
       {
         title: ROUTES.PERMISSIONS.title,
         url: ROUTES.PERMISSIONS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/permissions'
-        }
+        requiredPermission: PERMISSIONS.PERMISSIONS.LIST
       },
       {
         title: ROUTES.ROLES.title,
         url: ROUTES.ROLES.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/roles'
-        }
+        requiredPermission: PERMISSIONS.ROLES.LIST
       }
     ]
   },
@@ -80,18 +66,12 @@ const navMain: NavItem[] = [
       {
         title: ROUTES.TIMETABLES.title,
         url: ROUTES.TIMETABLES.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/timetables'
-        }
+        requiredPermission: PERMISSIONS.TIMETABLES.LIST
       },
       {
         title: ROUTES.TIMETABLE_CLASSROOM.title,
         url: ROUTES.TIMETABLE_CLASSROOM.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/classrooms/availability'
-        }
+        requiredPermission: PERMISSIONS.CLASSROOMS.CLASSROOM_AVAILABILITY
       }
     ]
   },
@@ -99,46 +79,31 @@ const navMain: NavItem[] = [
     title: ROUTES.EDUCATIONAL_SYSTEMS.title,
     url: ROUTES.EDUCATIONAL_SYSTEMS.url,
     icon: Bot,
-    requiredPermission: {
-      method: 'GET',
-      path: '/educational-systems'
-    }
+    requiredPermission: PERMISSIONS.EDUCATIONAL_SYSTEMS.LIST
   },
   {
     title: ROUTES.LECTURE_INVITATION_MONEYS.title,
     url: ROUTES.LECTURE_INVITATION_MONEYS.url,
     icon: Bot,
-    requiredPermission: {
-      method: 'GET',
-      path: '/lecture-invitation-money'
-    }
+    requiredPermission: PERMISSIONS.LECTURE_INVITATION_MONEY.LIST
   },
   {
     title: ROUTES.FACULTY_DEPARTMENTS.title,
     url: ROUTES.FACULTY_DEPARTMENTS.url,
     icon: BookOpen,
-    requiredPermission: {
-      method: 'GET',
-      path: '/faculty-departments'
-    }
+    requiredPermission: PERMISSIONS.FACULTY_DEPARTMENTS.LIST
   },
   {
     title: ROUTES.SUBJECTS.title,
     url: ROUTES.SUBJECTS.url,
     icon: BookOpen,
-    requiredPermission: {
-      method: 'GET',
-      path: '/subjects'
-    }
+    requiredPermission: PERMISSIONS.SUBJECTS.LIST
   },
   {
     title: ROUTES.COURSES.title,
     url: ROUTES.COURSES.url,
     icon: BookOpen,
-    requiredPermission: {
-      method: 'GET',
-      path: '/courses'
-    }
+    requiredPermission: PERMISSIONS.COURSES.LIST
   },
   {
     title: 'Hệ thống',
@@ -149,50 +114,37 @@ const navMain: NavItem[] = [
       {
         title: ROUTES.ACADEMIC_YEARS.title,
         url: ROUTES.ACADEMIC_YEARS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/academic-years'
-        }
+        requiredPermission: PERMISSIONS.ACADEMIC_YEARS.LIST
       },
       {
         title: ROUTES.CLASSROOMS.title,
         url: ROUTES.CLASSROOMS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/classrooms'
-        }
+        requiredPermission: PERMISSIONS.CLASSROOMS.LIST
       },
       {
         title: ROUTES.BUILDINGS.title,
         url: ROUTES.BUILDINGS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/buildings'
-        }
+        requiredPermission: PERMISSIONS.BUILDINGS.LIST
       },
       {
         title: ROUTES.ACADEMIC_CREDENTIALS.title,
         url: ROUTES.ACADEMIC_CREDENTIALS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/academic-credentials'
-        }
+        requiredPermission: PERMISSIONS.ACADEMIC_CREDENTIALS.LIST
       },
       {
         title: ROUTES.EXEMPTION_PERCENTAGES.title,
         url: ROUTES.EXEMPTION_PERCENTAGES.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/exemption-percentages'
-        }
+        requiredPermission: PERMISSIONS.EXEMPTION_PERCENTAGES.LIST
       },
       {
         title: ROUTES.AUDIT_LOGS.title,
         url: ROUTES.AUDIT_LOGS.url,
-        requiredPermission: {
-          method: 'GET',
-          path: '/audit-logs'
-        }
+        requiredPermission: PERMISSIONS.AUDIT_LOGS.LIST
+      },
+      {
+        title: ROUTES.BACKUPS.title,
+        url: ROUTES.BACKUPS.url,
+        requiredPermission: PERMISSIONS.BACKUPS.LIST
       }
     ]
   }

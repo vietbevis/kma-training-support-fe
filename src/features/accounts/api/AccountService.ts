@@ -28,7 +28,8 @@ export const useGetAccountsQuery = ({
 export const useGetAccountDetailQuery = (id: string) => {
   return useQuery({
     queryKey: ['account', id],
-    queryFn: () => api.get<AccountResponse>(`${API_ROUTES.ACCOUNTS}/${id}`)
+    queryFn: () => api.get<AccountResponse>(`${API_ROUTES.ACCOUNTS}/${id}`),
+    enabled: !!id
   })
 }
 

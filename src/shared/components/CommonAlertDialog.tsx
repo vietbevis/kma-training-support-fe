@@ -6,7 +6,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 
 const CommonDialog = () => {
   const { open, type, title, description, loading, onConfirm, content, closeDialog, className } = useDialogStore()
-  console.log('🚀 ~ CommonDialog ~ className:', className)
   const [showOverlay, setShowOverlay] = useState(false)
 
   useEffect(() => {

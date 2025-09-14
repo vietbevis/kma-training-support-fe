@@ -1,8 +1,11 @@
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
 import { Badge } from '@/shared/components/ui/badge'
 import { Button } from '@/shared/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
+import { Separator } from '@/shared/components/ui/separator'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import { format } from 'date-fns'
+import { BookOpen, Calendar, Clock, GraduationCap, User, Users } from 'lucide-react'
 import { useGetTimetableDetailsByIdQuery } from '../api/TimetableClassroomService'
 
 interface TimetableDetailsDialogProps {
@@ -24,81 +27,130 @@ const TimetableDetailsDialog = ({ timetableId }: TimetableDetailsDialogProps) =>
 
   if (!timetable) {
     return (
-      <div className='flex items-center justify-center h-64'>
-        <div className='text-lg'>Không tìm thấy thông tin lớp học phần</div>
+      <div className='flex items-center justify-center h-64 text-muted-foreground'>
+        <div className='text-center space-y-2'>
+          <BookOpen className='h-12 w-12 mx-auto opacity-50' />
+          <div className='text-lg font-medium'>Không tìm thấy thông tin lớp học phần</div>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className='space-y-4 p-2'>
-      <div className='space-y-2'>
-        <div className='flex flex-wrap gap-2 justify-between mb-6'>
-          <h3 className='text-xl font-semibold'>Lớp: {timetable.className}</h3>
-          <Badge variant='outline'>{timetable.semester}</Badge>
+    <div className='space-y-6 p-1'>
+      <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4'>
+        <div className='space-y-1'>
+          <h2 className='text-2xl font-bold tracking-tight'>{timetable.className}</h2>
+          <p className='text-sm text-muted-foreground'>
+            {timetable.course?.courseCode} - {timetable.course?.courseName}
+          </p>
         </div>
-
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <div>
-            <p className='text-sm text-gray-500'>Thông tin chung</p>
-            <table className='w-full mt-2'>
-              <tbody>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Học phần:</td>
-                  <td className='py-1 text-sm font-medium'>
-                    {timetable.course?.courseCode} - {timetable.course?.courseName}
-                  </td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Năm học:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.academicYear?.yearCode || '-'}</td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Loại lớp:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.classType || '-'}</td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Giảng viên theo TKB:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.lecturerName || '-'}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div>
-            <p className='text-sm text-gray-500'>Thông tin chi tiết</p>
-            <table className='w-full mt-2'>
-              <tbody>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Số sinh viên:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.studentCount || '-'}</td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Thời gian:</td>
-                  <td className='py-1 text-sm font-medium'>
-                    {format(new Date(timetable.startDate), 'dd/MM/yyyy')} -{' '}
-                    {format(new Date(timetable.endDate), 'dd/MM/yyyy')}
-                  </td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Số tiết lý thuyết:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.theoryHours || '-'}</td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Số tiết thực tế:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.actualHours || '-'}</td>
-                </tr>
-                <tr>
-                  <td className='py-1 pr-2 text-sm text-gray-600'>Số tín chỉ:</td>
-                  <td className='py-1 text-sm font-medium'>{timetable.course?.credits || '-'}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <Badge variant='secondary' className='w-fit'>
+          {timetable.semester}
+        </Badge>
       </div>
-      <div className='flex justify-end'>
-        <Button variant='outline' onClick={closeDialog}>
+
+      <Separator />
+
+      <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
+        <Card>
+          <CardHeader className='pb-3'>
+            <CardTitle className='text-lg flex items-center gap-2'>
+              <BookOpen className='h-5 w-5 text-primary' />
+              Thông tin chung
+            </CardTitle>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className='grid gap-3'>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <BookOpen className='h-4 w-4' />
+                  Học phần:
+                </span>
+                <span className='text-sm font-medium'>
+                  {timetable.course?.courseCode + ' - ' + timetable.course?.courseName || '-'}
+                </span>
+              </div>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <Calendar className='h-4 w-4' />
+                  Năm học:
+                </span>
+                <span className='text-sm font-medium'>{timetable.academicYear?.yearCode || '-'}</span>
+              </div>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <GraduationCap className='h-4 w-4' />
+                  Loại lớp:
+                </span>
+                <span className='text-sm font-medium'>{timetable.classType || '-'}</span>
+              </div>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <User className='h-4 w-4' />
+                  Giảng viên:
+                </span>
+                {timetable.lecturerName && (
+                  <p className='text-sm font-medium flex flex-wrap'>
+                    {timetable.lecturerName.split(/[;+]/).map((name) => (
+                      <span key={name} title={name}>
+                        {name}
+                      </span>
+                    ))}
+                  </p>
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className='pb-3'>
+            <CardTitle className='text-lg flex items-center gap-2'>
+              <Users className='h-5 w-5 text-primary' />
+              Thông tin chi tiết
+            </CardTitle>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className='grid gap-3'>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <Users className='h-4 w-4' />
+                  Số sinh viên:
+                </span>
+                <span className='text-sm font-medium'>{timetable.studentCount || '-'}</span>
+              </div>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <Calendar className='h-4 w-4' />
+                  Thời gian:
+                </span>
+                <span className='text-sm font-medium'>
+                  {format(new Date(timetable.startDate), 'dd/MM/yyyy')} -{' '}
+                  {format(new Date(timetable.endDate), 'dd/MM/yyyy')}
+                </span>
+              </div>
+              <div className='flex items-center justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
+                  <Clock className='h-4 w-4' />
+                  LL thực:
+                </span>
+                <span className='text-sm font-medium'>{timetable.actualHours || '-'}</span>
+              </div>
+              <div className='flex items-start gap-4 justify-between py-2'>
+                <span className='text-sm text-muted-foreground flex items-center gap-2'>
+                  <BookOpen className='h-4 w-4' />
+                  Số tín chỉ:
+                </span>
+                <span className='text-sm font-medium'>{timetable.course?.credits || '-'}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className='flex justify-end pt-4 border-t'>
+        <Button variant='outline' onClick={closeDialog} className='min-w-[100px] bg-transparent'>
           Đóng
         </Button>
       </div>
