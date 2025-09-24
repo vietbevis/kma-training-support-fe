@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router'
 import { AuthGuard } from './features/auth'
 import { authLoader } from './features/auth/api/AuthLoader'
+import GlobalLoadingPrivider from './shared/components/GlobalLoadingPrivider'
 import { ReactQueryProvider } from './shared/components/ReactQuery'
 import { SocketProvider } from './shared/components/SocketProvider'
 import { Toaster } from './shared/components/ui/sonner'
@@ -177,9 +178,11 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <ReactQueryProvider>
-      <SocketProvider>
-        <RouterProvider router={router} />
-      </SocketProvider>
+      <GlobalLoadingPrivider>
+        <SocketProvider>
+          <RouterProvider router={router} />
+        </SocketProvider>
+      </GlobalLoadingPrivider>
       <Toaster position='top-right' richColors theme='light' />
     </ReactQueryProvider>
   )

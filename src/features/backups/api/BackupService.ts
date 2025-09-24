@@ -1,6 +1,7 @@
 import api from '@/shared/lib/api'
 import API_ROUTES from '@/shared/lib/api-routes'
 import { normalizeObject } from '@/shared/lib/utils'
+import { useGlobalLoadingStore } from '@/shared/stores/useGlobalLoading'
 import type {
   BackupStatisticsResponseDto,
   CreateBackupDto,
@@ -87,13 +88,19 @@ export const useDeleteBackupMutation = () => {
 // Restore backup
 export const useRestoreBackupMutation = () => {
   const queryClient = useQueryClient()
+  const { setLoading } = useGlobalLoadingStore()
   return useMutation({
-    mutationFn: (id: string) => api.post<{ message: string }>(API_ROUTES.BACKUPS.RESTORE(id)),
+    mutationFn: (id: string) => {
+      setLoading(true, 'Đang khôi phục backup... Vui lòng không đóng trang!')
+      return api.post<{ message: string }>(API_ROUTES.BACKUPS.RESTORE(id))
+    },
     onSuccess: () => {
       queryClient.invalidateQueries()
+      setLoading(false, '')
       toast.success('Khôi phục backup thành công')
     },
     onError: (error: any) => {
+      setLoading(false, '')
       toast.error(error.message || 'Khôi phục backup thất bại')
     }
   })
@@ -102,8 +109,10 @@ export const useRestoreBackupMutation = () => {
 // Restore from upload
 export const useRestoreFromUploadMutation = () => {
   const queryClient = useQueryClient()
+  const { setLoading } = useGlobalLoadingStore()
   return useMutation({
     mutationFn: (data: RestoreFromUploadDto) => {
+      setLoading(true, 'Đang khôi phục backup từ file... Vui lòng không đóng trang!')
       const formData = new FormData()
       formData.append('backupFile', data.backupFile)
       return api.post<{ message: string }>(API_ROUTES.BACKUPS.RESTORE_FROM_UPLOAD, formData, {
@@ -114,9 +123,11 @@ export const useRestoreFromUploadMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries()
+      setLoading(false, '')
       toast.success('Khôi phục từ file backup thành công')
     },
     onError: (error: any) => {
+      setLoading(false, '')
       toast.error(error.message || 'Khôi phục từ file backup thất bại')
     }
   })

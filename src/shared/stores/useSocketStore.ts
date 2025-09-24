@@ -40,6 +40,7 @@ export const useSocketStore = create<SocketState>()((set, get) => ({
     try {
       const newSocket = io(`${envConfig.VITE_SOCKET_URL}/backup`, {
         auth: { token },
+        path: '/ws/socket.io',
         transports: ['websocket'],
         autoConnect: true,
         reconnection: true,
