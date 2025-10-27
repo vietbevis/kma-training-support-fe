@@ -20,7 +20,7 @@ import {
 } from '../api/VisitingLecturerService'
 import { VisitingLecturerFilters, VisitingLecturerTable } from '../components'
 
-const VisitingLecturersPageComponent = () => {
+const VisitingLecturersInactivePageComponent = () => {
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
     page: '1',
     limit: '10',
@@ -29,7 +29,7 @@ const VisitingLecturersPageComponent = () => {
     subjectId: '',
     academicCredentialId: '',
     gender: '',
-    areTeaching: '',
+    areTeaching: 'false', // Set sẵn filter đã ngừng giảng dạy
     trainingApproved: '',
     facultyApproved: '',
     academyApproved: ''
@@ -43,7 +43,7 @@ const VisitingLecturersPageComponent = () => {
     subjectId: filters.subjectId || '',
     academicCredentialId: filters.academicCredentialId || '',
     gender: filters.gender || '',
-    areTeaching: filters.areTeaching ? filters.areTeaching === 'true' : undefined,
+    areTeaching: false, // Force false cho trang này
     trainingApproved: filters.trainingApproved ? filters.trainingApproved === 'true' : undefined,
     facultyApproved: filters.facultyApproved ? filters.facultyApproved === 'true' : undefined,
     academyApproved: filters.academyApproved ? filters.academyApproved === 'true' : undefined
@@ -108,9 +108,9 @@ const VisitingLecturersPageComponent = () => {
     <div className='space-y-6'>
       <div className='flex justify-between items-center'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Quản lý giảng viên mời</h1>
+          <h1 className='text-3xl font-bold tracking-tight'>Giảng viên mời đã ngừng giảng dạy</h1>
           <p className='text-muted-foreground'>
-            Quản lý thông tin giảng viên mời trong hệ thống ({visitingLecturers.length} giảng viên mời)
+            Danh sách giảng viên mời đã ngừng giảng dạy ({visitingLecturers.length} giảng viên mời)
           </p>
         </div>
         <PermissionButton
@@ -125,11 +125,11 @@ const VisitingLecturersPageComponent = () => {
         </PermissionButton>
       </div>
 
-      <VisitingLecturerFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
+      <VisitingLecturerFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} page='inactive' />
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách giảng viên mời ({meta?.total || 0})</CardTitle>
+          <CardTitle>Danh sách giảng viên mời đã ngừng giảng dạy ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <VisitingLecturerTable
@@ -153,7 +153,7 @@ const VisitingLecturersPageComponent = () => {
 }
 
 // Apply permission guard
-export const VisitingLecturersPage = withPermissionGuard(
-  VisitingLecturersPageComponent,
+export const VisitingLecturersInactivePage = withPermissionGuard(
+  VisitingLecturersInactivePageComponent,
   PERMISSIONS.VISITING_LECTURERS?.LIST || { method: 'GET', path: '/visiting-lecturers' }
 )

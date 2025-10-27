@@ -36,16 +36,6 @@ const navMain: NavItem[] = [
         requiredPermission: PERMISSIONS.ACCOUNTS.LIST
       },
       {
-        title: ROUTES.USERS.title,
-        url: ROUTES.USERS.url,
-        requiredPermission: PERMISSIONS.USERS.LIST
-      },
-      {
-        title: ROUTES.VISITING_LECTURERS.title,
-        url: ROUTES.VISITING_LECTURERS.url,
-        requiredPermission: PERMISSIONS.VISITING_LECTURERS.LIST
-      },
-      {
         title: ROUTES.PERMISSIONS.title,
         url: ROUTES.PERMISSIONS.url,
         requiredPermission: PERMISSIONS.PERMISSIONS.LIST
@@ -54,6 +44,57 @@ const navMain: NavItem[] = [
         title: ROUTES.ROLES.title,
         url: ROUTES.ROLES.url,
         requiredPermission: PERMISSIONS.ROLES.LIST
+      }
+    ]
+  },
+  {
+    title: 'Giảng viên mời',
+    url: '#',
+    icon: SquareTerminal,
+    isActive: true,
+    items: [
+      {
+        title: ROUTES.VISITING_LECTURER_CREATE.title,
+        url: ROUTES.VISITING_LECTURER_CREATE.url,
+        requiredPermission: PERMISSIONS.VISITING_LECTURERS?.CREATE || { method: 'POST', path: '/visiting-lecturers' }
+      },
+      {
+        title: ROUTES.VISITING_LECTURERS_ACTIVE.title,
+        url: ROUTES.VISITING_LECTURERS_ACTIVE.url,
+        requiredPermission: PERMISSIONS.VISITING_LECTURERS?.LIST || { method: 'GET', path: '/visiting-lecturers' }
+      },
+      {
+        title: ROUTES.VISITING_LECTURERS_PENDING.title,
+        url: ROUTES.VISITING_LECTURERS_PENDING.url,
+        requiredPermission: PERMISSIONS.VISITING_LECTURERS?.LIST || { method: 'GET', path: '/visiting-lecturers' }
+      },
+      {
+        title: ROUTES.VISITING_LECTURERS_INACTIVE.title,
+        url: ROUTES.VISITING_LECTURERS_INACTIVE.url,
+        requiredPermission: PERMISSIONS.VISITING_LECTURERS?.LIST || { method: 'GET', path: '/visiting-lecturers' }
+      }
+    ]
+  },
+  {
+    title: 'Nhân viên',
+    url: '#',
+    icon: SquareTerminal,
+    isActive: true,
+    items: [
+      {
+        title: ROUTES.USER_CREATE.title,
+        url: ROUTES.USER_CREATE.url,
+        requiredPermission: PERMISSIONS.USERS.CREATE
+      },
+      {
+        title: ROUTES.USERS_ACTIVE.title,
+        url: ROUTES.USERS_ACTIVE.url,
+        requiredPermission: PERMISSIONS.USERS.LIST
+      },
+      {
+        title: ROUTES.USERS_INACTIVE.title,
+        url: ROUTES.USERS_INACTIVE.url,
+        requiredPermission: PERMISSIONS.USERS.LIST
       }
     ]
   },

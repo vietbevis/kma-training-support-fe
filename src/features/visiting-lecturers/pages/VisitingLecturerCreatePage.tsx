@@ -4,7 +4,7 @@ import { PERMISSIONS } from '@/shared/constants/permissions'
 import ROUTES from '@/shared/lib/routes'
 import type { CreateVisitingLecturer } from '@/shared/validations/VisitingLecturerSchema'
 import { ArrowLeft } from 'lucide-react'
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import { useCreateVisitingLecturerMutation } from '../api/VisitingLecturerService'
 import { VisitingLecturerForm } from '../components'
 
@@ -14,17 +14,15 @@ const VisitingLecturerCreatePageComponent = () => {
 
   const handleSubmit = async (data: CreateVisitingLecturer) => {
     await createVisitingLecturerMutation.mutateAsync(data)
-    navigate(ROUTES.VISITING_LECTURERS?.url || '/visiting-lecturers')
+    navigate(ROUTES.VISITING_LECTURERS_PENDING.url)
   }
 
   return (
     <>
       <div className='space-y-6'>
         <div className='flex items-center gap-4'>
-          <Button variant='outline' size='icon' asChild>
-            <Link to={ROUTES.VISITING_LECTURERS?.url || '/visiting-lecturers'}>
-              <ArrowLeft className='h-4 w-4' />
-            </Link>
+          <Button variant='outline' size='icon' onClick={() => navigate(-1)}>
+            <ArrowLeft className='h-4 w-4' />
           </Button>
           <div>
             <h1 className='text-3xl font-bold tracking-tight'>Thêm giảng viên mời mới</h1>

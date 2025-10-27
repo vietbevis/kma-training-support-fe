@@ -9,9 +9,10 @@ interface VisitingLecturerFiltersProps {
   filters: Record<string, string>
   setFilters: (filters: Record<string, string>) => void
   resetFilters: () => void
+  page: 'active' | 'academy-approved' | 'pending' | 'inactive'
 }
 
-export const VisitingLecturerFilters = ({ filters, setFilters, resetFilters }: VisitingLecturerFiltersProps) => {
+export const VisitingLecturerFilters = ({ filters, setFilters, resetFilters, page }: VisitingLecturerFiltersProps) => {
   const [search, setSearch] = useState(filters.search || '')
 
   const debouncedSearch = useDebounce(search)
@@ -40,61 +41,37 @@ export const VisitingLecturerFilters = ({ filters, setFilters, resetFilters }: V
         </div>
       </div>
 
-      <Select
-        value={filters.areTeaching || 'all'}
-        onValueChange={(value: string) => setFilters({ areTeaching: value === 'all' ? '' : value })}
-      >
-        <SelectTrigger className='max-w-sm'>
-          <SelectValue placeholder='Trạng thái giảng dạy' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='all'>Trạng thái giảng dạy</SelectItem>
-          <SelectItem value='true'>Đang giảng dạy</SelectItem>
-          <SelectItem value='false'>Ngừng giảng dạy</SelectItem>
-        </SelectContent>
-      </Select>
+      {page === 'pending' ? (
+        <>
+          <Select
+            value={filters.trainingApproved || 'all'}
+            onValueChange={(value: string) => setFilters({ trainingApproved: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className='max-w-sm'>
+              <SelectValue placeholder='Đào tạo duyệt' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='all'>Đào tạo duyệt</SelectItem>
+              <SelectItem value='true'>Đã duyệt</SelectItem>
+              <SelectItem value='false'>Chưa duyệt</SelectItem>
+            </SelectContent>
+          </Select>
 
-      <Select
-        value={filters.trainingApproved || 'all'}
-        onValueChange={(value: string) => setFilters({ trainingApproved: value === 'all' ? '' : value })}
-      >
-        <SelectTrigger className='max-w-sm'>
-          <SelectValue placeholder='Đào tạo duyệt' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='all'>Đào tạo duyệt</SelectItem>
-          <SelectItem value='true'>Đã duyệt</SelectItem>
-          <SelectItem value='false'>Chưa duyệt</SelectItem>
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={filters.facultyApproved || 'all'}
-        onValueChange={(value: string) => setFilters({ facultyApproved: value === 'all' ? '' : value })}
-      >
-        <SelectTrigger className='max-w-sm'>
-          <SelectValue placeholder='Khoa duyệt' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='all'>Khoa duyệt</SelectItem>
-          <SelectItem value='true'>Đã duyệt</SelectItem>
-          <SelectItem value='false'>Chưa duyệt</SelectItem>
-        </SelectContent>
-      </Select>
-
-      <Select
-        value={filters.academyApproved || 'all'}
-        onValueChange={(value: string) => setFilters({ academyApproved: value === 'all' ? '' : value })}
-      >
-        <SelectTrigger className='max-w-sm'>
-          <SelectValue placeholder='Học viện duyệt' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='all'>Học viện duyệt</SelectItem>
-          <SelectItem value='true'>Đã duyệt</SelectItem>
-          <SelectItem value='false'>Chưa duyệt</SelectItem>
-        </SelectContent>
-      </Select>
+          <Select
+            value={filters.facultyApproved || 'all'}
+            onValueChange={(value: string) => setFilters({ facultyApproved: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className='max-w-sm'>
+              <SelectValue placeholder='Khoa duyệt' />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value='all'>Khoa duyệt</SelectItem>
+              <SelectItem value='true'>Đã duyệt</SelectItem>
+              <SelectItem value='false'>Chưa duyệt</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
+      ) : null}
 
       <Button variant='outline' onClick={handleResetFilters} className='flex items-center gap-2'>
         <X className='h-4 w-4' />

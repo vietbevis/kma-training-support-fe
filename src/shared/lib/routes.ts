@@ -90,11 +90,6 @@ const ROUTES = {
     url: '/timetables',
     icon: Calendar
   },
-  USERS: {
-    title: 'Nhân viên',
-    url: '/users',
-    icon: User
-  },
   USER_CREATE: {
     title: 'Thêm nhân viên',
     url: '/users/create',
@@ -105,6 +100,16 @@ const ROUTES = {
     url: `/users/:id/edit`,
     icon: Pencil,
     getPath: (id: string) => `/users/${id}/edit`
+  },
+  USERS_ACTIVE: {
+    title: 'DS nhân viên',
+    url: '/users/active',
+    icon: UserCheck
+  },
+  USERS_INACTIVE: {
+    title: 'Đã ngừng giảng dạy',
+    url: '/users/inactive',
+    icon: User
   },
   PERMISSIONS: {
     title: 'Phân quyền',
@@ -132,12 +137,6 @@ const ROUTES = {
     url: '/audit-logs',
     icon: ClipboardList
   },
-  VISITING_LECTURERS: {
-    title: 'Giảng viên mời',
-    url: '/visiting-lecturers',
-    getPath: (id: string) => `/visiting-lecturers/${id}/edit`,
-    icon: User
-  },
   VISITING_LECTURER_CREATE: {
     title: 'Thêm giảng viên mời',
     url: '/visiting-lecturers/create',
@@ -148,6 +147,26 @@ const ROUTES = {
     url: `/visiting-lecturers/:id/edit`,
     icon: Pencil,
     getPath: (id: string) => `/visiting-lecturers/${id}/edit`
+  },
+  VISITING_LECTURERS_ACTIVE: {
+    title: 'DS giảng viên mời',
+    url: '/visiting-lecturers/active',
+    icon: UserCheck
+  },
+  VISITING_LECTURERS_INACTIVE: {
+    title: 'Đã ngừng giảng dạy',
+    url: '/visiting-lecturers/inactive',
+    icon: User
+  },
+  VISITING_LECTURERS_ACADEMY_APPROVED: {
+    title: 'DS giảng viên mời',
+    url: '/visiting-lecturers/academy-approved',
+    icon: UserCheck
+  },
+  VISITING_LECTURERS_PENDING: {
+    title: 'DS chờ duyệt',
+    url: '/visiting-lecturers/pending',
+    icon: User
   },
   TIMETABLE_CLASSROOM: {
     title: 'Tình trạng phòng học',

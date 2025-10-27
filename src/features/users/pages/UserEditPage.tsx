@@ -5,7 +5,7 @@ import { PERMISSIONS } from '@/shared/constants/permissions'
 import ROUTES from '@/shared/lib/routes'
 import type { UpdateUser } from '@/shared/validations/UserSchema'
 import { ArrowLeft } from 'lucide-react'
-import { Link, useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useGetUserDetailQuery, useUpdateUserMutation } from '../api/UserService'
 import { UserForm } from '../components'
 
@@ -17,7 +17,7 @@ const UserEditPageComponent = () => {
 
   const handleSubmit = async (data: UpdateUser) => {
     await updateUserMutation.mutateAsync(data)
-    navigate(ROUTES.USERS.url)
+    navigate(ROUTES.USERS_ACTIVE.url)
   }
 
   if (isLoading) {
@@ -33,8 +33,9 @@ const UserEditPageComponent = () => {
       <>
         <div className='text-center py-8'>
           <p className='text-muted-foreground'>Không tìm thấy nhân viên</p>
-          <Button className='mt-4' asChild>
-            <Link to={ROUTES.USERS.url}>Quay lại danh sách</Link>
+          <Button className='mt-4' onClick={() => navigate(-1)}>
+            <ArrowLeft className='h-4 w-4' />
+            Quay lại
           </Button>
         </div>
       </>
@@ -45,10 +46,8 @@ const UserEditPageComponent = () => {
     <>
       <div className='space-y-6'>
         <div className='flex items-center gap-4'>
-          <Button variant='outline' size='icon' asChild>
-            <Link to={ROUTES.USERS.url}>
-              <ArrowLeft className='h-4 w-4' />
-            </Link>
+          <Button variant='outline' size='icon' onClick={() => navigate(-1)}>
+            <ArrowLeft className='h-4 w-4' />
           </Button>
           <div>
             <h1 className='text-3xl font-bold tracking-tight'>Chỉnh sửa nhân viên</h1>

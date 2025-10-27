@@ -33,22 +33,29 @@ const EducationalSystemsPage = lazy(() =>
 const LectureInvitationMoneysPage = lazy(() =>
   import('./features/lecture-invitation-money/page').then((m) => ({ default: m.LectureInvitationMoneysPage }))
 )
-const UsersPage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UsersPage })))
 const UserCreatePage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UserCreatePage })))
 const UserEditPage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UserEditPage })))
+const UsersActivePage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UsersActivePage })))
+const UsersInactivePage = lazy(() => import('./features/users/pages').then((m) => ({ default: m.UsersInactivePage })))
 const PermissionsPage = lazy(() => import('./features/permissions/page').then((m) => ({ default: m.PermissionsPage })))
 const RolesPage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RolesPage })))
 const RoleEditPage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RoleEditPage })))
 const RoleCreatePage = lazy(() => import('./features/roles/page').then((m) => ({ default: m.RoleCreatePage })))
 const AuditLogsPage = lazy(() => import('./features/audit-log/page').then((m) => ({ default: m.AuditLogsPage })))
-const VisitingLecturersPage = lazy(() =>
-  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturersPage }))
-)
 const VisitingLecturerCreatePage = lazy(() =>
   import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturerCreatePage }))
 )
 const VisitingLecturerEditPage = lazy(() =>
   import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturerEditPage }))
+)
+const VisitingLecturersActivePage = lazy(() =>
+  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturersActivePage }))
+)
+const VisitingLecturersInactivePage = lazy(() =>
+  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturersInactivePage }))
+)
+const VisitingLecturersPendingPage = lazy(() =>
+  import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturersPendingPage }))
 )
 const TimetablesPage = lazy(() => import('./features/timetables/page').then((m) => ({ default: m.TimetablesPage })))
 const TimetableClassroomPage = lazy(() =>
@@ -106,16 +113,20 @@ const router = createBrowserRouter([
             element: <LectureInvitationMoneysPage />
           },
           {
-            path: ROUTES.USERS.url,
-            element: <UsersPage />
-          },
-          {
             path: ROUTES.USER_CREATE.url,
             element: <UserCreatePage />
           },
           {
             path: ROUTES.USER_EDIT.url,
             element: <UserEditPage />
+          },
+          {
+            path: ROUTES.USERS_ACTIVE.url,
+            element: <UsersActivePage />
+          },
+          {
+            path: ROUTES.USERS_INACTIVE.url,
+            element: <UsersInactivePage />
           },
           {
             path: ROUTES.PERMISSIONS.url,
@@ -138,16 +149,24 @@ const router = createBrowserRouter([
             element: <AuditLogsPage />
           },
           {
-            path: ROUTES.VISITING_LECTURERS.url,
-            element: <VisitingLecturersPage />
-          },
-          {
             path: ROUTES.VISITING_LECTURER_CREATE.url,
             element: <VisitingLecturerCreatePage />
           },
           {
             path: ROUTES.VISITING_LECTURER_EDIT.url,
             element: <VisitingLecturerEditPage />
+          },
+          {
+            path: ROUTES.VISITING_LECTURERS_ACTIVE.url,
+            element: <VisitingLecturersActivePage />
+          },
+          {
+            path: ROUTES.VISITING_LECTURERS_INACTIVE.url,
+            element: <VisitingLecturersInactivePage />
+          },
+          {
+            path: ROUTES.VISITING_LECTURERS_PENDING.url,
+            element: <VisitingLecturersPendingPage />
           },
           {
             path: ROUTES.TIMETABLES.url,

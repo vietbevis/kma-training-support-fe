@@ -1,3 +1,5 @@
 export { VisitingLecturerCreatePage } from './VisitingLecturerCreatePage'
 export { VisitingLecturerEditPage } from './VisitingLecturerEditPage'
-export { VisitingLecturersPage } from './VisitingLecturersPage'
+export { VisitingLecturersActivePage } from './VisitingLecturersActivePage'
+export { VisitingLecturersInactivePage } from './VisitingLecturersInactivePage'
+export { VisitingLecturersPendingPage } from './VisitingLecturersPendingPage'

@@ -12,7 +12,7 @@ import { toast } from 'sonner'
 import { useGetUsersQuery } from '../api/UserService'
 import { UserFilters, UserTable } from '../components'
 
-const UsersPageComponent = () => {
+const UsersActivePageComponent = () => {
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
     page: '1',
     limit: '10',
@@ -21,7 +21,7 @@ const UsersPageComponent = () => {
     subjectId: '',
     academicCredentialId: '',
     gender: '',
-    areTeaching: ''
+    areTeaching: 'true' // Set sẵn filter đang giảng dạy
   })
 
   const { data, isLoading, isFetching } = useGetUsersQuery({
@@ -32,7 +32,7 @@ const UsersPageComponent = () => {
     subjectId: filters.subjectId || '',
     academicCredentialId: filters.academicCredentialId || '',
     gender: filters.gender || '',
-    areTeaching: filters.areTeaching ? filters.areTeaching === 'true' : undefined
+    areTeaching: true // Force true cho trang này
   })
 
   const users = data?.data.data || []
@@ -59,8 +59,10 @@ const UsersPageComponent = () => {
     <div className='space-y-6'>
       <div className='flex justify-between items-center'>
         <div>
-          <h1 className='text-3xl font-bold tracking-tight'>Quản lý nhân viên</h1>
-          <p className='text-muted-foreground'>Quản lý thông tin nhân viên trong hệ thống ({users.length} nhân viên)</p>
+          <h1 className='text-3xl font-bold tracking-tight'>Danh sách nhân viên (Đang giảng dạy)</h1>
+          <p className='text-muted-foreground'>
+            Danh sách nhân viên đang trong quá trình giảng dạy ({users.length} nhân viên)
+          </p>
         </div>
         <PermissionButton asChild className='flex items-center gap-2' requiredPermission={PERMISSIONS.USERS.CREATE}>
           <Link to={ROUTES.USER_CREATE.url}>
@@ -74,7 +76,7 @@ const UsersPageComponent = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Danh sách nhân viên ({meta?.total || 0})</CardTitle>
+          <CardTitle>Danh sách nhân viên đang giảng dạy ({meta?.total || 0})</CardTitle>
         </CardHeader>
         <CardContent>
           <UserTable data={users} isLoading={isLoading} isFilterLoading={isFetching} onDelete={handleDelete} />
@@ -87,4 +89,4 @@ const UsersPageComponent = () => {
 }
 
 // Apply permission guard
-export const UsersPage = withPermissionGuard(UsersPageComponent, PERMISSIONS.USERS.LIST)
+export const UsersActivePage = withPermissionGuard(UsersActivePageComponent, PERMISSIONS.USERS.LIST)

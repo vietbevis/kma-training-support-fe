@@ -1,6 +1,5 @@
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
 import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Search, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -39,19 +38,6 @@ export const UserFilters = ({ filters, setFilters, resetFilters }: UserFiltersPr
           />
         </div>
       </div>
-      <Select
-        value={filters.areTeaching || 'all'}
-        onValueChange={(value: string) => setFilters({ areTeaching: value === 'all' ? '' : value })}
-      >
-        <SelectTrigger className='max-w-sm'>
-          <SelectValue placeholder='Trạng thái giảng dạy' />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value='all'>Trạng thái giảng dạy</SelectItem>
-          <SelectItem value='true'>Đang giảng dạy</SelectItem>
-          <SelectItem value='false'>Ngừng giảng dạy</SelectItem>
-        </SelectContent>
-      </Select>
 
       <Button variant='outline' onClick={handleResetFilters} className='flex items-center gap-2'>
         <X className='h-4 w-4' />
