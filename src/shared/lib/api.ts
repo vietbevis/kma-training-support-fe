@@ -18,18 +18,7 @@ const api = axios.create({
 })
 
 let isRefreshing = false
-let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: any) => void }[] = []
-
-const processQueue = (error: AxiosError | null, token: string | null = null) => {
-  failedQueue.forEach((promise) => {
-    if (error) {
-      promise.reject(error)
-    } else {
-      promise.resolve(token)
-    }
-  })
-  failedQueue = []
-}
+let refreshTokenPromise: Promise<string> | null = null
 
 api.interceptors.request.use(
   async (config: InternalAxiosRequestConfig) => {
@@ -50,59 +39,66 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as ExtendedAxiosRequestConfig
 
+    // Nếu refresh token request bị lỗi, logout luôn
     if (originalRequest?.url?.includes(API_ROUTES.AUTH.REFRESH_TOKEN)) {
+      isRefreshing = false
+      refreshTokenPromise = null
       useAuthStore.getState().logout()
+      window.location.href = ROUTES.LOGIN.url
       return Promise.reject(error)
     }
 
+    // Xử lý 401 (trừ login endpoint)
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
       !originalRequest?.url?.includes(API_ROUTES.AUTH.LOGIN)
     ) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject })
-        })
-          .then((token) => {
-            originalRequest.headers.Authorization = `Bearer ${token}`
-            return api(originalRequest)
-          })
-          .catch((err) => Promise.reject(err))
+      originalRequest._retry = true
+
+      // Nếu đang refresh, chờ promise hiện tại
+      if (isRefreshing && refreshTokenPromise) {
+        try {
+          const newToken = await refreshTokenPromise
+          originalRequest.headers.Authorization = `Bearer ${newToken}`
+          return api(originalRequest)
+        } catch (refreshError) {
+          return Promise.reject(refreshError)
+        }
       }
 
-      originalRequest._retry = true
+      // Bắt đầu refresh token process
       isRefreshing = true
 
-      try {
-        const refreshToken = useAuthStore.getState().token?.refreshToken
+      refreshTokenPromise = (async () => {
+        try {
+          const refreshToken = useAuthStore.getState().token?.refreshToken
 
-        if (!refreshToken) {
-          throw new Error('No refresh token available')
+          if (!refreshToken) {
+            throw new Error('No refresh token available')
+          }
+
+          const response = await api.post<RefreshTokenResponse>(API_ROUTES.AUTH.REFRESH_TOKEN, { refreshToken })
+
+          const newToken = response.data.accessToken
+          useAuthStore.getState().login(response.data)
+
+          return newToken
+        } catch (refreshError) {
+          useAuthStore.getState().logout()
+          window.location.href = ROUTES.LOGIN.url
+          throw refreshError
+        } finally {
+          isRefreshing = false
+          refreshTokenPromise = null
         }
+      })()
 
-        const response = await api.post<RefreshTokenResponse>(API_ROUTES.AUTH.REFRESH_TOKEN, {
-          refreshToken
-        })
-
-        useAuthStore.getState().login(response.data)
-
-        const newToken = response.data.accessToken
+      try {
+        const newToken = await refreshTokenPromise
         originalRequest.headers.Authorization = `Bearer ${newToken}`
-
-        processQueue(null, newToken)
-
-        isRefreshing = false
-
         return api(originalRequest)
       } catch (refreshError) {
-        processQueue(refreshError as AxiosError)
-
-        isRefreshing = false
-
-        useAuthStore.getState().logout()
-        window.location.href = ROUTES.LOGIN.url
-
         return Promise.reject(refreshError)
       }
     }
