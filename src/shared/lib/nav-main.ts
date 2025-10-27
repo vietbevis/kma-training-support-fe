@@ -1,4 +1,15 @@
-import { BookOpen, Bot, Calendar, Settings2, SquareTerminal } from 'lucide-react'
+import {
+  BookOpen,
+  Building2,
+  CalendarDays,
+  GraduationCap,
+  Notebook,
+  Settings,
+  UserCog,
+  UserPlus,
+  Users,
+  Wallet
+} from 'lucide-react'
 import { PERMISSIONS } from '../constants/permissions'
 import ROUTES from './routes'
 
@@ -27,7 +38,7 @@ const navMain: NavItem[] = [
   {
     title: 'Người dùng',
     url: '#',
-    icon: SquareTerminal,
+    icon: Users,
     isActive: true,
     items: [
       {
@@ -50,7 +61,7 @@ const navMain: NavItem[] = [
   {
     title: 'Giảng viên mời',
     url: '#',
-    icon: SquareTerminal,
+    icon: UserPlus,
     isActive: true,
     items: [
       {
@@ -78,7 +89,7 @@ const navMain: NavItem[] = [
   {
     title: 'Nhân viên',
     url: '#',
-    icon: SquareTerminal,
+    icon: UserCog,
     isActive: true,
     items: [
       {
@@ -101,7 +112,7 @@ const navMain: NavItem[] = [
   {
     title: 'Thời khóa biểu',
     url: '#',
-    icon: Calendar,
+    icon: CalendarDays,
     isActive: true,
     items: [
       {
@@ -119,19 +130,19 @@ const navMain: NavItem[] = [
   {
     title: ROUTES.EDUCATIONAL_SYSTEMS.title,
     url: ROUTES.EDUCATIONAL_SYSTEMS.url,
-    icon: Bot,
+    icon: GraduationCap,
     requiredPermission: PERMISSIONS.EDUCATIONAL_SYSTEMS.LIST
   },
   {
     title: ROUTES.LECTURE_INVITATION_MONEYS.title,
     url: ROUTES.LECTURE_INVITATION_MONEYS.url,
-    icon: Bot,
+    icon: Wallet,
     requiredPermission: PERMISSIONS.LECTURE_INVITATION_MONEY.LIST
   },
   {
     title: ROUTES.FACULTY_DEPARTMENTS.title,
     url: ROUTES.FACULTY_DEPARTMENTS.url,
-    icon: BookOpen,
+    icon: Building2,
     requiredPermission: PERMISSIONS.FACULTY_DEPARTMENTS.LIST
   },
   {
@@ -143,13 +154,13 @@ const navMain: NavItem[] = [
   {
     title: ROUTES.COURSES.title,
     url: ROUTES.COURSES.url,
-    icon: BookOpen,
+    icon: Notebook,
     requiredPermission: PERMISSIONS.COURSES.LIST
   },
   {
     title: 'Hệ thống',
     url: '#',
-    icon: Settings2,
+    icon: Settings,
     isActive: true,
     items: [
       {
