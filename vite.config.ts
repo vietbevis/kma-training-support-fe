@@ -16,13 +16,7 @@ export default defineConfig(({ mode }) => {
     preview: {
       allowedHosts: ['.vittapcode.id.vn'],
       host: '0.0.0.0',
-      port: 4173,
-      proxy: {
-        '/api': {
-          target: env.VITE_API_URL,
-          changeOrigin: true
-        }
-      }
+      port: 4173
     },
     server: {
       proxy: {
