@@ -1,25 +1,17 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import {
-  useGetModulePermissions,
-  useGetPermissionByModule,
-  useUpdatePermission
-} from '@/features/permissions/api/PermissionService'
-import { PermissionFilters, PermissionForm, PermissionTable } from '@/features/permissions/components'
+import { useGetModulePermissions, useUpdatePermission } from '@/features/permissions/api/PermissionService'
+import { PermissionFilters, PermissionForm } from '@/features/permissions/components'
 import LoadingSpinner from '@/shared/components/LoadingSpinner'
 import { withPermissionGuard } from '@/shared/components/PermissionGuard'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/shared/components/ui/accordion'
+import { Accordion } from '@/shared/components/ui/accordion'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card'
 import { PERMISSIONS } from '@/shared/constants/permissions'
-import { translateModule } from '@/shared/lib/utils'
 import { useDialogStore } from '@/shared/stores/dialogStore'
 import type { PermissionType, UpdatePermission } from '@/shared/validations/PermissionSchema'
-import { Shield } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router'
+import { useState } from 'react'
+import ModuleAccordionItem from '../components/ModuleAccordionItem'
 
 const PermissionsPageComponent = () => {
   const { openDialog, closeDialog } = useDialogStore()
-  const [searchParams] = useSearchParams()
   const [moduleSelected, setModuleSelected] = useState<string | null>(null)
 
   const { data: modulesData, isLoading: isLoadingModules } = useGetModulePermissions()
@@ -47,42 +39,6 @@ const PermissionsPageComponent = () => {
     closeDialog()
   }
 
-  const ModuleAccordionItem = ({ module }: { module: string }) => {
-    const { data: permissionsData, isLoading: isLoadingPermissions } = useGetPermissionByModule(
-      module,
-      moduleSelected === module
-    )
-    const permissions = permissionsData?.data || []
-
-    const search = searchParams.get('search')?.toLowerCase() || ''
-    const filteredPermissions = useMemo(() => {
-      if (!search) return permissions
-
-      return permissions.filter(
-        (permission) =>
-          permission.name.toLowerCase().includes(search) || permission.description.toLowerCase().includes(search)
-      )
-    }, [permissions, search])
-
-    return (
-      <AccordionItem value={module} key={module}>
-        <AccordionTrigger className='hover:no-underline' onClick={() => setModuleSelected(module)}>
-          <div className='flex items-center gap-3'>
-            <Shield className='h-5 w-5 text-primary' />
-            <div className='text-left'>
-              <h3 className='font-semibold'>{translateModule(module)}</h3>
-            </div>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className='pl-8 space-y-4'>
-            <PermissionTable permissions={filteredPermissions} onEdit={handleEdit} isLoading={isLoadingPermissions} />
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    )
-  }
-
   return (
     <div className='space-y-6'>
       <div className='flex items-center justify-between'>
@@ -108,7 +64,13 @@ const PermissionsPageComponent = () => {
           ) : (
             <Accordion type='multiple' className='w-full'>
               {modules.map((module) => (
-                <ModuleAccordionItem key={module} module={module} />
+                <ModuleAccordionItem
+                  key={module}
+                  module={module}
+                  moduleSelected={moduleSelected}
+                  setModuleSelected={setModuleSelected}
+                  handleEdit={handleEdit}
+                />
               ))}
             </Accordion>
           )}
