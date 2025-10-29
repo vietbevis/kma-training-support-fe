@@ -48,5 +48,18 @@ export const useDialogStore = create<DialogState>((set) => ({
       description: params.description || 'Chọn file để tải lên',
       fileUploadParams: params
     }),
-  closeDialog: () => set({ open: false, loading: false, fileUploadParams: undefined, className: '' })
+  closeDialog: () =>
+    set({
+      open: false,
+      type: null,
+      title: '',
+      description: '',
+      loading: false,
+      onConfirm: undefined,
+      onCancel: undefined,
+      content: undefined,
+      data: undefined,
+      fileUploadParams: undefined,
+      className: ''
+    })
 }))

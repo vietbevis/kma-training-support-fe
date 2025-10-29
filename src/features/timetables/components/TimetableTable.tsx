@@ -6,33 +6,43 @@ import { PERMISSIONS } from '@/shared/constants/permissions'
 import { formatDate } from 'date-fns'
 import { Edit, Trash2 } from 'lucide-react'
 
-interface TimetableType {
+export interface TimetableType {
   id: string
+  createdAt: string
+  updatedAt: string
   className: string
   semester: string
   classType: string
   studentCount: number
   theoryHours: number
-  crowdClassCoefficient: number
+  crowdClassCoefficient: string
   actualHours: number
-  overtimeCoefficient: number
-  standardHours: number
+  overtimeCoefficient: string
+  standardHours: string
   startDate: string
   endDate: string
-  lecturerName?: string
-  detailTimeSlots: {
-    dayOfWeek: number
-    timeSlot: string
-    roomName: string
-    buildingName?: string
-    startDate: string
-    endDate: string
-  }[]
-  notes?: string
-  courseId: string
-  academicYearId: string
+  lecturerName: string
+  course: Course
+  academicYear: AcademicYear
+}
+
+export interface Course {
+  id: string
   createdAt: string
   updatedAt: string
+  courseCode: string
+  courseName: string
+  credits: number
+  semester: string
+  description: any
+  facultyDepartment: any
+}
+
+export interface AcademicYear {
+  id: string
+  createdAt: string
+  updatedAt: string
+  yearCode: string
 }
 
 interface TimetableTableProps {
@@ -79,7 +89,7 @@ export const TimetableTable = ({ data, isLoading, onEdit, onDelete, isFilterLoad
               <TableHead>Tên lớp</TableHead>
               <TableHead>Kỳ học</TableHead>
               <TableHead>Giảng viên</TableHead>
-              {/* <TableHead>CTĐT</TableHead> */}
+              <TableHead>Khoa</TableHead>
               <TableHead>Ngày bắt đầu</TableHead>
               <TableHead>Ngày kết thúc</TableHead>
               <TableHead>LL</TableHead>
@@ -99,6 +109,7 @@ export const TimetableTable = ({ data, isLoading, onEdit, onDelete, isFilterLoad
                 </TableCell>
                 <TableCell>{timetable.semester}</TableCell>
                 <TableCell>{timetable.lecturerName || '—'}</TableCell>
+                <TableCell>{timetable.course?.facultyDepartment?.name || '—'}</TableCell>
                 <TableCell>{formatDate(new Date(timetable.startDate), 'dd/MM/yyyy')}</TableCell>
                 <TableCell>{formatDate(new Date(timetable.endDate), 'dd/MM/yyyy')}</TableCell>
                 {/* Lên lớp */}
