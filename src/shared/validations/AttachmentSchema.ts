@@ -44,9 +44,7 @@ export const ImageUploadSchema = z.object({
   files: z.array(z.instanceof(File)).min(1).max(10)
 })
 
-export const PaginationAttachmentSchema = createPaginationQuerySchema(
-  z.enum(['name', 'type', 'createdAt', 'updatedAt'])
-)
+export const PaginationAttachmentSchema = createPaginationQuerySchema()
 
 export const PaginationAttachmentQuerySchema = PaginationAttachmentSchema.extend({
   name: z.string().optional(),

@@ -48,8 +48,7 @@ export const ComboboxClassroom = ({
             ...page,
             data: page.data.map((classroom) => ({
               id: classroom.id,
-              name: classroom.name,
-              capacity: classroom.capacity
+              name: classroom.name
             }))
           }))
         }

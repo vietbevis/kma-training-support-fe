@@ -2,14 +2,7 @@
 export * from './api/BackupService'
 
 // Components
-export {
-  BackupFilters,
-  BackupForm,
-  BackupStatistics,
-  BackupTable,
-  RestoreForm,
-  RestoreFromUploadForm
-} from './components'
+export { BackupFilters, BackupForm, BackupStatistics, BackupTable, RestoreFromUploadForm } from './components'
 
 // Hooks
 export * from './hooks'

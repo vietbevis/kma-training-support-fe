@@ -9,4 +9,3 @@ export { UserTable } from './components/UserTable'
 // Pages
 export { UserCreatePage } from './pages/UserCreatePage'
 export { UserEditPage } from './pages/UserEditPage'
-export { UsersPage } from './pages/UsersPage'
