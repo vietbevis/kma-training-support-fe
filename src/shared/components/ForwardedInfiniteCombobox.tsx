@@ -437,7 +437,11 @@ function InfiniteCombobox<T extends ComboboxItem>(
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className='p-0 w-[var(--radix-popover-trigger-width)]' align='start' sideOffset={4}>
+        <PopoverContent
+          className='p-0 w-[var(--radix-popover-trigger-width)] overscroll-y-contain'
+          align='start'
+          sideOffset={4}
+        >
           <Command shouldFilter={false} className='w-full'>
             <CommandInput
               placeholder={searchPlaceholder}
@@ -465,7 +469,11 @@ function InfiniteCombobox<T extends ComboboxItem>(
               </div>
             )}
 
-            <CommandList className='max-h-[200px] overflow-y-auto' ref={listRef} onScroll={handleScroll}>
+            <CommandList
+              className='max-h-[200px] overflow-y-auto overscroll-y-contain'
+              ref={listRef}
+              onScroll={handleScroll}
+            >
               {renderContent()}
 
               {isFetchingNextPage && (
