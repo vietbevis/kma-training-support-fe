@@ -164,6 +164,15 @@ export const PERMISSIONS = {
     UPLOAD_EXCEL: { method: 'POST', path: '/timetables/upload-excel' } as PermissionRequirement
   },
 
+  // Standards
+  STANDARDS: {
+    LIST: { method: 'GET', path: '/standards' } as PermissionRequirement,
+    UPDATE: { method: 'PATCH', path: '/standards/:id' } as PermissionRequirement,
+    DELETE: { method: 'DELETE', path: '/standards/:id' } as PermissionRequirement,
+    VIEW: { method: 'GET', path: '/standards/:id' } as PermissionRequirement,
+    UPLOAD_WORD: { method: 'POST', path: '/standards/upload-word' } as PermissionRequirement
+  },
+
   // Backups
   BACKUPS: {
     VIEW: { method: 'GET', path: '/backup/:id' } as PermissionRequirement,

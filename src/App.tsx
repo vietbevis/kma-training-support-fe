@@ -58,6 +58,7 @@ const VisitingLecturersPendingPage = lazy(() =>
   import('./features/visiting-lecturers/pages').then((m) => ({ default: m.VisitingLecturersPendingPage }))
 )
 const TimetablesPage = lazy(() => import('./features/timetables/page').then((m) => ({ default: m.TimetablesPage })))
+const StandardsPage = lazy(() => import('./features/standards/page').then((m) => ({ default: m.StandardsPage })))
 const TimetableClassroomPage = lazy(() =>
   import('./features/timetable-classroom/page').then((m) => ({ default: m.TimetableClassroomPage }))
 )
@@ -171,6 +172,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.TIMETABLES.url,
             element: <TimetablesPage />
+          },
+          {
+            path: ROUTES.STANDARDS_EXPECTED.url,
+            element: <StandardsPage />
           },
           {
             path: ROUTES.TIMETABLE_CLASSROOM.url,

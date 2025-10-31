@@ -33,7 +33,7 @@ export const BackupTable = ({ data, isLoading, onRestore, onDelete, isFilterLoad
     const k = 1024
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
-    if (Number.isNaN(i)) return '-'
+    if (Number.isNaN(i)) return '—'
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
@@ -93,7 +93,7 @@ export const BackupTable = ({ data, isLoading, onRestore, onDelete, isFilterLoad
                   <Badge variant='outline'>{backup.type === 'manual' ? 'Thủ công' : 'Tự động'}</Badge>
                 </TableCell>
                 <TableCell>{formatDate(backup.createdAt)}</TableCell>
-                <TableCell>{backup.completedAt ? formatDate(backup.completedAt) : '-'}</TableCell>
+                <TableCell>{backup.completedAt ? formatDate(backup.completedAt) : '—'}</TableCell>
                 <TableCell className='text-right space-x-1'>
                   {backup.status === BackupStatus.COMPLETED && (
                     <>

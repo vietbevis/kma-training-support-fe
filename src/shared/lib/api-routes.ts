@@ -31,6 +31,7 @@ const API_ROUTES = {
   AUDIT_LOGS: '/v1/audit-logs',
   VISITING_LECTURERS: '/v1/visiting-lecturers',
   TIMETABLES: '/v1/timetables',
+  STANDARDS: '/v1/standards',
   BACKUPS: {
     ROOT: '/v1/backup',
     RESTORE: (id: string) => `/v1/backup/${id}/restore`,

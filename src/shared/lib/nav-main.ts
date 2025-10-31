@@ -2,6 +2,7 @@ import {
   BookOpen,
   Building2,
   CalendarDays,
+  ClipboardList,
   GraduationCap,
   Notebook,
   Settings,
@@ -124,6 +125,19 @@ const navMain: NavItem[] = [
         title: ROUTES.TIMETABLE_CLASSROOM.title,
         url: ROUTES.TIMETABLE_CLASSROOM.url,
         requiredPermission: PERMISSIONS.CLASSROOMS.CLASSROOM_AVAILABILITY
+      }
+    ]
+  },
+  {
+    title: 'Quy chuẩn',
+    url: '#',
+    icon: ClipboardList,
+    isActive: true,
+    items: [
+      {
+        title: ROUTES.STANDARDS_EXPECTED.title,
+        url: ROUTES.STANDARDS_EXPECTED.url,
+        requiredPermission: PERMISSIONS.STANDARDS.LIST
       }
     ]
   },

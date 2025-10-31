@@ -6,23 +6,23 @@ import { PERMISSIONS } from '@/shared/constants/permissions'
 import { formatDate } from 'date-fns'
 import { Edit, Trash2 } from 'lucide-react'
 
-export interface TimetableType {
+export interface StandardType {
   id: string
   createdAt: string
   updatedAt: string
   className: string
   semester: string
-  classType: string
+  classType: string | null
   studentCount: number
   theoryHours: number
   crowdClassCoefficient: string
   actualHours: number
   overtimeCoefficient: string
   standardHours: string
-  startDate: string
-  endDate: string
+  startDate: string | null
+  endDate: string | null
   lecturerName: string
-  course: Course
+  course: Course | null
   academicYear: AcademicYear
 }
 
@@ -45,16 +45,17 @@ export interface AcademicYear {
   yearCode: string
 }
 
-interface TimetableTableProps {
-  data: TimetableType[]
+interface StandardTableProps {
+  data: StandardType[]
   isLoading: boolean
-  onEdit: (timetable: TimetableType) => void
+  onEdit: (standard: StandardType) => void
   onDelete: (id: string) => void
   isFilterLoading?: boolean
 }
 
-export const TimetableTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: TimetableTableProps) => {
-  const renderValue = (value: number | string) => {
+export const StandardTable = ({ data, isLoading, onEdit, onDelete, isFilterLoading }: StandardTableProps) => {
+  const renderValue = (value: number | string | null | undefined) => {
+    if (value === null || value === undefined || value === '') return '—'
     const num = Number(value)
     return num === 0 ? '—' : value
   }
@@ -70,7 +71,7 @@ export const TimetableTable = ({ data, isLoading, onEdit, onDelete, isFilterLoad
   if (data.length === 0) {
     return (
       <>
-        <div className='text-center py-8 text-muted-foreground'>Không có dữ liệu thời khóa biểu</div>
+        <div className='text-center py-8 text-muted-foreground'>Không có dữ liệu quy chuẩn</div>
       </>
     )
   }
@@ -102,43 +103,45 @@ export const TimetableTable = ({ data, isLoading, onEdit, onDelete, isFilterLoad
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map((timetable) => (
-              <TableRow key={timetable.id}>
+            {data.map((standard) => (
+              <TableRow key={standard.id}>
                 <TableCell>
-                  <Badge variant='outline'>{timetable.className}</Badge>
+                  <Badge variant='outline'>{standard.className}</Badge>
                 </TableCell>
-                <TableCell>{timetable.semester}</TableCell>
-                <TableCell>{timetable.lecturerName || '—'}</TableCell>
-                <TableCell>{timetable.course?.facultyDepartment?.name || '—'}</TableCell>
-                <TableCell>{formatDate(new Date(timetable.startDate), 'dd/MM/yyyy')}</TableCell>
-                <TableCell>{formatDate(new Date(timetable.endDate), 'dd/MM/yyyy')}</TableCell>
+                <TableCell>{standard.semester}</TableCell>
+                <TableCell>{standard.lecturerName || '—'}</TableCell>
+                <TableCell>{standard.course?.facultyDepartment?.name || '—'}</TableCell>
+                <TableCell>
+                  {standard.startDate ? formatDate(new Date(standard.startDate), 'dd/MM/yyyy') : '—'}
+                </TableCell>
+                <TableCell>{standard.endDate ? formatDate(new Date(standard.endDate), 'dd/MM/yyyy') : '—'}</TableCell>
                 {/* Lên lớp */}
-                <TableCell>{renderValue(timetable.theoryHours)}</TableCell>
+                <TableCell>{renderValue(standard.theoryHours)}</TableCell>
                 {/* Lên lớp thực */}
-                <TableCell>{renderValue(timetable.actualHours)}</TableCell>
+                <TableCell>{renderValue(standard.actualHours)}</TableCell>
                 {/* Số sinh viên */}
-                <TableCell>{renderValue(timetable.studentCount)}</TableCell>
+                <TableCell>{renderValue(standard.studentCount)}</TableCell>
                 {/* Hệ số đông */}
-                <TableCell>{renderValue(timetable.crowdClassCoefficient)}</TableCell>
+                <TableCell>{renderValue(standard.crowdClassCoefficient)}</TableCell>
                 {/* Hệ số ngoài giờ */}
-                <TableCell>{renderValue(timetable.overtimeCoefficient)}</TableCell>
+                <TableCell>{renderValue(standard.overtimeCoefficient)}</TableCell>
                 {/* Quy chuẩn */}
-                <TableCell>{renderValue(timetable.standardHours)}</TableCell>
+                <TableCell>{renderValue(standard.standardHours)}</TableCell>
                 <TableCell className='text-right'>
                   <div className='flex justify-end gap-2'>
                     <PermissionButton
                       variant='outline'
                       size='icon'
-                      onClick={() => onEdit(timetable)}
-                      requiredPermission={PERMISSIONS.TIMETABLES.UPDATE}
+                      onClick={() => onEdit(standard)}
+                      requiredPermission={PERMISSIONS.STANDARDS.UPDATE}
                     >
                       <Edit className='h-4 w-4' />
                     </PermissionButton>
                     <PermissionButton
                       variant='outline'
                       size='icon'
-                      onClick={() => onDelete(timetable.id)}
-                      requiredPermission={PERMISSIONS.TIMETABLES.DELETE}
+                      onClick={() => onDelete(standard.id)}
+                      requiredPermission={PERMISSIONS.STANDARDS.DELETE}
                     >
                       <Trash2 className='h-4 w-4' />
                     </PermissionButton>

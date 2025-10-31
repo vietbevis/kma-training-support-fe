@@ -90,6 +90,11 @@ const ROUTES = {
     url: '/timetables',
     icon: Calendar
   },
+  STANDARDS_EXPECTED: {
+    title: 'Quy chuẩn dự kiến',
+    url: '/standards/expected',
+    icon: ClipboardList
+  },
   USER_CREATE: {
     title: 'Thêm nhân viên',
     url: '/users/create',

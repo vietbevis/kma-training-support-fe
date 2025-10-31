@@ -68,7 +68,7 @@ const TimetableDetailsDialog = ({ timetableId }: TimetableDetailsDialogProps) =>
                   Học phần:
                 </span>
                 <span className='text-sm font-medium'>
-                  {timetable.course?.courseCode + ' - ' + timetable.course?.courseName || '-'}
+                  {timetable.course?.courseCode + ' - ' + timetable.course?.courseName || '—'}
                 </span>
               </div>
               <div className='flex items-start gap-4 justify-between py-2'>
@@ -76,14 +76,14 @@ const TimetableDetailsDialog = ({ timetableId }: TimetableDetailsDialogProps) =>
                   <Calendar className='h-4 w-4' />
                   Năm học:
                 </span>
-                <span className='text-sm font-medium'>{timetable.academicYear?.yearCode || '-'}</span>
+                <span className='text-sm font-medium'>{timetable.academicYear?.yearCode || '—'}</span>
               </div>
               <div className='flex items-start gap-4 justify-between py-2'>
                 <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
                   <GraduationCap className='h-4 w-4' />
                   Loại lớp:
                 </span>
-                <span className='text-sm font-medium'>{timetable.classType || '-'}</span>
+                <span className='text-sm font-medium'>{timetable.classType || '—'}</span>
               </div>
               <div className='flex items-start gap-4 justify-between py-2'>
                 <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
@@ -118,7 +118,7 @@ const TimetableDetailsDialog = ({ timetableId }: TimetableDetailsDialogProps) =>
                   <Users className='h-4 w-4' />
                   Số sinh viên:
                 </span>
-                <span className='text-sm font-medium'>{timetable.studentCount || '-'}</span>
+                <span className='text-sm font-medium'>{timetable.studentCount || '—'}</span>
               </div>
               <div className='flex items-start gap-4 justify-between py-2'>
                 <span className='text-sm text-muted-foreground flex items-center gap-2 shrink-0'>
@@ -135,14 +135,14 @@ const TimetableDetailsDialog = ({ timetableId }: TimetableDetailsDialogProps) =>
                   <Clock className='h-4 w-4' />
                   LL thực:
                 </span>
-                <span className='text-sm font-medium'>{timetable.actualHours || '-'}</span>
+                <span className='text-sm font-medium'>{timetable.actualHours || '—'}</span>
               </div>
               <div className='flex items-start gap-4 justify-between py-2'>
                 <span className='text-sm text-muted-foreground flex items-center gap-2'>
                   <BookOpen className='h-4 w-4' />
                   Số tín chỉ:
                 </span>
-                <span className='text-sm font-medium'>{timetable.course?.credits || '-'}</span>
+                <span className='text-sm font-medium'>{timetable.course?.credits || '—'}</span>
               </div>
             </div>
           </CardContent>
