@@ -18,7 +18,7 @@ export const VisitingLecturerFilters = ({ filters, setFilters, resetFilters, pag
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -45,7 +45,7 @@ export const VisitingLecturerFilters = ({ filters, setFilters, resetFilters, pag
         <>
           <Select
             value={filters.trainingApproved || 'all'}
-            onValueChange={(value: string) => setFilters({ trainingApproved: value === 'all' ? '' : value })}
+            onValueChange={(value: string) => setFilters({ trainingApproved: value === 'all' ? '' : value, page: '1' })}
           >
             <SelectTrigger className='max-w-sm'>
               <SelectValue placeholder='Đào tạo duyệt' />
@@ -59,7 +59,7 @@ export const VisitingLecturerFilters = ({ filters, setFilters, resetFilters, pag
 
           <Select
             value={filters.facultyApproved || 'all'}
-            onValueChange={(value: string) => setFilters({ facultyApproved: value === 'all' ? '' : value })}
+            onValueChange={(value: string) => setFilters({ facultyApproved: value === 'all' ? '' : value, page: '1' })}
           >
             <SelectTrigger className='max-w-sm'>
               <SelectValue placeholder='Khoa duyệt' />

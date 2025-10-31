@@ -1,8 +1,9 @@
 import { Button } from '@/shared/components/ui/button'
 import { Input } from '@/shared/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { Search, X } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface FacultyDepartmentFiltersProps {
   filters: Record<string, string>
@@ -12,6 +13,13 @@ interface FacultyDepartmentFiltersProps {
 
 export const FacultyDepartmentFilters = ({ filters, setFilters, resetFilters }: FacultyDepartmentFiltersProps) => {
   const [search, setSearch] = useState(filters.search || '')
+
+  const debouncedSearch = useDebounce(search)
+
+  useEffect(() => {
+    setFilters({ search: debouncedSearch, page: '1' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearch])
 
   const handleResetFilters = () => {
     setSearch('')
@@ -34,7 +42,7 @@ export const FacultyDepartmentFilters = ({ filters, setFilters, resetFilters }: 
 
       <Select
         value={filters.isFaculty || 'all'}
-        onValueChange={(value: string) => setFilters({ isFaculty: value === 'all' ? '' : value })}
+        onValueChange={(value: string) => setFilters({ isFaculty: value === 'all' ? '' : value, page: '1' })}
       >
         <SelectTrigger className='w-40 max-w-sm'>
           <SelectValue placeholder='Loại đơn vị' />

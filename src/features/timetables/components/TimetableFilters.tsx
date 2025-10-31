@@ -35,11 +35,11 @@ export const TimetableFilters = ({ filters, setFilters, resetFilters }: Timetabl
   const debouncedClassName = useDebounce(className, 500)
 
   const handleDateChange = (field: 'startDate' | 'endDate', value: Date | null) => {
-    setFilters({ [field]: value ? value.toISOString().split('T')[0] : '' })
+    setFilters({ [field]: value ? value.toISOString().split('T')[0] : '', page: '1' })
   }
 
   useEffect(() => {
-    setFilters({ className: debouncedClassName || '' })
+    setFilters({ className: debouncedClassName || '', page: '1' })
   }, [debouncedClassName, setFilters])
 
   return (
@@ -58,14 +58,17 @@ export const TimetableFilters = ({ filters, setFilters, resetFilters }: Timetabl
 
       <div className='space-y-2 w-80'>
         <Label className='text-sm font-medium'>Học phần</Label>
-        <ComboboxCourse value={filters.courseId || ''} onValueChange={(value) => setFilters({ courseId: value })} />
+        <ComboboxCourse
+          value={filters.courseId || ''}
+          onValueChange={(value) => setFilters({ courseId: value, page: '1' })}
+        />
       </div>
 
       <div className='space-y-2 w-60'>
         <Label className='text-sm font-medium'>Năm học</Label>
         <ComboboxAcademicYear
           value={filters.academicYearId || ''}
-          onValueChange={(value) => setFilters({ academicYearId: value })}
+          onValueChange={(value) => setFilters({ academicYearId: value, page: '1' })}
         />
       </div>
 
@@ -73,7 +76,9 @@ export const TimetableFilters = ({ filters, setFilters, resetFilters }: Timetabl
         <Label className='text-sm font-medium'>Kỳ học</Label>
         <Select
           value={filters.semester || 'all'}
-          onValueChange={(value) => (value === 'all' ? setFilters({ semester: '' }) : setFilters({ semester: value }))}
+          onValueChange={(value) =>
+            value === 'all' ? setFilters({ semester: '', page: '1' }) : setFilters({ semester: value, page: '1' })
+          }
         >
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='Chọn kỳ học' />

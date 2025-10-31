@@ -16,7 +16,7 @@ export const ClassroomFilters = ({ filters, setFilters, resetFilters }: Classroo
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -42,7 +42,7 @@ export const ClassroomFilters = ({ filters, setFilters, resetFilters }: Classroo
       <div className='max-w-md min-w-sm'>
         <ComboboxBuilding
           value={filters.buildingId || ''}
-          onValueChange={(value: string) => setFilters({ buildingId: value })}
+          onValueChange={(value: string) => setFilters({ buildingId: value, page: '1' })}
         />
       </div>
 

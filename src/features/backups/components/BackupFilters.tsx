@@ -18,7 +18,7 @@ export const BackupFilters = ({ filters, setFilters, resetFilters }: BackupFilte
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -38,7 +38,10 @@ export const BackupFilters = ({ filters, setFilters, resetFilters }: BackupFilte
         />
       </div>
       <div className='w-40'>
-        <Select value={filters.status} onValueChange={(value) => setFilters({ status: value === 'all' ? '' : value })}>
+        <Select
+          value={filters.status}
+          onValueChange={(value) => setFilters({ status: value === 'all' ? '' : value, page: '1' })}
+        >
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='Trạng thái' />
           </SelectTrigger>
@@ -54,7 +57,10 @@ export const BackupFilters = ({ filters, setFilters, resetFilters }: BackupFilte
         </Select>
       </div>
       <div className='w-40'>
-        <Select value={filters.type} onValueChange={(value) => setFilters({ type: value === 'all' ? '' : value })}>
+        <Select
+          value={filters.type}
+          onValueChange={(value) => setFilters({ type: value === 'all' ? '' : value, page: '1' })}
+        >
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='Loại' />
           </SelectTrigger>

@@ -15,7 +15,7 @@ export const AcademicCredentialFilters = ({ filters, setFilters, resetFilters }:
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 

@@ -18,7 +18,7 @@ export const EducationalSystemFilters = ({ filters, setFilters, resetFilters }: 
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -43,7 +43,7 @@ export const EducationalSystemFilters = ({ filters, setFilters, resetFilters }: 
 
       <Select
         value={filters.educationLevels || 'all'}
-        onValueChange={(value: string) => setFilters({ educationLevels: value === 'all' ? '' : value })}
+        onValueChange={(value: string) => setFilters({ educationLevels: value === 'all' ? '' : value, page: '1' })}
       >
         <SelectTrigger className='w-40'>
           <SelectValue placeholder='Bậc đào tạo' />
@@ -60,7 +60,7 @@ export const EducationalSystemFilters = ({ filters, setFilters, resetFilters }: 
 
       <Select
         value={filters.tuitions || 'all'}
-        onValueChange={(value: string) => setFilters({ tuitions: value === 'all' ? '' : value })}
+        onValueChange={(value: string) => setFilters({ tuitions: value === 'all' ? '' : value, page: '1' })}
       >
         <SelectTrigger className='w-40'>
           <SelectValue placeholder='Học phí' />

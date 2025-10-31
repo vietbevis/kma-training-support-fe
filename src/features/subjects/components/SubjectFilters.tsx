@@ -17,7 +17,7 @@ export const SubjectFilters = ({ filters, setFilters, resetFilters }: SubjectFil
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -43,7 +43,7 @@ export const SubjectFilters = ({ filters, setFilters, resetFilters }: SubjectFil
       <div className='max-w-sm'>
         <ComboboxFacultyDepartment
           value={filters.facultyDepartmentId || ''}
-          onValueChange={(value: string) => setFilters({ facultyDepartmentId: value })}
+          onValueChange={(value: string) => setFilters({ facultyDepartmentId: value, page: '1' })}
           placeholder='Chọn khoa...'
           width='100%'
           className='min-w-72'

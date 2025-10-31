@@ -15,7 +15,7 @@ export const PermissionFilters = () => {
           <Input
             placeholder='Tìm kiếm theo tên quyền...'
             value={searchParams.get('search') || ''}
-            onChange={(e) => setSearchParams({ search: e.target.value })}
+            onChange={(e) => setSearchParams({ search: e.target.value, page: '1' })}
             className='pl-10'
           />
         </div>

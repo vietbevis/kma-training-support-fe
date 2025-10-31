@@ -21,7 +21,7 @@ export const LectureInvitationMoneyFilters = ({
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -47,7 +47,7 @@ export const LectureInvitationMoneyFilters = ({
       <div className='max-w-sm w-full'>
         <ComboboxAcademicCredential
           value={filters.academicCredentialId || ''}
-          onValueChange={(value: string) => setFilters({ academicCredentialId: value })}
+          onValueChange={(value: string) => setFilters({ academicCredentialId: value, page: '1' })}
         />
       </div>
 

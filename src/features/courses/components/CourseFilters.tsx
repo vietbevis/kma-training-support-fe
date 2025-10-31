@@ -20,7 +20,7 @@ export const CourseFilters = ({ filters, setFilters, resetFilters }: CourseFilte
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -46,7 +46,7 @@ export const CourseFilters = ({ filters, setFilters, resetFilters }: CourseFilte
       <div className='max-w-sm w-full'>
         <ComboboxFacultyDepartment
           value={filters.facultyDepartmentId || ''}
-          onValueChange={(value: string) => setFilters({ facultyDepartmentId: value })}
+          onValueChange={(value: string) => setFilters({ facultyDepartmentId: value, page: '1' })}
           isFaculty
         />
       </div>
@@ -55,13 +55,13 @@ export const CourseFilters = ({ filters, setFilters, resetFilters }: CourseFilte
         <ComboboxSubjects
           value={filters.subjectId || ''}
           facultyDepartmentId={filters.facultyDepartmentId || ''}
-          onValueChange={(value: string) => setFilters({ subjectId: value })}
+          onValueChange={(value: string) => setFilters({ subjectId: value, page: '1' })}
         />
       </div>
 
       <Select
         value={filters.semester || ''}
-        onValueChange={(value: string) => setFilters({ semester: value === 'all' ? '' : value })}
+        onValueChange={(value: string) => setFilters({ semester: value === 'all' ? '' : value, page: '1' })}
       >
         <SelectTrigger className='w-40'>
           <SelectValue placeholder='Kỳ học' />

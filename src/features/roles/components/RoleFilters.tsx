@@ -18,7 +18,7 @@ export const RoleFilters = ({ filters, setFilters, resetFilters }: RoleFiltersPr
   const debouncedSearch = useDebounce(search)
 
   useEffect(() => {
-    setFilters({ search: debouncedSearch })
+    setFilters({ search: debouncedSearch, page: '1' })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch])
 
@@ -44,7 +44,7 @@ export const RoleFilters = ({ filters, setFilters, resetFilters }: RoleFiltersPr
       <div className='max-w-xs'>
         <Select
           value={filters.isActive || 'all'}
-          onValueChange={(value: string) => setFilters({ isActive: value === 'all' ? '' : value })}
+          onValueChange={(value: string) => setFilters({ isActive: value === 'all' ? '' : value, page: '1' })}
         >
           <SelectTrigger>
             <SelectValue placeholder='Trạng thái' />
@@ -60,7 +60,7 @@ export const RoleFilters = ({ filters, setFilters, resetFilters }: RoleFiltersPr
       <div className='max-w-xs'>
         <Select
           value={filters.isSystemRole || 'all'}
-          onValueChange={(value: string) => setFilters({ isSystemRole: value === 'all' ? '' : value })}
+          onValueChange={(value: string) => setFilters({ isSystemRole: value === 'all' ? '' : value, page: '1' })}
         >
           <SelectTrigger>
             <SelectValue placeholder='Loại vai trò' />
@@ -76,7 +76,7 @@ export const RoleFilters = ({ filters, setFilters, resetFilters }: RoleFiltersPr
       <div className='max-w-sm'>
         <ComboboxFacultyDepartment
           value={filters.scopeFacultyDepartmentId || ''}
-          onValueChange={(value: string) => setFilters({ scopeFacultyDepartmentId: value })}
+          onValueChange={(value: string) => setFilters({ scopeFacultyDepartmentId: value, page: '1' })}
           placeholder='Phạm vi khoa/phòng ban...'
           width='100%'
           className='min-w-72'
