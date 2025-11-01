@@ -32,16 +32,29 @@ interface StandardFiltersProps {
 
 export const StandardFilters = ({ filters, setFilters, resetFilters }: StandardFiltersProps) => {
   const [className, setClassName] = useState(filters.className || '')
+  const [startDate, setStartDate] = useState(filters.startDate || '')
+  const [endDate, setEndDate] = useState(filters.endDate || '')
   const debouncedClassName = useDebounce(className)
+  const debouncedStartDate = useDebounce(startDate)
+  const debouncedEndDate = useDebounce(endDate)
 
   const handleDateChange = (field: 'startDate' | 'endDate', value: Date | null) => {
-    setFilters({ [field]: value ? value.toISOString().split('T')[0] : '', page: '1' })
+    if (field === 'startDate') {
+      setStartDate(value ? value.toISOString().split('T')[0] : '')
+    } else {
+      setEndDate(value ? value.toISOString().split('T')[0] : '')
+    }
   }
 
   useEffect(() => {
-    setFilters({ className: debouncedClassName || '', page: '1' })
+    setFilters({
+      className: debouncedClassName || '',
+      startDate: debouncedStartDate || '',
+      endDate: debouncedEndDate || '',
+      page: '1'
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedClassName])
+  }, [debouncedClassName, debouncedStartDate, debouncedEndDate])
 
   return (
     <div className='flex gap-4 flex-wrap'>
@@ -100,7 +113,7 @@ export const StandardFilters = ({ filters, setFilters, resetFilters }: StandardF
           Ngày bắt đầu
         </Label>
         <DateField
-          value={filters.startDate ? new Date(filters.startDate) : null}
+          value={startDate ? new Date(startDate) : null}
           onValueChange={(value) => handleDateChange('startDate', value)}
         >
           <DateFieldDays placeholder='dd' />
@@ -116,7 +129,7 @@ export const StandardFilters = ({ filters, setFilters, resetFilters }: StandardF
           Ngày kết thúc
         </Label>
         <DateField
-          value={filters.endDate ? new Date(filters.endDate) : null}
+          value={endDate ? new Date(endDate) : null}
           onValueChange={(value) => handleDateChange('endDate', value)}
         >
           <DateFieldDays placeholder='dd' />
@@ -133,6 +146,8 @@ export const StandardFilters = ({ filters, setFilters, resetFilters }: StandardF
           onClick={() => {
             resetFilters()
             setClassName('')
+            setStartDate('')
+            setEndDate('')
           }}
           className='ml-auto'
         >

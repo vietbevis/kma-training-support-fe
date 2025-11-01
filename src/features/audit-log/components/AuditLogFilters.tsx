@@ -9,7 +9,9 @@ import {
 } from '@/shared/components/ui/date-field'
 import { Label } from '@/shared/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/components/ui/select'
+import { useDebounce } from '@/shared/hooks/useDebounce'
 import { X } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const actionOptions = [
   { value: 'CREATE', label: 'Tạo mới' },
@@ -56,14 +58,28 @@ interface AuditLogFiltersProps {
     fromDate: string
     toDate: string
   }
-  setFilter: (key: keyof AuditLogFiltersProps['filters'], value: string) => void
+  setFilters: (filters: Record<string, string>) => void
   resetFilters: () => void
 }
 
-export const AuditLogFilters = ({ filters, setFilter, resetFilters }: AuditLogFiltersProps) => {
+export const AuditLogFilters = ({ filters, setFilters, resetFilters }: AuditLogFiltersProps) => {
+  const [fromDate, setFromDate] = useState(filters.fromDate || '')
+  const [toDate, setToDate] = useState(filters.toDate || '')
+  const debouncedFromDate = useDebounce(fromDate)
+  const debouncedToDate = useDebounce(toDate)
+
   const handleDateChange = (field: 'fromDate' | 'toDate', value: Date | null) => {
-    setFilter(field, value ? value.toISOString().split('T')[0] : '')
+    if (field === 'fromDate') {
+      setFromDate(value ? value.toISOString().split('T')[0] : '')
+    } else {
+      setToDate(value ? value.toISOString().split('T')[0] : '')
+    }
   }
+
+  useEffect(() => {
+    setFilters({ fromDate: debouncedFromDate || '', toDate: debouncedToDate || '', page: '1' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedFromDate, debouncedToDate])
 
   return (
     <div className='flex flex-wrap items-end gap-4'>
@@ -72,7 +88,7 @@ export const AuditLogFilters = ({ filters, setFilter, resetFilters }: AuditLogFi
         <Label htmlFor='userId'>Người thực hiện</Label>
         <ComboboxUser
           value={filters.userId}
-          onValueChange={(value) => setFilter('userId', value)}
+          onValueChange={(value) => setFilters({ userId: value, page: '1' })}
           placeholder='Chọn người thực hiện...'
           width='100%'
         />
@@ -81,7 +97,10 @@ export const AuditLogFilters = ({ filters, setFilter, resetFilters }: AuditLogFi
       {/* Action Filter */}
       <div className='space-y-2 w-40'>
         <Label htmlFor='action'>Hành động</Label>
-        <Select value={filters.action} onValueChange={(value) => setFilter('action', value === 'all' ? '' : value)}>
+        <Select
+          value={filters.action}
+          onValueChange={(value) => setFilters({ action: value === 'all' ? '' : value, page: '1' })}
+        >
           <SelectTrigger id='action' className='w-full'>
             <SelectValue placeholder='Chọn hành động' />
           </SelectTrigger>
@@ -101,7 +120,7 @@ export const AuditLogFilters = ({ filters, setFilter, resetFilters }: AuditLogFi
         <Label htmlFor='entityName'>Thực thể</Label>
         <Select
           value={filters.entityName}
-          onValueChange={(value) => setFilter('entityName', value === 'all' ? '' : value)}
+          onValueChange={(value) => setFilters({ entityName: value === 'all' ? '' : value, page: '1' })}
         >
           <SelectTrigger id='entityName' className='w-full'>
             <SelectValue placeholder='Chọn thực thể' />
@@ -121,7 +140,7 @@ export const AuditLogFilters = ({ filters, setFilter, resetFilters }: AuditLogFi
       <div className='space-y-2'>
         <Label htmlFor='fromDate'>Từ ngày</Label>
         <DateField
-          value={filters.fromDate ? new Date(filters.fromDate) : null}
+          value={fromDate ? new Date(fromDate) : null}
           onValueChange={(value) => handleDateChange('fromDate', value)}
         >
           <DateFieldDays placeholder='dd' />
@@ -136,7 +155,7 @@ export const AuditLogFilters = ({ filters, setFilter, resetFilters }: AuditLogFi
       <div className='space-y-2'>
         <Label htmlFor='toDate'>Đến ngày</Label>
         <DateField
-          value={filters.toDate ? new Date(filters.toDate) : null}
+          value={toDate ? new Date(toDate) : null}
           onValueChange={(value) => handleDateChange('toDate', value)}
         >
           <DateFieldDays placeholder='dd' />

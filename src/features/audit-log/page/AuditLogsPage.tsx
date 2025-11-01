@@ -11,7 +11,7 @@ import { AuditLogFilters, AuditLogTable } from '../components'
 
 export const AuditLogsPage = () => {
   const [interval, setInterval] = useState(10000)
-  const { filters, setFilter, resetFilters, setFilters } = useSearchParamsManager({
+  const { filters, resetFilters, setFilters } = useSearchParamsManager({
     page: '',
     limit: '10',
     userId: '',
@@ -58,7 +58,7 @@ export const AuditLogsPage = () => {
         </div>
       </div>
 
-      <AuditLogFilters filters={filters} setFilter={setFilter} resetFilters={resetFilters} />
+      <AuditLogFilters filters={filters} setFilters={setFilters} resetFilters={resetFilters} />
 
       <Card>
         <CardHeader>
