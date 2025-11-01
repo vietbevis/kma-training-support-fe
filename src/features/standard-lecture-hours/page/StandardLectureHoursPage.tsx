@@ -10,7 +10,6 @@ import { StandardLectureHoursForm } from '../components'
 
 const StandardLectureHoursPageComponent = () => {
   const { data, isLoading } = useGetStandardLectureHoursQuery()
-  console.log('🚀 ~ StandardLectureHoursPageComponent ~ data:', data?.data)
   const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateStandardLectureHoursMutation()
 
   const standardLectureHours = data?.data

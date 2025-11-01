@@ -6,5 +6,4 @@ export { AcademicCredentialForm, ComboboxAcademicCredential } from './components
 export { AcademicCredentialFilters } from './components/AcademicCredentialFilters'
 export { default as AcademicCredentialTable } from './components/AcademicCredentialTable'
 
-// Pages
-export * from './page'
+// Pages should only be lazy loaded in App.tsx, not exported here

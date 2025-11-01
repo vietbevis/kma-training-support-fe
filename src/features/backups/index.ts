@@ -7,5 +7,4 @@ export { BackupFilters, BackupForm, BackupStatistics, BackupTable, RestoreFromUp
 // Hooks
 export * from './hooks'
 
-// Pages
-export * from './page'
+// Pages should only be lazy loaded in App.tsx, not exported here

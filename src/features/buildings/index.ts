@@ -6,5 +6,4 @@ export { BuildingForm, ComboboxBuilding } from './components'
 export { BuildingFilters } from './components/BuildingFilters'
 export { default as BuildingTable } from './components/BuildingTable'
 
-// Pages
-export * from './page'
+// Pages should only be lazy loaded in App.tsx, not exported here

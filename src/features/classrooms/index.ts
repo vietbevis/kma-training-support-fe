@@ -6,5 +6,4 @@ export { ClassroomForm } from './components'
 export { ClassroomFilters } from './components/ClassroomFilters'
 export { default as ClassroomTable } from './components/ClassroomTable'
 
-// Pages
-export * from './page'
+// Pages should only be lazy loaded in App.tsx, not exported here
