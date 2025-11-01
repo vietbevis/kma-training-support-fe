@@ -32,6 +32,7 @@ const API_ROUTES = {
   VISITING_LECTURERS: '/v1/visiting-lecturers',
   TIMETABLES: '/v1/timetables',
   STANDARDS: '/v1/standards',
+  STANDARD_LECTURE_HOURS: '/v1/standard-lecture-hours',
   BACKUPS: {
     ROOT: '/v1/backup',
     RESTORE: (id: string) => `/v1/backup/${id}/restore`,

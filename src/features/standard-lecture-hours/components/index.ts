@@ -1,0 +1,2 @@
+export { StandardLectureHoursForm } from './StandardLectureHoursForm'
+

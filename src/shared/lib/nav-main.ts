@@ -203,6 +203,11 @@ const navMain: NavItem[] = [
         requiredPermission: PERMISSIONS.EXEMPTION_PERCENTAGES.LIST
       },
       {
+        title: ROUTES.STANDARD_LECTURE_HOURS.title,
+        url: ROUTES.STANDARD_LECTURE_HOURS.url,
+        requiredPermission: PERMISSIONS.STANDARD_LECTURE_HOURS.VIEW
+      },
+      {
         title: ROUTES.AUDIT_LOGS.title,
         url: ROUTES.AUDIT_LOGS.url,
         requiredPermission: PERMISSIONS.AUDIT_LOGS.LIST

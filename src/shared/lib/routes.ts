@@ -182,6 +182,11 @@ const ROUTES = {
     title: 'Backup hệ thống',
     url: '/backups',
     icon: Database
+  },
+  STANDARD_LECTURE_HOURS: {
+    title: 'Số tiết định mức',
+    url: '/standard-lecture-hours',
+    icon: BookOpen
   }
 }
 

@@ -1,0 +1,2 @@
+export { StandardLectureHoursPage } from './StandardLectureHoursPage'
+

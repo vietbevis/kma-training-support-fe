@@ -173,6 +173,12 @@ export const PERMISSIONS = {
     UPLOAD_WORD: { method: 'POST', path: '/standards/upload-word' } as PermissionRequirement
   },
 
+  // Standard Lecture Hours
+  STANDARD_LECTURE_HOURS: {
+    VIEW: { method: 'GET', path: '/standard-lecture-hours' } as PermissionRequirement,
+    UPDATE: { method: 'PUT', path: '/standard-lecture-hours' } as PermissionRequirement
+  },
+
   // Backups
   BACKUPS: {
     VIEW: { method: 'GET', path: '/backup/:id' } as PermissionRequirement,

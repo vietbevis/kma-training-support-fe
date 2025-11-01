@@ -63,6 +63,9 @@ const TimetableClassroomPage = lazy(() =>
   import('./features/timetable-classroom/page').then((m) => ({ default: m.TimetableClassroomPage }))
 )
 const BackupsPage = lazy(() => import('./features/backups/page').then((m) => ({ default: m.BackupsPage })))
+const StandardLectureHoursPage = lazy(() =>
+  import('./features/standard-lecture-hours/page').then((m) => ({ default: m.StandardLectureHoursPage }))
+)
 
 const router = createBrowserRouter([
   {
@@ -184,6 +187,10 @@ const router = createBrowserRouter([
           {
             path: ROUTES.BACKUPS.url,
             element: <BackupsPage />
+          },
+          {
+            path: ROUTES.STANDARD_LECTURE_HOURS.url,
+            element: <StandardLectureHoursPage />
           }
         ]
       }
