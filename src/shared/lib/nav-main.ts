@@ -129,7 +129,7 @@ const navMain: NavItem[] = [
     ]
   },
   {
-    title: 'Quy chuẩn',
+    title: 'Bảng quy chuẩn',
     url: '#',
     icon: ClipboardList,
     isActive: true,
