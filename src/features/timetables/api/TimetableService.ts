@@ -115,3 +115,17 @@ export const useCheckTimetableConflictMutation = () => {
     mutationFn: (data: TimetableConflictCheckDto) => api.post(`${API_ROUTES.TIMETABLES}/check-conflict`, data)
   })
 }
+
+export const useAddToStandardMutation = () => {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: () => api.post(`${API_ROUTES.TIMETABLES}/add-to-standard`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['standards'] })
+      toast.success('Thêm vào quy chuẩn dự kiến thành công')
+    },
+    onError: (error: any) => {
+      toast.error(error.message || 'Thêm vào quy chuẩn dự kiến thất bại')
+    }
+  })
+}

@@ -32,7 +32,7 @@ interface StandardFiltersProps {
 
 export const StandardFilters = ({ filters, setFilters, resetFilters }: StandardFiltersProps) => {
   const [className, setClassName] = useState(filters.className || '')
-  const debouncedClassName = useDebounce(className, 500)
+  const debouncedClassName = useDebounce(className)
 
   const handleDateChange = (field: 'startDate' | 'endDate', value: Date | null) => {
     setFilters({ [field]: value ? value.toISOString().split('T')[0] : '', page: '1' })
@@ -40,7 +40,8 @@ export const StandardFilters = ({ filters, setFilters, resetFilters }: StandardF
 
   useEffect(() => {
     setFilters({ className: debouncedClassName || '', page: '1' })
-  }, [debouncedClassName, setFilters])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedClassName])
 
   return (
     <div className='flex gap-4 flex-wrap'>

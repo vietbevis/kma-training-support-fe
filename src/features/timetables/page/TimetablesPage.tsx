@@ -5,8 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui
 import { PERMISSIONS } from '@/shared/constants/permissions'
 import { useSearchParamsManager } from '@/shared/hooks/useSearchParamsManager'
 import { useDialogStore } from '@/shared/stores/dialogStore'
-import { FileUp } from 'lucide-react'
-import { useDeleteTimetableMutation, useGetTimetablesQuery, useUpdateTimetableMutation } from '../api/TimetableService'
+import { FileUp, Plus } from 'lucide-react'
+import {
+  useAddToStandardMutation,
+  useDeleteTimetableMutation,
+  useGetTimetablesQuery,
+  useUpdateTimetableMutation
+} from '../api/TimetableService'
 import { TimetableFilters, TimetableForm, TimetableTable, TimetableUploadForm } from '../components'
 
 // Use permission from constants
@@ -15,7 +20,7 @@ const TimetablesPageComponent = () => {
   const { openDialog, closeDialog } = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
-    page: '',
+    page: '1',
     limit: '10',
     courseId: '',
     academicYearId: '',
@@ -32,6 +37,7 @@ const TimetablesPageComponent = () => {
 
   const { mutateAsync: deleteMutation, isPending: isDeleting } = useDeleteTimetableMutation()
   const { mutateAsync: updateMutation, isPending: isUpdating } = useUpdateTimetableMutation()
+  const { mutateAsync: addToStandardMutation, isPending: isAddingToStandard } = useAddToStandardMutation()
 
   const handleDelete = (id: string) => {
     openDialog({
@@ -82,6 +88,19 @@ const TimetablesPageComponent = () => {
     })
   }
 
+  const handleAddToStandard = () => {
+    openDialog({
+      type: 'confirm',
+      title: 'Xác nhận thêm vào quy chuẩn dự kiến',
+      description: 'Bạn có chắc chắn muốn thêm thời khóa biểu vào quy chuẩn dự kiến không?',
+      loading: isAddingToStandard,
+      onConfirm: async () => {
+        await addToStandardMutation()
+        closeDialog()
+      }
+    })
+  }
+
   return (
     <>
       <div className='space-y-6'>
@@ -91,6 +110,10 @@ const TimetablesPageComponent = () => {
             <p className='text-muted-foreground'>Quản lý danh sách thời khóa biểu trong hệ thống</p>
           </div>
           <div className='flex gap-2'>
+            <PermissionButton onClick={handleAddToStandard} requiredPermission={PERMISSIONS.TIMETABLES.UPLOAD_EXCEL}>
+              <Plus className='h-4 w-4 mr-2' />
+              Thêm vào quy chuẩn dự kiến
+            </PermissionButton>
             <PermissionButton onClick={handleUploadExcel} requiredPermission={PERMISSIONS.TIMETABLES.UPLOAD_EXCEL}>
               <FileUp className='h-4 w-4 mr-2' />
               Tải lên từ Excel
