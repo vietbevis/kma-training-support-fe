@@ -69,8 +69,17 @@ const BackupsPageComponent = () => {
       type: 'confirm',
       title: 'Xóa backup',
       description: 'Bạn có chắc chắn muốn xóa backup này không? Hành động này không thể hoàn tác.',
+      loading: deleteBackupMutation.isPending,
       onConfirm: async () => {
-        await deleteBackupMutation.mutateAsync(id)
+        dialogStore.setLoading?.(true)
+        try {
+          await deleteBackupMutation.mutateAsync(id)
+          dialogStore.closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          dialogStore.setLoading?.(false)
+        }
       }
     })
   }
@@ -80,8 +89,17 @@ const BackupsPageComponent = () => {
       type: 'confirm',
       title: 'Khôi phục backup',
       description: 'Khôi phục backup từ file',
+      loading: restoreBackupMutation.isPending,
       onConfirm: async () => {
-        await restoreBackupMutation.mutateAsync(backup.id)
+        dialogStore.setLoading?.(true)
+        try {
+          await restoreBackupMutation.mutateAsync(backup.id)
+          dialogStore.closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          dialogStore.setLoading?.(false)
+        }
       }
     })
   }
@@ -107,11 +125,14 @@ const BackupsPageComponent = () => {
       backupFile: file as File
     }
 
+    dialogStore.setLoading?.(true)
     try {
       await restoreFromUploadMutation.mutateAsync(data)
       dialogStore.closeDialog()
     } catch (error) {
       console.error(error)
+    } finally {
+      dialogStore.setLoading?.(false)
     }
   }
 
@@ -120,11 +141,16 @@ const BackupsPageComponent = () => {
       type: 'confirm',
       title: 'Dọn dẹp backups',
       description: 'Hệ thống sẽ xóa các backup bị lỗi hoặc không hoàn chỉnh. Bạn có chắc chắn muốn tiếp tục?',
+      loading: cleanupBackupsMutation.isPending,
       onConfirm: async () => {
+        dialogStore.setLoading?.(true)
         try {
           await cleanupBackupsMutation.mutateAsync()
+          dialogStore.closeDialog()
         } catch (error) {
           console.error(error)
+        } finally {
+          dialogStore.setLoading?.(false)
         }
       }
     })
@@ -135,11 +161,16 @@ const BackupsPageComponent = () => {
       type: 'confirm',
       title: 'Tái tạo metadata',
       description: 'Hệ thống sẽ tái tạo metadata từ các file backup hiện có. Bạn có chắc chắn muốn tiếp tục?',
+      loading: rebuildMetadataMutation.isPending,
       onConfirm: async () => {
+        dialogStore.setLoading?.(true)
         try {
           await rebuildMetadataMutation.mutateAsync()
+          dialogStore.closeDialog()
         } catch (error) {
           console.error(error)
+        } finally {
+          dialogStore.setLoading?.(false)
         }
       }
     })

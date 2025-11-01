@@ -17,7 +17,7 @@ import { TimetableFilters, TimetableForm, TimetableTable, TimetableUploadForm } 
 // Use permission from constants
 
 const TimetablesPageComponent = () => {
-  const { openDialog, closeDialog } = useDialogStore()
+  const { openDialog, closeDialog, setLoading } = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
     page: '1',
@@ -46,8 +46,15 @@ const TimetablesPageComponent = () => {
       description: 'Bạn có chắc chắn muốn xóa thời khóa biểu này? Hành động này không thể hoàn tác.',
       loading: isDeleting,
       onConfirm: async () => {
-        await deleteMutation(id)
-        closeDialog()
+        setLoading?.(true)
+        try {
+          await deleteMutation(id)
+          closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading?.(false)
+        }
       }
     })
   }
@@ -95,12 +102,18 @@ const TimetablesPageComponent = () => {
       description: 'Bạn có chắc chắn muốn thêm thời khóa biểu vào quy chuẩn dự kiến không?',
       loading: isAddingToStandard,
       onConfirm: async () => {
-        await addToStandardMutation()
-        closeDialog()
+        setLoading?.(true)
+        try {
+          await addToStandardMutation()
+          closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading?.(false)
+        }
       }
     })
   }
-
   return (
     <>
       <div className='space-y-6'>

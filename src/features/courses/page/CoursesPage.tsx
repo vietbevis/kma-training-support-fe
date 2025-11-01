@@ -49,8 +49,15 @@ const CoursesPageComponent = () => {
       description: 'Bạn có chắc chắn muốn xóa học phần này? Hành động này không thể hoàn tác.',
       loading: isDeleting,
       onConfirm: async () => {
-        await deleteMutation(id)
-        dialogStore.closeDialog()
+        dialogStore.setLoading?.(true)
+        try {
+          await deleteMutation(id)
+          dialogStore.closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          dialogStore.setLoading?.(false)
+        }
       }
     })
   }

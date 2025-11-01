@@ -25,6 +25,7 @@ interface DialogState {
   ) => void
   openFileUploadDialog?: (params: FileUploadDialogParams & { title?: string; description?: string }) => void
   closeDialog: () => void
+  setLoading?: (loading: boolean) => void
 }
 
 export const useDialogStore = create<DialogState>((set) => ({
@@ -61,5 +62,6 @@ export const useDialogStore = create<DialogState>((set) => ({
       data: undefined,
       fileUploadParams: undefined,
       className: ''
-    })
+    }),
+  setLoading: (loading: boolean) => set({ loading })
 }))

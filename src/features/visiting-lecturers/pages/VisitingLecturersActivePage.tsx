@@ -69,12 +69,16 @@ const VisitingLecturersActivePageComponent = () => {
       type: 'confirm',
       title: 'Xác nhận xóa giảng viên mời',
       description: `Bạn có chắc chắn muốn xóa giảng viên mời "${visitingLecturer.fullName}"? Hành động này không thể hoàn tác.`,
+      loading: deleteVisitingLecturerMutation.isPending,
       onConfirm: async () => {
+        dialogStore.setLoading?.(true)
         try {
           await deleteVisitingLecturerMutation.mutateAsync(id)
           dialogStore.closeDialog()
         } catch (error) {
           // Error đã được handle trong mutation
+        } finally {
+          dialogStore.setLoading?.(false)
         }
       }
     })

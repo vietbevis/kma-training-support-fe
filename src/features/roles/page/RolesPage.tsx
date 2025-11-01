@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
 
 const RolesPageComponent = () => {
-  const { openDialog, closeDialog } = useDialogStore()
+  const { openDialog, closeDialog, setLoading } = useDialogStore()
   const navigate = useNavigate()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
@@ -45,9 +45,16 @@ const RolesPageComponent = () => {
       description: 'Bạn có chắc chắn muốn xóa vai trò này? Hành động này không thể hoàn tác.',
       loading: false,
       onConfirm: async () => {
-        await deleteRole(id)
-        toast.success('Xóa vai trò thành công')
-        closeDialog()
+        setLoading?.(true)
+        try {
+          await deleteRole(id)
+          toast.success('Xóa vai trò thành công')
+          closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading?.(false)
+        }
       }
     })
   }

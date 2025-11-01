@@ -10,7 +10,7 @@ import { useDeleteStandardMutation, useGetStandardsQuery, useUpdateStandardMutat
 import { StandardFilters, StandardForm, StandardTable, StandardUploadForm } from '../components'
 
 const StandardsPageComponent = () => {
-  const { openDialog, closeDialog } = useDialogStore()
+  const { openDialog, closeDialog, setLoading } = useDialogStore()
 
   const { filters, resetFilters, setFilters } = useSearchParamsManager({
     page: '',
@@ -38,8 +38,15 @@ const StandardsPageComponent = () => {
       description: 'Bạn có chắc chắn muốn xóa quy chuẩn này? Hành động này không thể hoàn tác.',
       loading: isDeleting,
       onConfirm: async () => {
-        await deleteMutation(id)
-        closeDialog()
+        setLoading?.(true)
+        try {
+          await deleteMutation(id)
+          closeDialog()
+        } catch (error) {
+          console.error(error)
+        } finally {
+          setLoading?.(false)
+        }
       }
     })
   }
@@ -121,4 +128,3 @@ const StandardsPageComponent = () => {
 
 // Apply permission guard
 export const StandardsPage = withPermissionGuard(StandardsPageComponent, PERMISSIONS.STANDARDS.LIST)
-
